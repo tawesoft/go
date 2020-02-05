@@ -7,7 +7,7 @@ Contents
 --------
 
 | Package                | Stable?  | Description |                            |
-|------------------------|----------|------------------------------------------|
+| ---------------------- |:--------:| ---------------------------------------- |
 | [humanize](./humanize) | no       | lightweight human-readable numbers       |
 | [dialog](./dialog)     | yes      | simple cross platform¹ messagebox        |
 | [ximage](./ximage)     | yes      | extended image and colour types          |
