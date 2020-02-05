@@ -6,7 +6,7 @@ A monorepo for small Go modules maintained by [Tawesoft](https://www.tawesoft.co
 Contents
 --------
 
-| Package                | Stable?  | Description |                            |
+| Package                | Stable?  | Description                              |
 | ---------------------- |:--------:| ---------------------------------------- |
 | [humanize](./humanize) | no       | lightweight human-readable numbers       |
 | [dialog](./dialog)     | yes      | simple cross platform¹ messagebox        |
