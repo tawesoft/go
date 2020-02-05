@@ -1,3 +1,5 @@
+![Tawesoft Logo](https://www.tawesoft.co.uk/media/0/logo-240r.png)
+
 [tawesoft.co.uk/go](https://tawesoft.co.uk/go)
 ================================================================================
 
@@ -18,5 +20,5 @@ Support
 
 Community support through [GitHub issues](https://github.com/tawesoft/go/issues).
 
-For commercial support contact [open-source@tawesoft.co.uk](malto:open-source@tawesoft.co.uk)
+For commercial support contact open-source@tawesoft.co.uk
 
