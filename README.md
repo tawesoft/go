@@ -1,4 +1,4 @@
-[tawesoft.co.uk/go](https://tawesoft.co.uk/go):
+[tawesoft.co.uk/go](https://tawesoft.co.uk/go)
 ================================================================================
 
 A monorepo for small Go modules maintained by [Tawesoft](https://www.tawesoft.co.uk/)
