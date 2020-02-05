@@ -1,0 +1,22 @@
+2019-11-16
+
+    * Fix incorrect formatting of multiple arguments in Linux stdio fallback
+
+2019-10-16
+
+    * Remove title argument from Alert function (see https://github.com/tawesoft/dialog/issues/1)
+
+2019-10-01
+
+    * Fix string formatting bug in Windows build
+
+2019-10-01
+
+    * Support Unicode in UTF16 Windows dialogs
+    * Use "golang.org/x/sys/windows" to provide WinAPI
+    * Removes CGO and windows.h implementation
+    * Linux stdio fallback alert no longer blocks waiting for input
+
+2019-09-30
+
+    * First release
