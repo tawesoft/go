@@ -1,7 +1,9 @@
 [![Tawesoft](https://www.tawesoft.co.uk/media/0/logo-240r.png)](https://tawesoft.co.uk/go)
 ================================================================================
 
-A monorepo for small Go modules maintained by [Tawesoft](https://www.tawesoft.co.uk/)
+A monorepo for small Go modules maintained by [Tawesoft&reg;](https://www.tawesoft.co.uk/go)
+
+This is permissively-licensed open source software but exact licenses may vary between modules.
 
 Contents
 --------
