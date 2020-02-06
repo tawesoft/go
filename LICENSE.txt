@@ -78,7 +78,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 --------------------------------------------------------------------------------
 
-tawesoft.co.uk/go/xcolor
+tawesoft.co.uk/go/ximage/xcolor
 
 Copyright (c) 2009 The Go Authors. All rights reserved.
 
