@@ -7,9 +7,16 @@
     <style>
         html, body { color: #323232; background-color: #FFF; }
         a { color: #b63355; text-decoration: none; }
+        table { width: 100%; border-spacing: 0 0; }
+        table, thead, tbody, tr { border: 0; border-collapse: separate; text-align: left; }
+        th { border-bottom: 1px solid #000; }
+        table.pkg td.links > a { background-color: #FEE; padding: 0.5em 1em; margin: 0.25em; }
+        table.pkg td.links > a:hover { background-color: #b63355; color: #FFF; }
+        table.pkg tbody > tr { height: 4em; line-height: 2em; }
+        th, td { padding: 0.5em; }
     </style>
 </head>
-<body>
+<body style="min-width: 600px;">
 
 <div style="margin: 0 auto; max-width: 800px;">
 
@@ -26,6 +33,38 @@
 
 <pre>go get -u tawesoft.co.uk/go</pre>
 
+<h2>Packages</h2>
+
+<table class="pkg">
+    <thead>
+        <tr>
+            <th style="width: 15%;">Package</th>
+            <th style="width: 10%;">Stable?</th>
+            <th style="width: 25%;">Links</th>
+            <th style="width: 50%;">Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><b>humanize</b></td>
+            <td>no</td>
+            <td class="links"><a href="https://godoc.org/tawesoft.co.uk/go/humanize">docs</a> <a href="https://github.com/tawesoft/go/tree/master/humanize">src</a></td>
+            <td>lightweight human-readable numbers</td>
+        </tr>
+        <tr>
+            <td><b>dialog</b></td>
+            <td>yes</td>
+            <td class="links"><a href="https://godoc.org/tawesoft.co.uk/go/dialog">docs</a> <a href="https://github.com/tawesoft/go/tree/master/dialog">src</a></td>
+            <td>simple cross-platform messagebox</td>
+        </tr>
+        <tr>
+            <td><b>ximage</b></td>
+            <td>yes</td>
+            <td class="links"><a href="https://godoc.org/tawesoft.co.uk/go/ximage">docs</a> <a href="https://github.com/tawesoft/go/tree/master/ximage">src</a></td>
+            <td>extended image and colour types</td>
+        </tr>
+    </tbody>
+</table>
 
 <h2>Links:</h2>
 
@@ -33,7 +72,6 @@
     <li>Home: <a href="https://tawesoft.co.uk/go">tawesoft.co.uk/go</a></li>
     <li>Repository: <a href="https://github.com/tawesoft/go">github.com/tawesoft/go</a></li>
 </ul>
-
 
 <h2>Support:</h2>
 

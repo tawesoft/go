@@ -4,9 +4,25 @@ dialogs for Go.
 
 Currently only Windows and Linux targets are supported.
 
-For source code see https://github.com/tawesoft/dialog
+On Linux, uses (in order of preference) `zenity`, `xmessage`, or stdio.
 
-For links, news, etc. see https://www.tawesoft.co.uk/go/dialog
+Usage:
+
+    package main
+
+    import "tawesoft.co.uk/go/dialog"
+
+    func main() {
+        dialog.Alert("Message")
+        dialog.Alert("There are %d lights", 4)
+    }
+
+Home page https://tawesoft.co.uk/go
+
+For source code see https://github.com/tawesoft/go/master/dialog
+
+For documentation see https://godoc.org/tawesoft.co.uk/go/dialog
+
 */
 package dialog // import "tawesoft.co.uk/go/dialog"
 

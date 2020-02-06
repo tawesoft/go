@@ -1,36 +1,18 @@
-[tawesoft.co.uk/go/humanize](https://www.tawesoft.co.uk/go/humanize)
+tawesoft.co.uk/go/humanize
 ================================================================================
 
 Lightweight human-readable numbers for Go.
 
 The API is incomplete and may be subject to occasional breaking changes.
 
-Download/update:
+| --- | --- | --- |
+| [Home](https://www.tawesoft.co.uk/go) | [Source](https://github.com/tawesoft/go/master/humanize) | [Documentation](https://godoc.org/tawesoft.co.uk/go/humanize) |
 
-```
-go get -u tawesoft.co.uk/go/humanize
-```
 
-Usage:
+Comments
+--------
 
-```
-import "tawesoft.co.uk/go/humanize"
-```
-
-Docs:
-
-[godoc.org/tawesoft.co.uk/go/humanize](https://godoc.org/tawesoft.co.uk/go/humanize)
-
-Examples:
-
-```
-ParseBytes("1 KiB") => 1024
-FormatBytesSI(nil, 1e6) => "1 MB"
-FormatBytesIEC(nil, 1024*1024) => "1 MiB"
-```
-
-Versus dustin's [go-humanize](https://github.com/dustin/go-humanize)
---------------------------------------------------------------------------------
+### Versus dustin's [go-humanize](https://github.com/dustin/go-humanize)
 
 * `tawesoft.co.uk/go/humanize` parses about 5 times faster with fewer memory
 allocations. Benchmark (YMMV):
