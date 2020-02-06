@@ -16,8 +16,8 @@ Contents
 [doc_dialog]:   https://godoc.org/tawesoft.co.uk/go/dialog
 [doc_ximage]:   https://godoc.org/tawesoft.co.uk/go/ximage
 
-[copy_humanize]: ./humanize/README.md
-[copy_dialog]:   ./dialog/README.md
+[copy_humanize]: ./humanize/COPYING.md
+[copy_dialog]:   ./dialog/COPYING.md
 [copy_ximage]:   ./ximage/LICENSE.txt
 
 Support
