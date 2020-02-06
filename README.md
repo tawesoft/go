@@ -8,9 +8,9 @@ Contents
 
 | Package  | Description                              | Links                                   | License                     | Stable?  | 
 | -------- | ---------------------------------------- | --------------------------------------- | ----------------------------|:--------:|
-| humanize | lightweight human-readable numbers       | [src](./humanize), [docs][doc_humanize] | [MIT-0](copy_humanize)      | no       |
-| dialog   | simple cross platform messagebox         | [src](./dialog),   [docs][doc_dialog]   | [MIT-0](copy_dialog)        | yes      |
-| ximage   | extended image and colour types          | [src](./ximage),   [docs][doc_ximage]   | [BSD-3-clause](copy_ximage) | yes      |
+| humanize | lightweight human-readable numbers       | [src](./humanize), [docs][doc_humanize] | [MIT-0][copy_humanize]      | no       |
+| dialog   | simple cross platform messagebox         | [src](./dialog),   [docs][doc_dialog]   | [MIT-0][copy_dialog]        | yes      |
+| ximage   | extended image and colour types          | [src](./ximage),   [docs][doc_ximage]   | [BSD-3-clause][copy_ximage] | yes      |
 
 [doc_humanize]: https://godoc.org/tawesoft.co.uk/go/humanize
 [doc_dialog]:   https://godoc.org/tawesoft.co.uk/go/dialog
