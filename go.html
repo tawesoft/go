@@ -10,9 +10,10 @@
         table { width: 100%; border-spacing: 0 0; }
         table, thead, tbody, tr { border: 0; border-collapse: separate; text-align: left; }
         th { border-bottom: 1px solid #000; }
-        table.pkg td.links > a { background-color: #FEE; padding: 0.5em 1em; margin: 0.25em; }
+        table.pkg td.links { text-align: center; }
+        table.pkg td.links > a { display: inline-block; background-color: #FEE; padding: 0.5em 1em; margin: 0.25em; }
         table.pkg td.links > a:hover { background-color: #b63355; color: #FFF; }
-        table.pkg tbody > tr { height: 4em; line-height: 2em; }
+        table.pkg tbody > tr { height: 4em; line-height: 1.5em; }
         th, td { padding: 0.5em; }
     </style>
 </head>
@@ -26,8 +27,9 @@
 
 <h1>tawesoft.co.uk/go</h1>
 
-<p>A monorepo for small Go modules maintained by <a href="https://www.tawesoft.co.uk/">Tawesoft <sup>&reg;</sup></a></p>
+<p>A monorepo for small Go modules maintained by <a href="https://www.tawesoft.co.uk/">Tawesoft<sup>&reg;</sup></a></p>
 
+<p>This is permissively-licensed open source software but exact licenses may vary between modules.</p>
 
 <h2>Download</h2>
 
@@ -39,29 +41,48 @@
     <thead>
         <tr>
             <th style="width: 15%;">Package</th>
-            <th style="width: 10%;">Stable?</th>
+            <th style="width: 40%;">Description</th>
             <th style="width: 25%;">Links</th>
-            <th style="width: 50%;">Description</th>
+            <th style="width: 10%;">Stable?</th>
+            <th style="width: 10%;">License</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td><b>humanize</b></td>
-            <td>no</td>
-            <td class="links"><a href="https://godoc.org/tawesoft.co.uk/go/humanize">docs</a> <a href="https://github.com/tawesoft/go/tree/master/humanize">src</a></td>
             <td>lightweight human-readable numbers</td>
+            <td class="links">
+                <a href="https://godoc.org/tawesoft.co.uk/go/humanize">docs</a>
+                <a href="https://github.com/tawesoft/go/tree/master/humanize">src</a>
+            </td>
+            <td>no</td>
+            <td>
+                <a href="https://raw.githubusercontent.com/tawesoft/go/master/dialog/COPYING.md">MIT-0</a>
+            </td>
         </tr>
         <tr>
             <td><b>dialog</b></td>
-            <td>yes</td>
-            <td class="links"><a href="https://godoc.org/tawesoft.co.uk/go/dialog">docs</a> <a href="https://github.com/tawesoft/go/tree/master/dialog">src</a></td>
             <td>simple cross-platform messagebox</td>
+            <td class="links">
+                <a href="https://godoc.org/tawesoft.co.uk/go/dialog">docs</a>
+                <a href="https://github.com/tawesoft/go/tree/master/dialog">src</a>
+            </td>
+            <td>yes</td>
+            <td>
+                <a href="https://raw.githubusercontent.com/tawesoft/go/master/dialog/COPYING.md">MIT-0</a>
+            </td>
         </tr>
         <tr>
             <td><b>ximage</b></td>
-            <td>yes</td>
-            <td class="links"><a href="https://godoc.org/tawesoft.co.uk/go/ximage">docs</a> <a href="https://github.com/tawesoft/go/tree/master/ximage">src</a></td>
             <td>extended image and colour types</td>
+            <td class="links">
+                <a href="https://godoc.org/tawesoft.co.uk/go/ximage">docs</a>
+                <a href="https://github.com/tawesoft/go/tree/master/ximage">src</a>
+            </td>
+            <td>yes</td>
+            <td>
+                <a href="https://raw.githubusercontent.com/tawesoft/go/master/ximage/LICENSE.txt">BSD-3-Clause</a>
+            </td>
         </tr>
     </tbody>
 </table>
