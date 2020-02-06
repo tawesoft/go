@@ -14,7 +14,7 @@ Go image manipulation.
 
 Home page https://tawesoft.co.uk/go
 
-For source code see https://github.com/tawesoft/go/master/ximage/xcolor
+For source code see https://github.com/tawesoft/go/tree/master/ximage/xcolor
 
 For documentation see https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
 

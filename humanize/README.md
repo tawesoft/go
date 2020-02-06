@@ -5,8 +5,7 @@ Lightweight human-readable numbers for Go.
 
 The API is incomplete and may be subject to occasional breaking changes.
 
-| --- | --- | --- |
-| [Home](https://www.tawesoft.co.uk/go) | [Source](https://github.com/tawesoft/go/master/humanize) | [Documentation](https://godoc.org/tawesoft.co.uk/go/humanize) |
+[Home](https://www.tawesoft.co.uk/go) | [Source](https://github.com/tawesoft/go/tree/master/humanize) | [Documentation](https://godoc.org/tawesoft.co.uk/go/humanize)
 
 
 Comments

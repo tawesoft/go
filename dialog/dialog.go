@@ -19,7 +19,7 @@ Usage:
 
 Home page https://tawesoft.co.uk/go
 
-For source code see https://github.com/tawesoft/go/master/dialog
+For source code see https://github.com/tawesoft/go/tree/master/dialog
 
 For documentation see https://godoc.org/tawesoft.co.uk/go/dialog
 

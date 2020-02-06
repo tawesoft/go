@@ -14,7 +14,7 @@ native Go image manipulation.
 
 Home page https://tawesoft.co.uk/go
 
-For source code see https://github.com/tawesoft/go/master/ximage
+For source code see https://github.com/tawesoft/go/tree/master/ximage
 
 For documentation see https://godoc.org/tawesoft.co.uk/go/ximage
 

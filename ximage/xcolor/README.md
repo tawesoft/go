@@ -11,7 +11,6 @@ Extended image and colour types for Go complimenting the native
 
 Optimised for lower memory usage, not speed.
 
-| --- | --- | --- |
-| [Home](https://www.tawesoft.co.uk/go) | [Source](https://github.com/tawesoft/go/master/ximage/xcolor) | [Documentation](https://godoc.org/tawesoft.co.uk/go/ximage/xcolor) |
+[Home](https://www.tawesoft.co.uk/go) | [Source](https://github.com/tawesoft/go/tree/master/ximage/xcolor) | [Documentation](https://godoc.org/tawesoft.co.uk/go/ximage/xcolor)
 
 
