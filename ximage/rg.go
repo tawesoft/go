@@ -11,8 +11,8 @@ import (
     "tawesoft.co.uk/go/ximage/xcolor"
 )
 
-// RedGreen is an in-memory image whose At method returns color.RedGreen values.
-type RedGreen struct {
+// RG is an in-memory image whose At method returns color.RG values.
+type RG struct {
 	// Pix holds the image's pixels, as Red values. The pixel at
 	// (x, y) starts at Pix[(y-Rect.Min.Y)*Stride + (x-Rect.Min.X)*2].
 	Pix []uint8
@@ -22,39 +22,39 @@ type RedGreen struct {
 	Rect image.Rectangle
 }
 
-func (p *RedGreen) ColorModel() color.Model { return xcolor.RedGreenModel }
+func (p *RG) ColorModel() color.Model { return xcolor.RGModel }
 
-func (p *RedGreen) Bounds() image.Rectangle { return p.Rect }
+func (p *RG) Bounds() image.Rectangle { return p.Rect }
 
-func (p *RedGreen) At(x, y int) color.Color {
-	return p.RedGreenAt(x, y)
+func (p *RG) At(x, y int) color.Color {
+	return p.RGAt(x, y)
 }
 
-func (p *RedGreen) RedGreenAt(x, y int) xcolor.RedGreen {
+func (p *RG) RGAt(x, y int) xcolor.RG {
 	if !(image.Point{x, y}.In(p.Rect)) {
-		return xcolor.RedGreen{}
+		return xcolor.RG{}
 	}
 	i := p.PixOffset(x, y)
-	return xcolor.RedGreen{R: p.Pix[i], G: p.Pix[i+1]}
+	return xcolor.RG{R: p.Pix[i], G: p.Pix[i+1]}
 }
 
 // PixOffset returns the index of the first element of Pix that corresponds to
 // the pixel at (x, y).
-func (p *RedGreen) PixOffset(x, y int) int {
+func (p *RG) PixOffset(x, y int) int {
 	return (y-p.Rect.Min.Y)*p.Stride + (x-p.Rect.Min.X)*1
 }
 
-func (p *RedGreen) Set(x, y int, c color.Color) {
+func (p *RG) Set(x, y int, c color.Color) {
 	if !(image.Point{x, y}.In(p.Rect)) {
 		return
 	}
     i := p.PixOffset(x, y)
-    rgba := xcolor.RedGreenModel.Convert(c).(color.RGBA)
+    rgba := xcolor.RGModel.Convert(c).(color.RGBA)
     p.Pix[i] = rgba.R
     p.Pix[i+1] = rgba.G
 }
 
-func (p *RedGreen) SetRedGreen(x, y int, c xcolor.RedGreen) {
+func (p *RG) SetRG(x, y int, c xcolor.RG) {
 	if !(image.Point{x, y}.In(p.Rect)) {
 		return
 	}
@@ -65,16 +65,16 @@ func (p *RedGreen) SetRedGreen(x, y int, c xcolor.RedGreen) {
 
 // SubImage returns an image representing the portion of the image p visible
 // through r. The returned value shares pixels with the original image.
-func (p *RedGreen) SubImage(r image.Rectangle) image.Image {
+func (p *RG) SubImage(r image.Rectangle) image.Image {
 	r = r.Intersect(p.Rect)
 	// If r1 and r2 are Rectangles, r1.Intersect(r2) is not guaranteed to be inside
 	// either r1 or r2 if the intersection is empty. Without explicitly checking for
 	// this, the Pix[i:] expression below can panic.
 	if r.Empty() {
-		return &RedGreen{}
+		return &RG{}
 	}
 	i := p.PixOffset(r.Min.X, r.Min.Y)
-	return &RedGreen{
+	return &RG{
 		Pix:    p.Pix[i:],
 		Stride: p.Stride,
 		Rect:   r,
@@ -82,13 +82,13 @@ func (p *RedGreen) SubImage(r image.Rectangle) image.Image {
 }
 
 // Opaque scans the entire image and reports whether it is fully opaque.
-func (p *RedGreen) Opaque() bool {
+func (p *RG) Opaque() bool {
 	return true
 }
 
-// NewRedGreen returns a new RedGreen image with the given bounds.
-func NewRedGreen(r image.Rectangle) *RedGreen {
+// NewRG returns a new RG image with the given bounds.
+func NewRG(r image.Rectangle) *RG {
 	w, h := r.Dx(), r.Dy()
 	pix := make([]uint8, 2*w*h)
-	return &RedGreen{pix, 2 * w, r}
+	return &RG{pix, 2 * w, r}
 }

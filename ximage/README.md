@@ -6,7 +6,7 @@ Extended image and colour types for Go complimenting the native
 [image/color](https://golang.org/pkg/image/color) modules.
 
 * Red (e.g. for `gl.RED`)
-* RedGreen (e.g. for `gl.RG`)
+* RG  (e.g. for `gl.RG`)
 * RGB (e.g. for `gl.RGB`)
 
 Optimised for lower memory usage, not speed. 
