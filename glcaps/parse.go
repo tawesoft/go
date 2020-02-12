@@ -362,8 +362,9 @@ func parseStruct(binding *Binding, extensions []string, s reflect.Value) (errors
 //            }
 //
 //            MaxTextureUnits            int     `glcaps:"GetIntegerv GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS"`
-//            MaxTextureSize             int     `glcaps:"GetIntegerv GL_MAX_TEXTURE_SIZE; gte parsei 8192"`
+//            MaxTextureSize             int     `glcaps:"GetIntegerv GL_MAX_TEXTURE_SIZE; gte 8192"`
 //            MaxAnisotropy              float32 `glcaps:"if ext GL_EXT_texture_filter_anisotropic GetFloatv GL_MAX_TEXTURE_MAX_ANISOTROPY 1.0"`
+//            Frobbinators               int    `glcaps:"150; gte 10 lt 100 neq 13"`
 //        }
 //
 //        var Binding = glcaps.Binding{
@@ -378,12 +379,14 @@ func parseStruct(binding *Binding, extensions []string, s reflect.Value) (errors
 //
 //        var extensions, errors = glcaps.Parse(&Binding, &MyCaps)
 //        for _, i := range errors {
-//            fmt.Printf("glcaps error: %+v\n", i)
+//            fmt.Printf("glcaps error: %s\n", i.Message)
 //        }
 //
 //        fmt.Printf("Supports.TextureCompressionBPTC: %t\n", MyCaps.Supports.BPTextureCompression)
 //        fmt.Printf("Supports.FluxCapacitor: %t\n", MyCaps.Supports.FluxCapacitor)
+//        fmt.Printf("Supports.BigTextures: %t\n", MyCaps.Supports.BigTextures)
 //        fmt.Printf("MaxTextureUnits: %d\n", MyCaps.MaxTextureUnits)
+//        fmt.Printf("Frobbinators: %d\n", MyCaps.Frobbinators)
 //        fmt.Printf("%d extensions supported\n", len(extensions))
 //    }
 //
