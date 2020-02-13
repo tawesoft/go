@@ -4,6 +4,7 @@ licenses="
 dialog/LICENSE.txt
 glcaps/LICENSE.txt
 humanize/LICENSE.txt
+operator/LICENSE.txt
 ximage/LICENSE.txt
 ximage/xcolor/LICENSE.txt
 "
