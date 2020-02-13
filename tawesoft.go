@@ -11,6 +11,7 @@ import (
     _ "tawesoft.co.uk/go/dialog"
     _ "tawesoft.co.uk/go/glcaps"
     _ "tawesoft.co.uk/go/humanize"
+    _ "tawesoft.co.uk/go/operator"
     _ "tawesoft.co.uk/go/ximage"
     _ "tawesoft.co.uk/go/ximage/xcolor"
 )
