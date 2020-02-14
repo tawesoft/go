@@ -4,6 +4,9 @@ import (
     "testing"
 )
 
+const T = true
+const F = false
+
 func TestBooleanUnary(t *testing.T) {
     type test struct {
         p bool

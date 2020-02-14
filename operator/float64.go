@@ -4,6 +4,7 @@ package operator
 
 import "math"
 
+// Some overflow checks with reference to stackoverflow.com/a/1514309/5654201
 
 type float64Unary struct {
     Identity        func(float64) float64
@@ -56,6 +57,7 @@ type float64NaryChecked struct {
     Mul             func(... float64) (float64, error)
 }
 
+// Float64 implements operations on one (unary), two (binary), or many (nary) arguments of type float64.
 var Float64 = struct {
     Unary           float64Unary
     Binary          float64Binary
@@ -96,6 +98,8 @@ var Float64 = struct {
     Reduce:         float64Reduce,
 }
 
+// Float64Checked implements operations on one (unary), two (binary), or many (nary) arguments of type float64, returning an
+// error in cases such as overflow.
 var Float64Checked = struct {
     Unary           float64UnaryChecked
     Binary          float64BinaryChecked

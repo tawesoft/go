@@ -1,8 +1,5 @@
 package operator
 
-const T = true
-const F = false
-
 type boolUnary struct {
     True            func(bool) bool
     False           func(bool) bool
@@ -40,6 +37,7 @@ type boolNary struct{
     None            func(...bool) bool // returns true if none are true (all are false)
 }
 
+// Bool implements operations on one (unary), two (binary), or many (nary) arguments of type bool.
 var Bool = struct {
     Unary  boolUnary
     Binary boolBinary

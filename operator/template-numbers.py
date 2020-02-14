@@ -58,5 +58,8 @@ for _class, _type, signed in numbers:
                             (_class != "integers"):
 
                             fp.write(replace(left)+"\n")
+                else:
+                    # restore the comment
+                    fp.write("// %s\n" % replace(right))
 
 

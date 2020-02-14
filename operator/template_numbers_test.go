@@ -5,12 +5,12 @@ import "math" // CLASS floats
 // This file is templated by template-numbers.py // IGNORE
 // The token _t is replaced by a snakeCase type // IGNORE
 // The token _T is replaced by a CamelCase type // IGNORE
-// And lines are conditionally filtered by a command or command; options comment
+// And lines are conditionally filtered by a command or command; options comment // IGNORE
 type _t int // IGNORE
 const max_T =  1000 // IGNORE
 const min_T = -1000 // IGNORE
 
-// Some overflow checks with reference to https://stackoverflow.com/a/1514309/5654201
+// Some overflow checks with reference to stackoverflow.com/a/1514309/5654201
 
 type _tUnary struct {
     Identity        func(_t) _t
@@ -72,6 +72,7 @@ type _tNaryChecked struct {
     Mul             func(... _t) (_t, error) // CLASS integers, floats, complex
 }
 
+// _T implements operations on one (unary), two (binary), or many (nary) arguments of type _t.
 var _T = struct {
     Unary           _tUnary
     Binary          _tBinary
@@ -120,6 +121,8 @@ var _T = struct {
     Reduce:         _tReduce,
 }
 
+// _TChecked implements operations on one (unary), two (binary), or many (nary) arguments of type _t, returning an
+// error in cases such as overflow.
 var _TChecked = struct {
     Unary           _tUnaryChecked
     Binary          _tBinaryChecked
