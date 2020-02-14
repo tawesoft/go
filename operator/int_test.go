@@ -196,3 +196,51 @@ func TestUintCheckedAdd(t *testing.T) {
         }
     }
 }
+
+func TestIntNary(t *testing.T) {
+    type test struct {
+        xs []int
+        f func(...int) int
+        expected int
+    }
+    
+    var tests = []test {
+        {[]int{1, 2, 3, 4, 5, 6}, Int.Nary.Add, 21},
+        {[]int{1, 2, 3, 4, 5, 6}, Int.Nary.Mul, 720},
+    }
+    
+    for idx, i := range tests {
+        var result = i.f(i.xs...)
+        if result != i.expected {
+            t.Errorf("test %d: got %d, but expected %d", idx, result, i.expected)
+        }
+    }
+}
+
+func TestIntNaryChecked(t *testing.T) {
+    type test struct {
+        xs []int8
+        f func(...int8) (int8, error)
+        expectedValue int8
+        expectedError error
+    }
+    
+    var tests = []test {
+        {[]int8{1, 2, 3, 4, 5, 6},          Int8Checked.Nary.Add, 21, nil},
+        {[]int8{1, 2, 3, 4},                Int8Checked.Nary.Mul, 24, nil},
+        {[]int8{120, -120, -120, -8, -1},   Int8Checked.Nary.Add,  0, ErrorOverflow},
+        {[]int8{120, 4, 4},                 Int8Checked.Nary.Add,  0, ErrorOverflow},
+        {[]int8{32, 2, 2},                  Int8Checked.Nary.Mul, 0, ErrorOverflow},
+    }
+    
+    for idx, i := range tests {
+        var result, err = i.f(i.xs...)
+        if err == i.expectedError {
+            // pass
+        } else if err != nil {
+            t.Errorf("test %d: unexpected error %v (expected %v)", idx, err, i.expectedError)
+        } else if result != i.expectedValue {
+            t.Errorf("test %d: got %d, but expected %d", idx, result, i.expectedValue)
+        }
+    }
+}

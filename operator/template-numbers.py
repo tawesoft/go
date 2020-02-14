@@ -1,4 +1,6 @@
 
+# usage: python3 template-numbers.py
+
 template=""
 template_file="template_numbers_test.go"
 
@@ -50,9 +52,10 @@ for _class, _type, signed in numbers:
                     classes = right[right.find(" "):].split(",")
                     classes = set([x.strip() for x in classes])
                     if _class in classes:
-
                         if (rest is None) or \
-                            (("signed" in rest) and signed):
+                            (("signed" in rest) and (_class == "integers") and signed) or \
+                            (("unsigned" in rest) and (_class == "integers") and (not signed)) or \
+                            (_class != "integers"):
 
                             fp.write(replace(left)+"\n")
 

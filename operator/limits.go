@@ -36,5 +36,6 @@ const maxFloat64 = math.MaxFloat64
 const minFloat32 = -math.MaxFloat32
 const minFloat64 = -math.MaxFloat64
 
-var ErrorOverflow = fmt.Errorf("Overflow")
+var ErrorOverflow  = fmt.Errorf("Overflow")
 var ErrorUndefined = fmt.Errorf("Undefined")
+var ErrorNaN       = fmt.Errorf("Not a Number (NaN)")
