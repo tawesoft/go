@@ -1,17 +1,8 @@
 package operator
 
 import (
-    "reflect"
-    "runtime"
     "testing"
 )
-
-const T = true
-const F = false
-
-func getFunctionName(i interface{}) string {
-    return runtime.FuncForPC(reflect.ValueOf(i).Pointer()).Name()
-}
 
 func TestBooleanUnary(t *testing.T) {
     type test struct {
@@ -133,6 +124,46 @@ func TestBooleanNary(t *testing.T) {
         {Bool.Nary.None,  []bool{T, T, T, T}, F},   // test 22
         {Bool.Nary.None,  []bool{T, T, F, T}, F},   // test 23
         {Bool.Nary.None,  []bool{F, F, F, F}, T},   // test 24
+        
+        {boolNaryAll1,    []bool{},  T},            // test 25
+        {boolNaryAll1,    []bool{T}, T},            // test 26
+        {boolNaryAll1,    []bool{F}, F},            // test 27
+        {boolNaryAll1,    []bool{T, T, T, T}, T},   // test 28
+        {boolNaryAll1,    []bool{T, T, F, T}, F},   // test 29
+        
+        {boolNaryAll2,    []bool{},  T},            // test 30
+        {boolNaryAll2,    []bool{T}, T},            // test 31
+        {boolNaryAll2,    []bool{F}, F},            // test 32
+        {boolNaryAll2,    []bool{T, T, T, T}, T},   // test 33
+        {boolNaryAll2,    []bool{T, T, F, T}, F},   // test 34
+        
+        {boolNaryAny1,    []bool{},  F},            // test 35
+        {boolNaryAny1,    []bool{T}, T},            // test 36
+        {boolNaryAny1,    []bool{F}, F},            // test 37
+        {boolNaryAny1,    []bool{T, T, T, T}, T},   // test 38
+        {boolNaryAny1,    []bool{T, T, F, T}, T},   // test 39
+        {boolNaryAny1,    []bool{F, F, F, F}, F},   // test 40
+        
+        {boolNaryAny2,    []bool{},  F},            // test 41
+        {boolNaryAny2,    []bool{T}, T},            // test 42
+        {boolNaryAny2,    []bool{F}, F},            // test 43
+        {boolNaryAny2,    []bool{T, T, T, T}, T},   // test 44
+        {boolNaryAny2,    []bool{T, T, F, T}, T},   // test 45
+        {boolNaryAny2,    []bool{F, F, F, F}, F},   // test 46
+        
+        {boolNaryNone1,   []bool{},  T},            // test 47
+        {boolNaryNone1,   []bool{T}, F},            // test 48
+        {boolNaryNone1,   []bool{F}, T},            // test 49
+        {boolNaryNone1,   []bool{T, T, T, T}, F},   // test 50
+        {boolNaryNone1,   []bool{T, T, F, T}, F},   // test 51
+        {boolNaryNone1,   []bool{F, F, F, F}, T},   // test 52
+        
+        {boolNaryNone2,   []bool{},  T},            // test 53
+        {boolNaryNone2,   []bool{T}, F},            // test 54
+        {boolNaryNone2,   []bool{F}, T},            // test 55
+        {boolNaryNone2,   []bool{T, T, T, T}, F},   // test 56
+        {boolNaryNone2,   []bool{T, T, F, T}, F},   // test 57
+        {boolNaryNone2,   []bool{F, F, F, F}, T},   // test 58
     }
     
     for idx, i := range tests {

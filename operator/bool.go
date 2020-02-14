@@ -1,5 +1,8 @@
 package operator
 
+const T = true
+const F = false
+
 type boolUnary struct {
     True            func(bool) bool
     False           func(bool) bool
@@ -73,30 +76,53 @@ var Bool = struct {
     Nary: boolNary{
         True:       func(_...bool) bool { return true },
         False:      func(_...bool) bool { return false },
-        All:        boolNaryAll,
-        Any:        boolNaryAny,
-        None:       boolNaryNone,
+        All:        boolNaryAll1,
+        Any:        boolNaryAny1,
+        None:       boolNaryNone1,
     },
 }
 
-func boolNaryAll(p...bool) bool {
+func boolNaryAll1(p...bool) bool {
     for i := 0; i < len(p); i++ {
         if !p[i] { return false }
     }
     return true
 }
 
-func boolNaryAny(p...bool) bool {
+func boolNaryAll2(p...bool) (result bool) {
+    result = true
+    for i := 0; i < len(p); i++ {
+        result = result && p[i]
+    }
+    return result
+}
+
+func boolNaryAny1(p...bool) bool {
     for i := 0; i < len(p); i++ {
         if p[i] { return true }
     }
     return false
 }
 
-func boolNaryNone(p...bool) bool {
+func boolNaryAny2(p...bool) (result bool) {
+    for i := 0; i < len(p); i++ {
+        result = result || p[i]
+    }
+    return result
+}
+
+func boolNaryNone1(p...bool) bool {
     for i := 0; i < len(p); i++ {
         if p[i] { return false }
     }
     return true
+}
+
+func boolNaryNone2(p...bool) (result bool) {
+    result = false
+    for i := 0; i < len(p); i++ {
+        result = result || p[i]
+    }
+    return !result
 }
 
