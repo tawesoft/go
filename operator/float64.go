@@ -42,6 +42,7 @@ type float64BinaryChecked struct {
     Add             func(float64, float64) (float64, error)
     Sub             func(float64, float64) (float64, error)
     Mul             func(float64, float64) (float64, error)
+    Div             func(float64, float64) (float64, error)
     
 }
 
@@ -99,7 +100,7 @@ var Float64 = struct {
 }
 
 // Float64Checked implements operations on one (unary), two (binary), or many (nary) arguments of type float64, returning an
-// error in cases such as overflow.
+// error in cases such as overflow or an undefined operation.
 var Float64Checked = struct {
     Unary           float64UnaryChecked
     Binary          float64BinaryChecked
@@ -115,6 +116,7 @@ var Float64Checked = struct {
         Add:        float64BinaryCheckedAdd,
         Sub:        float64BinaryCheckedSub,
         Mul:        float64BinaryCheckedMul,
+        Div:        float64BinaryCheckedDiv,
     },
     
     Nary:           float64NaryChecked{
@@ -165,6 +167,13 @@ func float64BinaryCheckedMul(a float64, b float64) (v float64, err error) {
     if (a < (minFloat64 / b)) { return v, ErrorOverflow }
     
     return a * b, nil
+}
+
+func float64BinaryCheckedDiv(a float64, b float64) (v float64, err error) {
+    if math.IsNaN(float64(a)) { return v, ErrorNaN }
+    if (b == 0) { return v, ErrorUndefined }
+    
+    return a / b, nil
 }
 
 

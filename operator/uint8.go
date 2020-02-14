@@ -44,6 +44,7 @@ type uint8BinaryChecked struct {
     Add             func(uint8, uint8) (uint8, error)
     Sub             func(uint8, uint8) (uint8, error)
     Mul             func(uint8, uint8) (uint8, error)
+    Div             func(uint8, uint8) (uint8, error)
     
     Shl             func(uint8, uint) (uint8, error)
     Shr             func(uint8, uint) (uint8, error)
@@ -109,7 +110,7 @@ var Uint8 = struct {
 }
 
 // Uint8Checked implements operations on one (unary), two (binary), or many (nary) arguments of type uint8, returning an
-// error in cases such as overflow.
+// error in cases such as overflow or an undefined operation.
 var Uint8Checked = struct {
     Unary           uint8UnaryChecked
     Binary          uint8BinaryChecked
@@ -123,6 +124,7 @@ var Uint8Checked = struct {
         Add:        uint8BinaryCheckedAdd,
         Sub:        uint8BinaryCheckedSub,
         Mul:        uint8BinaryCheckedMul,
+        Div:        uint8BinaryCheckedDiv,
         Shl:        uint8BinaryCheckedShl,
     },
     
@@ -162,6 +164,12 @@ func uint8BinaryCheckedMul(a uint8, b uint8) (v uint8, err error) {
     if (a < (minUint8 / b)) { return v, ErrorOverflow }
     
     return a * b, nil
+}
+
+func uint8BinaryCheckedDiv(a uint8, b uint8) (v uint8, err error) {
+    if (b == 0) { return v, ErrorUndefined }
+    
+    return a / b, nil
 }
 
 func uint8BinaryCheckedShl(a uint8, b uint) (v uint8, err error) {

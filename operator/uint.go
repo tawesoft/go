@@ -44,6 +44,7 @@ type uintBinaryChecked struct {
     Add             func(uint, uint) (uint, error)
     Sub             func(uint, uint) (uint, error)
     Mul             func(uint, uint) (uint, error)
+    Div             func(uint, uint) (uint, error)
     
     Shl             func(uint, uint) (uint, error)
     Shr             func(uint, uint) (uint, error)
@@ -109,7 +110,7 @@ var Uint = struct {
 }
 
 // UintChecked implements operations on one (unary), two (binary), or many (nary) arguments of type uint, returning an
-// error in cases such as overflow.
+// error in cases such as overflow or an undefined operation.
 var UintChecked = struct {
     Unary           uintUnaryChecked
     Binary          uintBinaryChecked
@@ -123,6 +124,7 @@ var UintChecked = struct {
         Add:        uintBinaryCheckedAdd,
         Sub:        uintBinaryCheckedSub,
         Mul:        uintBinaryCheckedMul,
+        Div:        uintBinaryCheckedDiv,
         Shl:        uintBinaryCheckedShl,
     },
     
@@ -162,6 +164,12 @@ func uintBinaryCheckedMul(a uint, b uint) (v uint, err error) {
     if (a < (minUint / b)) { return v, ErrorOverflow }
     
     return a * b, nil
+}
+
+func uintBinaryCheckedDiv(a uint, b uint) (v uint, err error) {
+    if (b == 0) { return v, ErrorUndefined }
+    
+    return a / b, nil
 }
 
 func uintBinaryCheckedShl(a uint, b uint) (v uint, err error) {

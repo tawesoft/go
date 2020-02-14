@@ -42,6 +42,7 @@ type float32BinaryChecked struct {
     Add             func(float32, float32) (float32, error)
     Sub             func(float32, float32) (float32, error)
     Mul             func(float32, float32) (float32, error)
+    Div             func(float32, float32) (float32, error)
     
 }
 
@@ -99,7 +100,7 @@ var Float32 = struct {
 }
 
 // Float32Checked implements operations on one (unary), two (binary), or many (nary) arguments of type float32, returning an
-// error in cases such as overflow.
+// error in cases such as overflow or an undefined operation.
 var Float32Checked = struct {
     Unary           float32UnaryChecked
     Binary          float32BinaryChecked
@@ -115,6 +116,7 @@ var Float32Checked = struct {
         Add:        float32BinaryCheckedAdd,
         Sub:        float32BinaryCheckedSub,
         Mul:        float32BinaryCheckedMul,
+        Div:        float32BinaryCheckedDiv,
     },
     
     Nary:           float32NaryChecked{
@@ -165,6 +167,13 @@ func float32BinaryCheckedMul(a float32, b float32) (v float32, err error) {
     if (a < (minFloat32 / b)) { return v, ErrorOverflow }
     
     return a * b, nil
+}
+
+func float32BinaryCheckedDiv(a float32, b float32) (v float32, err error) {
+    if math.IsNaN(float64(a)) { return v, ErrorNaN }
+    if (b == 0) { return v, ErrorUndefined }
+    
+    return a / b, nil
 }
 
 

@@ -55,6 +55,7 @@ type _tBinaryChecked struct {
     Add             func(_t, _t) (_t, error) // CLASS integers, floats, complex
     Sub             func(_t, _t) (_t, error) // CLASS integers, floats, complex
     Mul             func(_t, _t) (_t, error) // CLASS integers, floats, complex
+    Div             func(_t, _t) (_t, error) // CLASS integers, floats, complex
     
     Shl             func(_t, uint) (_t, error) // CLASS integers
     Shr             func(_t, uint) (_t, error) // CLASS integers
@@ -122,7 +123,7 @@ var _T = struct {
 }
 
 // _TChecked implements operations on one (unary), two (binary), or many (nary) arguments of type _t, returning an
-// error in cases such as overflow.
+// error in cases such as overflow or an undefined operation.
 var _TChecked = struct {
     Unary           _tUnaryChecked
     Binary          _tBinaryChecked
@@ -138,6 +139,7 @@ var _TChecked = struct {
         Add:        _tBinaryCheckedAdd, // CLASS integers, floats, complex
         Sub:        _tBinaryCheckedSub, // CLASS integers, floats, complex
         Mul:        _tBinaryCheckedMul, // CLASS integers, floats, complex
+        Div:        _tBinaryCheckedDiv, // CLASS integers, floats, complex
         Shl:        _tBinaryCheckedShl, // CLASS integers
     },
     
@@ -199,6 +201,14 @@ func _tBinaryCheckedMul(a _t, b _t) (v _t, err error) {
     if (a < (min_T / b)) { return v, ErrorOverflow }
     
     return a * b, nil
+}
+
+func _tBinaryCheckedDiv(a _t, b _t) (v _t, err error) {
+    if math.IsNaN(float64(a)) { return v, ErrorNaN } // CLASS floats
+    if (b == -1) && (a == min_T) { return v, ErrorOverflow } // CLASS integers; signed
+    if (b == 0) { return v, ErrorUndefined }
+    
+    return a / b, nil
 }
 
 func _tBinaryCheckedShl(a _t, b uint) (v _t, err error) { // CLASS integers

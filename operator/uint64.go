@@ -44,6 +44,7 @@ type uint64BinaryChecked struct {
     Add             func(uint64, uint64) (uint64, error)
     Sub             func(uint64, uint64) (uint64, error)
     Mul             func(uint64, uint64) (uint64, error)
+    Div             func(uint64, uint64) (uint64, error)
     
     Shl             func(uint64, uint) (uint64, error)
     Shr             func(uint64, uint) (uint64, error)
@@ -109,7 +110,7 @@ var Uint64 = struct {
 }
 
 // Uint64Checked implements operations on one (unary), two (binary), or many (nary) arguments of type uint64, returning an
-// error in cases such as overflow.
+// error in cases such as overflow or an undefined operation.
 var Uint64Checked = struct {
     Unary           uint64UnaryChecked
     Binary          uint64BinaryChecked
@@ -123,6 +124,7 @@ var Uint64Checked = struct {
         Add:        uint64BinaryCheckedAdd,
         Sub:        uint64BinaryCheckedSub,
         Mul:        uint64BinaryCheckedMul,
+        Div:        uint64BinaryCheckedDiv,
         Shl:        uint64BinaryCheckedShl,
     },
     
@@ -162,6 +164,12 @@ func uint64BinaryCheckedMul(a uint64, b uint64) (v uint64, err error) {
     if (a < (minUint64 / b)) { return v, ErrorOverflow }
     
     return a * b, nil
+}
+
+func uint64BinaryCheckedDiv(a uint64, b uint64) (v uint64, err error) {
+    if (b == 0) { return v, ErrorUndefined }
+    
+    return a / b, nil
 }
 
 func uint64BinaryCheckedShl(a uint64, b uint) (v uint64, err error) {

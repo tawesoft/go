@@ -44,6 +44,7 @@ type uint16BinaryChecked struct {
     Add             func(uint16, uint16) (uint16, error)
     Sub             func(uint16, uint16) (uint16, error)
     Mul             func(uint16, uint16) (uint16, error)
+    Div             func(uint16, uint16) (uint16, error)
     
     Shl             func(uint16, uint) (uint16, error)
     Shr             func(uint16, uint) (uint16, error)
@@ -109,7 +110,7 @@ var Uint16 = struct {
 }
 
 // Uint16Checked implements operations on one (unary), two (binary), or many (nary) arguments of type uint16, returning an
-// error in cases such as overflow.
+// error in cases such as overflow or an undefined operation.
 var Uint16Checked = struct {
     Unary           uint16UnaryChecked
     Binary          uint16BinaryChecked
@@ -123,6 +124,7 @@ var Uint16Checked = struct {
         Add:        uint16BinaryCheckedAdd,
         Sub:        uint16BinaryCheckedSub,
         Mul:        uint16BinaryCheckedMul,
+        Div:        uint16BinaryCheckedDiv,
         Shl:        uint16BinaryCheckedShl,
     },
     
@@ -162,6 +164,12 @@ func uint16BinaryCheckedMul(a uint16, b uint16) (v uint16, err error) {
     if (a < (minUint16 / b)) { return v, ErrorOverflow }
     
     return a * b, nil
+}
+
+func uint16BinaryCheckedDiv(a uint16, b uint16) (v uint16, err error) {
+    if (b == 0) { return v, ErrorUndefined }
+    
+    return a / b, nil
 }
 
 func uint16BinaryCheckedShl(a uint16, b uint) (v uint16, err error) {
