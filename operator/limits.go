@@ -36,6 +36,12 @@ const maxFloat64 = math.MaxFloat64
 const minFloat32 = -math.MaxFloat32
 const minFloat64 = -math.MaxFloat64
 
+// ErrorOverflow is the return type used for integer overflow in a checked function
 var ErrorOverflow  = fmt.Errorf("Overflow")
+
+// ErrorOverflow is the return type used for an undefined operation in a checked function such as shifting a negative
+// integer left.
 var ErrorUndefined = fmt.Errorf("Undefined")
+
+// ErrorNaN is the return type used for an operation on a float that is Not a Number in a checked function
 var ErrorNaN       = fmt.Errorf("Not a Number (NaN)")
