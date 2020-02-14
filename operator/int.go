@@ -67,6 +67,7 @@ var Int = struct {
     Unary           intUnary
     Binary          intBinary
     Nary            intNary
+    Reduce          func(operatorIdentity int, operator func(int, int) int, elements ... int) int
 }{
     Unary:          intUnary{
         Identity:   func(a int) int { return a },
@@ -105,12 +106,15 @@ var Int = struct {
         Add:        intNaryAdd,
         Mul:        intNaryMul,
     },
+    
+    Reduce:         intReduce,
 }
 
 var IntChecked = struct {
     Unary           intUnaryChecked
     Binary          intBinaryChecked
     Nary            intNaryChecked
+    Reduce          func(operatorIdentity int, operator func(int, int) (int, error), elements ... int) (int, error)
 }{
     Unary:          intUnaryChecked{
         Abs:        intUnaryCheckedAbs,
@@ -128,6 +132,8 @@ var IntChecked = struct {
         Add:        intNaryCheckedAdd,
         Mul:        intNaryCheckedMul,
     },
+    
+    Reduce:         intCheckedReduce,
 }
 
 func intUnaryPositive(a int) bool {
@@ -219,5 +225,22 @@ func intNaryCheckedMul(xs ... int) (result int, err error) {
         if err != nil { return result, err }
     }
     return result, nil
+}
+
+func intReduce(operatorIdentity int, operator func(int, int) int, elements ... int) (result int) {
+    result = operatorIdentity
+    for i := 0; i < len(elements); i++ {
+        result = operator(result, elements[i])
+    }
+    return result
+}
+
+func intCheckedReduce(operatorIdentity int, operator func(int, int) (int, error), elements ... int) (result int, err error) {
+    result = operatorIdentity
+    for i := 0; i < len(elements); i++ {
+        result, err = operator(result, elements[i])
+        if err != nil { return result, err }
+    }
+    return result, err
 }
 

@@ -67,6 +67,7 @@ var Int8 = struct {
     Unary           int8Unary
     Binary          int8Binary
     Nary            int8Nary
+    Reduce          func(operatorIdentity int8, operator func(int8, int8) int8, elements ... int8) int8
 }{
     Unary:          int8Unary{
         Identity:   func(a int8) int8 { return a },
@@ -105,12 +106,15 @@ var Int8 = struct {
         Add:        int8NaryAdd,
         Mul:        int8NaryMul,
     },
+    
+    Reduce:         int8Reduce,
 }
 
 var Int8Checked = struct {
     Unary           int8UnaryChecked
     Binary          int8BinaryChecked
     Nary            int8NaryChecked
+    Reduce          func(operatorIdentity int8, operator func(int8, int8) (int8, error), elements ... int8) (int8, error)
 }{
     Unary:          int8UnaryChecked{
         Abs:        int8UnaryCheckedAbs,
@@ -128,6 +132,8 @@ var Int8Checked = struct {
         Add:        int8NaryCheckedAdd,
         Mul:        int8NaryCheckedMul,
     },
+    
+    Reduce:         int8CheckedReduce,
 }
 
 func int8UnaryPositive(a int8) bool {
@@ -219,5 +225,22 @@ func int8NaryCheckedMul(xs ... int8) (result int8, err error) {
         if err != nil { return result, err }
     }
     return result, nil
+}
+
+func int8Reduce(operatorIdentity int8, operator func(int8, int8) int8, elements ... int8) (result int8) {
+    result = operatorIdentity
+    for i := 0; i < len(elements); i++ {
+        result = operator(result, elements[i])
+    }
+    return result
+}
+
+func int8CheckedReduce(operatorIdentity int8, operator func(int8, int8) (int8, error), elements ... int8) (result int8, err error) {
+    result = operatorIdentity
+    for i := 0; i < len(elements); i++ {
+        result, err = operator(result, elements[i])
+        if err != nil { return result, err }
+    }
+    return result, err
 }
 

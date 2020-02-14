@@ -76,6 +76,7 @@ var _T = struct {
     Unary           _tUnary
     Binary          _tBinary
     Nary            _tNary
+    Reduce          func(operatorIdentity _t, operator func(_t, _t) _t, elements ... _t) _t
 }{
     Unary:          _tUnary{
         Identity:   func(a _t) _t { return a },
@@ -115,12 +116,15 @@ var _T = struct {
         Add:        _tNaryAdd, // CLASS integers, floats, complex
         Mul:        _tNaryMul, // CLASS integers, floats, complex
     },
+    
+    Reduce:         _tReduce,
 }
 
 var _TChecked = struct {
     Unary           _tUnaryChecked
     Binary          _tBinaryChecked
     Nary            _tNaryChecked
+    Reduce          func(operatorIdentity _t, operator func(_t, _t) (_t, error), elements ... _t) (_t, error)
 }{
     Unary:          _tUnaryChecked{
         Abs:        _tUnaryCheckedAbs,      // CLASS integers, floats; signed
@@ -138,6 +142,8 @@ var _TChecked = struct {
         Add:        _tNaryCheckedAdd, // CLASS integers, floats, complex
         Mul:        _tNaryCheckedMul, // CLASS integers, floats, complex
     },
+    
+    Reduce:         _tCheckedReduce,
 }
 
 func _tUnaryPositive(a _t) bool {
@@ -236,5 +242,22 @@ func _tNaryCheckedMul(xs ... _t) (result _t, err error) {
         if err != nil { return result, err }
     }
     return result, nil
+}
+
+func _tReduce(operatorIdentity _t, operator func(_t, _t) _t, elements ... _t) (result _t) {
+    result = operatorIdentity
+    for i := 0; i < len(elements); i++ {
+        result = operator(result, elements[i])
+    }
+    return result
+}
+
+func _tCheckedReduce(operatorIdentity _t, operator func(_t, _t) (_t, error), elements ... _t) (result _t, err error) {
+    result = operatorIdentity
+    for i := 0; i < len(elements); i++ {
+        result, err = operator(result, elements[i])
+        if err != nil { return result, err }
+    }
+    return result, err
 }
 

@@ -64,6 +64,7 @@ var Uint64 = struct {
     Unary           uint64Unary
     Binary          uint64Binary
     Nary            uint64Nary
+    Reduce          func(operatorIdentity uint64, operator func(uint64, uint64) uint64, elements ... uint64) uint64
 }{
     Unary:          uint64Unary{
         Identity:   func(a uint64) uint64 { return a },
@@ -101,12 +102,15 @@ var Uint64 = struct {
         Add:        uint64NaryAdd,
         Mul:        uint64NaryMul,
     },
+    
+    Reduce:         uint64Reduce,
 }
 
 var Uint64Checked = struct {
     Unary           uint64UnaryChecked
     Binary          uint64BinaryChecked
     Nary            uint64NaryChecked
+    Reduce          func(operatorIdentity uint64, operator func(uint64, uint64) (uint64, error), elements ... uint64) (uint64, error)
 }{
     Unary:          uint64UnaryChecked{
     },
@@ -122,6 +126,8 @@ var Uint64Checked = struct {
         Add:        uint64NaryCheckedAdd,
         Mul:        uint64NaryCheckedMul,
     },
+    
+    Reduce:         uint64CheckedReduce,
 }
 
 func uint64UnaryPositive(a uint64) bool {
@@ -197,5 +203,22 @@ func uint64NaryCheckedMul(xs ... uint64) (result uint64, err error) {
         if err != nil { return result, err }
     }
     return result, nil
+}
+
+func uint64Reduce(operatorIdentity uint64, operator func(uint64, uint64) uint64, elements ... uint64) (result uint64) {
+    result = operatorIdentity
+    for i := 0; i < len(elements); i++ {
+        result = operator(result, elements[i])
+    }
+    return result
+}
+
+func uint64CheckedReduce(operatorIdentity uint64, operator func(uint64, uint64) (uint64, error), elements ... uint64) (result uint64, err error) {
+    result = operatorIdentity
+    for i := 0; i < len(elements); i++ {
+        result, err = operator(result, elements[i])
+        if err != nil { return result, err }
+    }
+    return result, err
 }
 

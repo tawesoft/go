@@ -230,11 +230,61 @@ func TestIntNaryChecked(t *testing.T) {
         {[]int8{1, 2, 3, 4},                Int8Checked.Nary.Mul, 24, nil},
         {[]int8{120, -120, -120, -8, -1},   Int8Checked.Nary.Add,  0, ErrorOverflow},
         {[]int8{120, 4, 4},                 Int8Checked.Nary.Add,  0, ErrorOverflow},
-        {[]int8{32, 2, 2},                  Int8Checked.Nary.Mul, 0, ErrorOverflow},
+        {[]int8{32, 2, 2},                  Int8Checked.Nary.Mul,  0, ErrorOverflow},
     }
     
     for idx, i := range tests {
         var result, err = i.f(i.xs...)
+        if err == i.expectedError {
+            // pass
+        } else if err != nil {
+            t.Errorf("test %d: unexpected error %v (expected %v)", idx, err, i.expectedError)
+        } else if result != i.expectedValue {
+            t.Errorf("test %d: got %d, but expected %d", idx, result, i.expectedValue)
+        }
+    }
+}
+
+func TestIntReduce(t *testing.T) {
+    type test struct {
+        operatorIdentity int
+        xs []int
+        f func(int, int) int
+        expected int
+    }
+    
+    var tests = []test {
+        {0, []int{1, 2, 3, 4, 5, 6}, Int.Binary.Add, 21},
+        {1, []int{1, 2, 3, 4, 5, 6}, Int.Binary.Mul, 720},
+    }
+    
+    for idx, i := range tests {
+        var result = Int.Reduce(i.operatorIdentity, i.f, i.xs...)
+        if result != i.expected {
+            t.Errorf("test %d: got %d, but expected %d", idx, result, i.expected)
+        }
+    }
+}
+
+func TestIntCheckedReduce(t *testing.T) {
+    type test struct {
+        operatorIdentity int8
+        xs []int8
+        f func(int8, int8) (int8, error)
+        expectedValue int8
+        expectedError error
+    }
+    
+    var tests = []test {
+        {0, []int8{1, 2, 3, 4, 5, 6},          Int8Checked.Binary.Add, 21, nil},
+        {1, []int8{1, 2, 3, 4},                Int8Checked.Binary.Mul, 24, nil},
+        {0, []int8{120, -120, -120, -8, -1},   Int8Checked.Binary.Add,  0, ErrorOverflow},
+        {0, []int8{120, 4, 4},                 Int8Checked.Binary.Add,  0, ErrorOverflow},
+        {1, []int8{32, 2, 2},                  Int8Checked.Binary.Mul,  0, ErrorOverflow},
+    }
+    
+    for idx, i := range tests {
+        var result, err = Int8Checked.Reduce(i.operatorIdentity, i.f, i.xs...)
         if err == i.expectedError {
             // pass
         } else if err != nil {
