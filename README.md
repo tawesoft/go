@@ -1,7 +1,7 @@
 [![Tawesoft](https://www.tawesoft.co.uk/media/0/logo-240r.png)](https://tawesoft.co.uk/go)
 ================================================================================
 
-A monorepo for small Go modules maintained by [Tawesoft&reg;](https://www.tawesoft.co.uk/go)
+A monorepo for small Go modules maintained by [Tawesoft®](https://www.tawesoft.co.uk/go)
 
 This is permissively-licensed open source software but exact licenses may vary between modules.
 
@@ -15,32 +15,130 @@ go get -u tawesoft.co.uk/go
 Contents
 --------
 
-Package | Description | Links | Stable? | License
- --- | --- | --- |:---:| ---
-dialog | simple cross-platform messagebox | [src](./dialog), [docs][doc_dialog] | yes | [MIT-0][copy_dialog]
-glcaps | read and check OpenGL capabilities | [src](./glcaps), [docs][doc_glcaps] | yes | [MIT][copy_glcaps]
-humanize | lightweight human-readable numbers | [src](./humanize), [docs][doc_humanize] | no | [MIT-0][copy_humanize]
-operator | operators as functions | [src](./operator), [docs][doc_operator] | yes | [MIT-0][copy_operator]
-ximage | extended image types | [src](./ximage), [docs][doc_ximage] | yes | [BSD-3-Clause][copy_ximage]
-ximage/xcolor | extended color types | [src](./ximage/xcolor), [docs][doc_ximage_xcolor] | yes | [BSD-3-Clause][copy_ximage_xcolor]
+### dialog: simple cross-platform messagebox
 
-[doc_dialog]: https://godoc.org/tawesoft.co.uk/go/dialog
-[doc_glcaps]: https://godoc.org/tawesoft.co.uk/go/glcaps
-[doc_humanize]: https://godoc.org/tawesoft.co.uk/go/humanize
-[doc_operator]: https://godoc.org/tawesoft.co.uk/go/operator
-[doc_ximage]: https://godoc.org/tawesoft.co.uk/go/ximage
-[doc_ximage_xcolor]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
+`go get -u tawesoft.co.uk/go/dialog`
 
-[copy_dialog]: ./dialog/COPYING.md
-[copy_glcaps]: ./glcaps/COPYING.md
-[copy_humanize]: ./humanize/COPYING.md
-[copy_operator]: ./operator/COPYING.md
-[copy_ximage]: ./ximage/COPYING.md
-[copy_ximage_xcolor]: ./ximage/xcolor/COPYING.md
+
+Package dialog implements simple cross platform native MessageBox/Alert dialogs for Go.
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_dialog], [docs][docs_dialog], [src][src_dialog] | [MIT-0](./dialog/COPYING.md) | ✔ yes |
+
+[home_dialog]: https://tawesoft.co.uk/go/dialog
+[src_dialog]:  https://github.com/tawesoft/go/tree/master/dialog
+[docs_dialog]: https://godoc.org/tawesoft.co.uk/go/dialog
+
+---
+
+### glcaps: read and check OpenGL capabilities
+
+`go get -u tawesoft.co.uk/go/glcaps`
+
+
+Package glcaps provides a nice interface to declare OpenGL capabilities you care about, including minimum required
+extensions or capabilities.
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_glcaps], [docs][docs_glcaps], [src][src_glcaps] | [MIT](./glcaps/COPYING.md) | ✔ yes |
+
+[home_glcaps]: https://tawesoft.co.uk/go/glcaps
+[src_glcaps]:  https://github.com/tawesoft/go/tree/master/glcaps
+[docs_glcaps]: https://godoc.org/tawesoft.co.uk/go/glcaps
+
+---
+
+### humanize: lightweight human-readable numbers
+
+`go get -u tawesoft.co.uk/go/humanize`
+
+
+Package humanize implements lightweight human-readable numbers for Go.
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_humanize], [docs][docs_humanize], [src][src_humanize] | [MIT-0](./humanize/COPYING.md) | ✘ **no** |
+
+[home_humanize]: https://tawesoft.co.uk/go/humanize
+[src_humanize]:  https://github.com/tawesoft/go/tree/master/humanize
+[docs_humanize]: https://godoc.org/tawesoft.co.uk/go/humanize
+
+---
+
+### operator: operators as functions
+
+`go get -u tawesoft.co.uk/go/operator`
+
+
+Package operator implements logical, arithmetic, bitwise and comparison
+operators as functions (like the Python operator module).
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_operator], [docs][docs_operator], [src][src_operator] | [MIT-0](./operator/COPYING.md) | ✔ yes |
+
+[home_operator]: https://tawesoft.co.uk/go/operator
+[src_operator]:  https://github.com/tawesoft/go/tree/master/operator
+[docs_operator]: https://godoc.org/tawesoft.co.uk/go/operator
+
+---
+
+### ximage: extended image types
+
+`go get -u tawesoft.co.uk/go/ximage`
+
+
+Package ximage implements Red, RG, and RGB images matching the core
+image interface.
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_ximage], [docs][docs_ximage], [src][src_ximage] | [BSD-3-Clause](./ximage/COPYING.md) | ✔ yes |
+
+[home_ximage]: https://tawesoft.co.uk/go/ximage
+[src_ximage]:  https://github.com/tawesoft/go/tree/master/ximage
+[docs_ximage]: https://godoc.org/tawesoft.co.uk/go/ximage
+
+---
+
+### ximage/xcolor: extended color types
+
+`go get -u tawesoft.co.uk/go/ximage/xcolor`
+
+
+Package xcolor implements Red, RedGreen, and RGB color models matching the core
+image/color interface.
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_ximage_xcolor], [docs][docs_ximage_xcolor], [src][src_ximage_xcolor] | [BSD-3-Clause](./ximage/xcolor/COPYING.md) | ✔ yes |
+
+[home_ximage_xcolor]: https://tawesoft.co.uk/go/ximage/xcolor
+[src_ximage_xcolor]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
+[docs_ximage_xcolor]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
+
+---
+
+Links
+-----
+
+* Home: [tawesoft.co.uk/go](https://tawesoft.co.uk/go)
+* Docs hub: [godoc.org/tawesoft.co.uk/go](https://godoc.org/tawesoft.co.uk/go)
+* Repository: [github.com/tawesoft/go](https://github.com/tawesoft/go)
+* Or [search "tawesoft"](https://pkg.go.dev/search?q=tawesoft) on [go.dev](https://go.dev/)
 
 Support
 -------
 
-Community support through [GitHub issues](https://github.com/tawesoft/go/issues).
+### Free and Community Support
 
-For commercial support contact open-source@tawesoft.co.uk
+* [GitHub issues](https://github.com/tawesoft/go/issues)
+
+### Commercial Support
+
+Open source software from Tawesoft® is backed by commercial support options.
+
+Email open-source@tawesoft.co.uk or visit [tawesoft.co.uk/products/open-source-software](https://www.tawesoft.co.uk/products/open-source-software)
+to learn more.

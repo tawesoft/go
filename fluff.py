@@ -13,6 +13,9 @@ class ModuleDesc:
     short: str
     long: str
 
+    def summary(self):
+        return self.long.partition(".")[0]
+
 
 @dataclass
 class ModuleLicense:
@@ -217,7 +220,7 @@ Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
             short="extended image types",
             long="""
 Package ximage implements Red, RG, and RGB images matching the core
-golang.org/pkg/image interface.
+image interface.
 
 Note that there are good reasons these image types aren't in the core image
 package. The native image types may have optimized fast-paths for many use
@@ -244,7 +247,7 @@ native Go image manipulation.
             short="extended color types",
             long="""
 Package xcolor implements Red, RedGreen, and RGB color models matching the core
-golang.org/pkg/image/color interface.
+image/color interface.
 
 Note that there are good reasons these color types aren't in the core
 image.color package. The native color types may have optimized fast-paths
@@ -306,7 +309,7 @@ def make_base_readme_md():
 [![Tawesoft](https://www.tawesoft.co.uk/media/0/logo-240r.png)](https://tawesoft.co.uk/go)
 ================================================================================
 
-A monorepo for small Go modules maintained by [Tawesoft&reg;](https://www.tawesoft.co.uk/go)
+A monorepo for small Go modules maintained by [Tawesoft®](https://www.tawesoft.co.uk/go)
 
 This is permissively-licensed open source software but exact licenses may vary between modules.
 
@@ -320,34 +323,62 @@ go get -u tawesoft.co.uk/go
 Contents
 --------
 
-Package | Description | Links | Stable? | License
- --- | --- | --- |:---:| ---
-{table}
+{contents}
+
+Links
+-----
+
+* Home: [tawesoft.co.uk/go](https://tawesoft.co.uk/go)
+* Docs hub: [godoc.org/tawesoft.co.uk/go](https://godoc.org/tawesoft.co.uk/go)
+* Repository: [github.com/tawesoft/go](https://github.com/tawesoft/go)
+* Or [search "tawesoft"](https://pkg.go.dev/search?q=tawesoft) on [go.dev](https://go.dev/)
 
 Support
 -------
 
-Community support through [GitHub issues](https://github.com/tawesoft/go/issues).
+### Free and Community Support
 
-For commercial support contact open-source@tawesoft.co.uk
+* [GitHub issues](https://github.com/tawesoft/go/issues)
+* Email open-source@tawesoft.co.uk (feedback welcomed, but support is "best
+ effort")
+
+### Commercial Support
+
+Open source software from Tawesoft® backed by commercial support options.
+
+Email open-source@tawesoft.co.uk or visit [tawesoft.co.uk/products/open-source-software](https://www.tawesoft.co.uk/products/open-source-software)
+to learn more.
 """
 
-    fmt = "{id} | {desc} | [src](./{id}), [docs][doc_{slug}] | {stable} | [{license}][copy_{slug}]"
-    table_rows = "\n".join([fmt.format(
+    fmt = """
+### {id}: {desc_short}
+
+`go get -u tawesoft.co.uk/go/{id}`
+
+{desc_summary}.
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_{slug}], [docs][docs_{slug}], [src][src_{slug}] | [{license}](./{id}/COPYING.md) | {stable} |
+
+[home_{slug}]: https://tawesoft.co.uk/go/{id}
+[src_{slug}]:  https://github.com/tawesoft/go/tree/master/{id}
+[docs_{slug}]: https://godoc.org/tawesoft.co.uk/go/{id}
+
+---
+""".strip()
+
+    contents = "\n\n".join([fmt.format(
         id=i.id,
         slug=i.slug("_"),
-        desc=i.desc.short,
+        desc_short=i.desc.short,
+        desc_summary=i.desc.summary(),
         license=i.license.id,
-        stable=("yes" if i.stable else "no")
+        stable=("✔ yes" if i.stable else "✘ **no**")
     ) for i in catalog])
 
-    table_links_doc  = "\n".join(["[doc_{slug}]: https://godoc.org/tawesoft.co.uk/go/{id}".format(slug=i.slug("_"), id=i.id) for i in catalog])
-    table_links_copy = "\n".join(["[copy_{slug}]: ./{id}/COPYING.md".format(slug=i.slug("_"), id=i.id) for i in catalog])
-
-    table = "\n\n".join([table_rows, table_links_doc, table_links_copy]).strip()
-
     with open("README.md", "w") as fp:
-        fp.write(template.format(table=table).strip())
+        fp.write(template.format(contents=contents).strip())
 
 
 def run(fn):
