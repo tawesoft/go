@@ -353,7 +353,7 @@ to learn more.
     fmt = """
 ### {id}: {desc_short}
 
-`go get -u tawesoft.co.uk/go/{id}`
+`import "tawesoft.co.uk/go/{id}"`
 
 {desc_summary}
 

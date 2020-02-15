@@ -17,7 +17,7 @@ Contents
 
 ### dialog: simple cross-platform messagebox
 
-`go get -u tawesoft.co.uk/go/dialog`
+`import "tawesoft.co.uk/go/dialog"`
 
 Package dialog implements simple cross platform native MessageBox/Alert dialogs for Go.
 
@@ -33,7 +33,7 @@ Package dialog implements simple cross platform native MessageBox/Alert dialogs 
 
 ### glcaps: read and check OpenGL capabilities
 
-`go get -u tawesoft.co.uk/go/glcaps`
+`import "tawesoft.co.uk/go/glcaps"`
 
 Package glcaps provides a nice interface to declare OpenGL capabilities you care about, including minimum required
 extensions or capabilities. Glcaps has no dependencies and is agnostic to the exact OpenGL binding used.
@@ -50,7 +50,7 @@ extensions or capabilities. Glcaps has no dependencies and is agnostic to the ex
 
 ### humanize: lightweight human-readable numbers
 
-`go get -u tawesoft.co.uk/go/humanize`
+`import "tawesoft.co.uk/go/humanize"`
 
 Package humanize implements lightweight human-readable numbers for Go.
 
@@ -66,7 +66,7 @@ Package humanize implements lightweight human-readable numbers for Go.
 
 ### operator: operators as functions
 
-`go get -u tawesoft.co.uk/go/operator`
+`import "tawesoft.co.uk/go/operator"`
 
 Package operator implements logical, arithmetic, bitwise and comparison
 operators as functions (like the Python operator module). Includes unary,
@@ -84,7 +84,7 @@ binary, and nary functions with overflow checked variants.
 
 ### ximage: extended image types
 
-`go get -u tawesoft.co.uk/go/ximage`
+`import "tawesoft.co.uk/go/ximage"`
 
 Package ximage implements Red, RG, and RGB images matching the core
 image interface.
@@ -101,7 +101,7 @@ image interface.
 
 ### ximage/xcolor: extended color types
 
-`go get -u tawesoft.co.uk/go/ximage/xcolor`
+`import "tawesoft.co.uk/go/ximage/xcolor"`
 
 Package xcolor implements Red, RedGreen, and RGB color models matching the core
 image/color interface.
