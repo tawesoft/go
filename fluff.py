@@ -55,7 +55,7 @@ class Module:
     def slug(self, replacement):
         return self.id.replace('/', replacement)
 
-    def link_table_markdown(self, unique_urls=False):
+    def link_table_markdown(self, unique_urls=True):
         return """
 |  Links  | License | Stable? | 
 |:-------:|:-------:|:-------:| 

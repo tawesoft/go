@@ -23,12 +23,12 @@ Package dialog implements simple cross platform native MessageBox/Alert dialogs 
 
 |  Links  | License | Stable? | 
 |:-------:|:-------:|:-------:| 
-| [home][home_] ∙ [docs][docs_] ∙ [src][src_] | [MIT-0][copy_] | ✔ yes |
+| [home][home_dialog] ∙ [docs][docs_dialog] ∙ [src][src_dialog] | [MIT-0][copy_dialog] | ✔ yes |
 
-[home_]: https://tawesoft.co.uk/go/dialog
-[src_]:  https://github.com/tawesoft/go/tree/master/dialog
-[docs_]: https://godoc.org/tawesoft.co.uk/go/dialog
-[copy_]: https://github.com/tawesoft/go/tree/master/dialog/COPYING.md
+[home_dialog]: https://tawesoft.co.uk/go/dialog
+[src_dialog]:  https://github.com/tawesoft/go/tree/master/dialog
+[docs_dialog]: https://godoc.org/tawesoft.co.uk/go/dialog
+[copy_dialog]: https://github.com/tawesoft/go/tree/master/dialog/COPYING.md
 
 ---
 
@@ -41,12 +41,12 @@ extensions or capabilities. Glcaps has no dependencies and is agnostic to the ex
 
 |  Links  | License | Stable? | 
 |:-------:|:-------:|:-------:| 
-| [home][home_] ∙ [docs][docs_] ∙ [src][src_] | [MIT][copy_] | ✔ yes |
+| [home][home_glcaps] ∙ [docs][docs_glcaps] ∙ [src][src_glcaps] | [MIT][copy_glcaps] | ✔ yes |
 
-[home_]: https://tawesoft.co.uk/go/glcaps
-[src_]:  https://github.com/tawesoft/go/tree/master/glcaps
-[docs_]: https://godoc.org/tawesoft.co.uk/go/glcaps
-[copy_]: https://github.com/tawesoft/go/tree/master/glcaps/COPYING.md
+[home_glcaps]: https://tawesoft.co.uk/go/glcaps
+[src_glcaps]:  https://github.com/tawesoft/go/tree/master/glcaps
+[docs_glcaps]: https://godoc.org/tawesoft.co.uk/go/glcaps
+[copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/COPYING.md
 
 ---
 
@@ -58,12 +58,12 @@ Package humanize implements lightweight human-readable numbers for Go.
 
 |  Links  | License | Stable? | 
 |:-------:|:-------:|:-------:| 
-| [home][home_] ∙ [docs][docs_] ∙ [src][src_] | [MIT-0][copy_] | ✘ **no** |
+| [home][home_humanize] ∙ [docs][docs_humanize] ∙ [src][src_humanize] | [MIT-0][copy_humanize] | ✘ **no** |
 
-[home_]: https://tawesoft.co.uk/go/humanize
-[src_]:  https://github.com/tawesoft/go/tree/master/humanize
-[docs_]: https://godoc.org/tawesoft.co.uk/go/humanize
-[copy_]: https://github.com/tawesoft/go/tree/master/humanize/COPYING.md
+[home_humanize]: https://tawesoft.co.uk/go/humanize
+[src_humanize]:  https://github.com/tawesoft/go/tree/master/humanize
+[docs_humanize]: https://godoc.org/tawesoft.co.uk/go/humanize
+[copy_humanize]: https://github.com/tawesoft/go/tree/master/humanize/COPYING.md
 
 ---
 
@@ -77,12 +77,12 @@ binary, and nary functions with overflow checked variants.
 
 |  Links  | License | Stable? | 
 |:-------:|:-------:|:-------:| 
-| [home][home_] ∙ [docs][docs_] ∙ [src][src_] | [MIT-0][copy_] | ✔ yes |
+| [home][home_operator] ∙ [docs][docs_operator] ∙ [src][src_operator] | [MIT-0][copy_operator] | ✔ yes |
 
-[home_]: https://tawesoft.co.uk/go/operator
-[src_]:  https://github.com/tawesoft/go/tree/master/operator
-[docs_]: https://godoc.org/tawesoft.co.uk/go/operator
-[copy_]: https://github.com/tawesoft/go/tree/master/operator/COPYING.md
+[home_operator]: https://tawesoft.co.uk/go/operator
+[src_operator]:  https://github.com/tawesoft/go/tree/master/operator
+[docs_operator]: https://godoc.org/tawesoft.co.uk/go/operator
+[copy_operator]: https://github.com/tawesoft/go/tree/master/operator/COPYING.md
 
 ---
 
@@ -95,12 +95,12 @@ image interface.
 
 |  Links  | License | Stable? | 
 |:-------:|:-------:|:-------:| 
-| [home][home_] ∙ [docs][docs_] ∙ [src][src_] | [BSD-3-Clause][copy_] | ✔ yes |
+| [home][home_ximage] ∙ [docs][docs_ximage] ∙ [src][src_ximage] | [BSD-3-Clause][copy_ximage] | ✔ yes |
 
-[home_]: https://tawesoft.co.uk/go/ximage
-[src_]:  https://github.com/tawesoft/go/tree/master/ximage
-[docs_]: https://godoc.org/tawesoft.co.uk/go/ximage
-[copy_]: https://github.com/tawesoft/go/tree/master/ximage/COPYING.md
+[home_ximage]: https://tawesoft.co.uk/go/ximage
+[src_ximage]:  https://github.com/tawesoft/go/tree/master/ximage
+[docs_ximage]: https://godoc.org/tawesoft.co.uk/go/ximage
+[copy_ximage]: https://github.com/tawesoft/go/tree/master/ximage/COPYING.md
 
 ---
 
@@ -113,12 +113,12 @@ image/color interface.
 
 |  Links  | License | Stable? | 
 |:-------:|:-------:|:-------:| 
-| [home][home_] ∙ [docs][docs_] ∙ [src][src_] | [BSD-3-Clause][copy_] | ✔ yes |
+| [home][home_ximage_xcolor] ∙ [docs][docs_ximage_xcolor] ∙ [src][src_ximage_xcolor] | [BSD-3-Clause][copy_ximage_xcolor] | ✔ yes |
 
-[home_]: https://tawesoft.co.uk/go/ximage/xcolor
-[src_]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
-[docs_]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
-[copy_]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/COPYING.md
+[home_ximage_xcolor]: https://tawesoft.co.uk/go/ximage/xcolor
+[src_ximage_xcolor]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
+[docs_ximage_xcolor]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
+[copy_ximage_xcolor]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/COPYING.md
 
 ---
 
