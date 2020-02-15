@@ -1,5 +1,4 @@
-License
-=======
+# License
 
 ```
 tawesoft.co.uk/go/glcaps
@@ -26,3 +25,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
+## Commentary:
+
+This module is released under the MIT License (SPDX: MIT).
+
+You may find this FAQ useful: https://www.tawesoft.co.uk/kb/article/mit-license-faq
+
+This commentary is not part of the license.

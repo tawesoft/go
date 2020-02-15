@@ -1,3 +1,6 @@
+# License
+
+```
 tawesoft.co.uk/go/ximage
 
 Copyright (c) 2009 The Go Authors. All rights reserved.
@@ -27,3 +30,14 @@ DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
 THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+## Commentary:
+
+This module is released under the BSD 3-Clause "New" or "Revised" License (SPDX: BSD-3-Clause).
+
+This module is based on source code originally by The Go Authors.
+
+The Go Authors and Google Inc. are not affiliated with this project in any way.
+
+This commentary is not part of the license.

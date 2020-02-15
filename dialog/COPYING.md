@@ -1,5 +1,4 @@
-License
-=======
+# License
 
 ```
 tawesoft.co.uk/go/dialog
@@ -23,10 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-Comments
---------
+## Commentary:
 
-This project is released under the **MIT No Attribution License (SPDX: MIT-0).**
+This module is released under the MIT No Attribution (SPDX: MIT-0).
 
 To be clear: you are free to use this project in binary distributions without
 attribution. In the interest of intellectual honesty please attribute source

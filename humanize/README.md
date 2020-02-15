@@ -1,34 +1,32 @@
-tawesoft.co.uk/go/humanize
-================================================================================
+# humanize - lightweight human-readable numbers
 
-Lightweight human-readable numbers for Go.
+## About
 
-The API is incomplete and may be subject to occasional breaking changes.
+Package humanize implements lightweight human-readable numbers for Go.
 
-[Home](https://www.tawesoft.co.uk/go) | [Source](https://github.com/tawesoft/go/tree/master/humanize) | [Documentation](https://godoc.org/tawesoft.co.uk/go/humanize)
+Why use this package?
 
+Compare tawesoft/go/humanize vs dustin/go-humanize: Tawesoft's parses input about 5 times faster with fewer memory
+allocations, and formats output about 25% quicker than dustin's. But dustin's is so far more complete, older, has a
+stable API, and has been tested by more people.
 
-Comments
---------
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_] ∙ [docs][docs_] ∙ [src][src_] | [MIT-0][copy_] | ✘ **no** |
 
-### Versus dustin's [go-humanize](https://github.com/dustin/go-humanize)
+[home_]: https://tawesoft.co.uk/go/humanize
+[src_]:  https://github.com/tawesoft/go/tree/master/humanize
+[docs_]: https://godoc.org/tawesoft.co.uk/go/humanize
+[copy_]: https://github.com/tawesoft/go/tree/master/humanize/COPYING.md
 
-* `tawesoft.co.uk/go/humanize` parses about 5 times faster with fewer memory
-allocations. Benchmark (YMMV):
+## Download
+
+```shell script
+go get -u tawesoft.co.uk/go
+```
+
+## Import
 
 ```
-BenchmarkTawesoftFormatBytes-4   	 3590067	       317 ns/op
-BenchmarkDustinFormatBytes-4     	 2705889	       439 ns/op
-BenchmarkTawesoftParseBytes-4    	55214542	        21.5 ns/op
-BenchmarkDustinParseBytes-4      	10613521	       108 ns/op
+import tawesoft.co.uk/go/humanize
 ```
-
-* `github.com/dustin/go-humanize` is more complete, older, and has been tested
-by more people
-
-* `tawesoft.co.uk/go/humanize` handles fractional ammounts, such as "1.5 MB"
-
-* `github.com/dustin/go-humanize` has a more stable API
-
-* `tawesoft.co.uk/go/humanize` exposes lower-level components suitable for
-constructing parsers and formatters of new numbers and unit types

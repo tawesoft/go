@@ -3,7 +3,8 @@ A monorepo for small Go modules maintained by Tawesoft®
 
 This is permissively-licensed open source software but exact licenses may vary between modules.
 
-For license information, source code, support, etc. please see https://tawesoft.co.uk/go
+For license information, documentation, source code, support, links, etc. please see
+https://tawesoft.co.uk/go
 */
 package tawesoft
 
