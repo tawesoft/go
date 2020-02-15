@@ -41,7 +41,7 @@ var ErrorOverflow  = fmt.Errorf("Overflow")
 
 // ErrorOverflow is the return type used for an undefined operation in a checked function such as shifting a negative
 // integer left or divide by zero
-var ErrorUndefined = fmt.Errorf("Undefined")
+var ErrorUndefined = fmt.Errorf("Undefined operation")
 
 // ErrorNaN is the return type used for an operation on a float that is Not a Number in a checked function
-var ErrorNaN       = fmt.Errorf("Not a Number (NaN)")
+var ErrorNaN       = fmt.Errorf("Not a number (NaN)")

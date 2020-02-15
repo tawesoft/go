@@ -1,5 +1,16 @@
 package main
 
+// Example output:
+//
+//     glcaps error: FluxCapacitor is required
+//     glcaps error: Frobbinators is 150 but must be < 100
+//     Supports.TextureCompressionBPTC: true
+//     Supports.FluxCapacitor: false
+//     Supports.BigTextures: true
+//     MaxTextureUnits: 192
+//     Frobbinators: 150
+//     380 extensions supported
+
 import (
     "fmt"
     

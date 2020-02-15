@@ -7,4 +7,5 @@
 //
 // For documentation see https://godoc.org/tawesoft.co.uk/go/operator
 //
+// SPDX-License-Identifier: MIT-0
 package operator
