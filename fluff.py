@@ -14,7 +14,7 @@ class ModuleDesc:
     long: str
 
     def summary(self):
-        return self.long.partition(".")[0]
+        return self.long.partition("\n\n")[0].strip()
 
 
 @dataclass
@@ -161,7 +161,7 @@ func main() {
             long="""
 Package glcaps provides a nice interface to declare OpenGL capabilities you care about, including minimum required
 extensions or capabilities. Glcaps has no dependencies and is agnostic to the exact OpenGL binding used.
- 
+
 """+trademarkOpenGL,
         ),
         license=licenseMIT,
@@ -355,7 +355,7 @@ to learn more.
 
 `go get -u tawesoft.co.uk/go/{id}`
 
-{desc_summary}.
+{desc_summary}
 
 |  Links  | License | Stable? | 
 |:-------:|:-------:|:-------:| 

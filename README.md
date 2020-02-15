@@ -19,7 +19,6 @@ Contents
 
 `go get -u tawesoft.co.uk/go/dialog`
 
-
 Package dialog implements simple cross platform native MessageBox/Alert dialogs for Go.
 
 |  Links  | License | Stable? | 
@@ -36,9 +35,8 @@ Package dialog implements simple cross platform native MessageBox/Alert dialogs 
 
 `go get -u tawesoft.co.uk/go/glcaps`
 
-
 Package glcaps provides a nice interface to declare OpenGL capabilities you care about, including minimum required
-extensions or capabilities.
+extensions or capabilities. Glcaps has no dependencies and is agnostic to the exact OpenGL binding used.
 
 |  Links  | License | Stable? | 
 |:-------:|:-------:|:-------:| 
@@ -53,7 +51,6 @@ extensions or capabilities.
 ### humanize: lightweight human-readable numbers
 
 `go get -u tawesoft.co.uk/go/humanize`
-
 
 Package humanize implements lightweight human-readable numbers for Go.
 
@@ -71,9 +68,9 @@ Package humanize implements lightweight human-readable numbers for Go.
 
 `go get -u tawesoft.co.uk/go/operator`
 
-
 Package operator implements logical, arithmetic, bitwise and comparison
-operators as functions (like the Python operator module).
+operators as functions (like the Python operator module). Includes unary,
+binary, and nary functions with overflow checked variants.
 
 |  Links  | License | Stable? | 
 |:-------:|:-------:|:-------:| 
@@ -88,7 +85,6 @@ operators as functions (like the Python operator module).
 ### ximage: extended image types
 
 `go get -u tawesoft.co.uk/go/ximage`
-
 
 Package ximage implements Red, RG, and RGB images matching the core
 image interface.
@@ -106,7 +102,6 @@ image interface.
 ### ximage/xcolor: extended color types
 
 `go get -u tawesoft.co.uk/go/ximage/xcolor`
-
 
 Package xcolor implements Red, RedGreen, and RGB color models matching the core
 image/color interface.
@@ -135,10 +130,12 @@ Support
 ### Free and Community Support
 
 * [GitHub issues](https://github.com/tawesoft/go/issues)
+* Email open-source@tawesoft.co.uk (feedback welcomed, but support is "best
+ effort")
 
 ### Commercial Support
 
-Open source software from Tawesoft® is backed by commercial support options.
+Open source software from Tawesoft® backed by commercial support options.
 
 Email open-source@tawesoft.co.uk or visit [tawesoft.co.uk/products/open-source-software](https://www.tawesoft.co.uk/products/open-source-software)
 to learn more.
