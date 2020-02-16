@@ -6,20 +6,6 @@ import (
     "strings"
 )
 
-func operationBooleanAnd(a bool, b bool) bool { return a && b }
-func operationBooleanOr (a bool, b bool) bool { return a || b }
-func operationIntEq     (a int,  b int)  bool { return a == b }
-func operationIntNeq    (a int,  b int)  bool { return a != b }
-func operationIntLt     (a int,  b int)  bool { return a <  b }
-func operationIntLte    (a int,  b int)  bool { return a <= b }
-func operationIntGt     (a int,  b int)  bool { return a >  b }
-func operationIntGte    (a int,  b int)  bool { return a >= b }
-func operationFloat32Eq (a float32,  b float32)  bool { return a == b }
-func operationFloat32Neq(a float32,  b float32)  bool { return a != b }
-func operationFloat32Lt (a float32,  b float32)  bool { return a <  b }
-func operationFloat32Lte(a float32,  b float32)  bool { return a <= b }
-func operationFloat32Gt (a float32,  b float32)  bool { return a >  b }
-func operationFloat32Gte(a float32,  b float32)  bool { return a >= b }
 func operationStringEq  (a string,   b string) bool { return a == b }
 func operationStringNeq (a string,   b string) bool { return a != b }
 

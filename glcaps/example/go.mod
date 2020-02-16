@@ -9,4 +9,6 @@ require (
 	tawesoft.co.uk/go/glcaps v0.0.0-00010101000000-000000000000
 )
 
+replace tawesoft.co.uk/go/operator => ../../operator
+
 replace tawesoft.co.uk/go/glcaps => ../

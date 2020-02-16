@@ -4,6 +4,8 @@ import (
     "fmt"
     "reflect"
     "strings"
+    
+    "tawesoft.co.uk/go/operator"
 )
 
 // parseAtom parses the next (space-delimited) word in the string starting at character offset, returning a slice to
@@ -65,15 +67,15 @@ func parseCommand(tag string, _offset int) (c command, next int, err error) {
     if offset < 0 { return c, 0, fmt.Errorf("expected command") }
     
     switch start {
-        case "and": return parseBinaryBooleanCommand(tag, offset, operationBooleanAnd)
-        case "or":  return parseBinaryBooleanCommand(tag, offset, operationBooleanOr)
+        case "and": return parseBinaryBooleanCommand(tag, offset, operator.Bool.Binary.And)
+        case "or":  return parseBinaryBooleanCommand(tag, offset, operator.Bool.Binary.Or)
         
-        case "eq":  return parseCompareCommand(tag, offset, operationIntEq,  operationFloat32Eq,  operationStringEq)
-        case "neq": return parseCompareCommand(tag, offset, operationIntNeq, operationFloat32Neq, operationStringNeq)
-        case "lt":  return parseCompareCommand(tag, offset, operationIntLt,  operationFloat32Lt,  nil)
-        case "lte": return parseCompareCommand(tag, offset, operationIntLte, operationFloat32Lte, nil)
-        case "gt":  return parseCompareCommand(tag, offset, operationIntGt,  operationFloat32Gt,  nil)
-        case "gte": return parseCompareCommand(tag, offset, operationIntGte, operationFloat32Gte, nil)
+        case "eq":  return parseCompareCommand(tag, offset, operator.Int.Binary.Eq,  operator.Float32.Binary.Eq,  operationStringEq)
+        case "neq": return parseCompareCommand(tag, offset, operator.Int.Binary.Eq,  operator.Float32.Binary.Neq, operationStringNeq)
+        case "lt":  return parseCompareCommand(tag, offset, operator.Int.Binary.Lt,  operator.Float32.Binary.Lt,  nil)
+        case "lte": return parseCompareCommand(tag, offset, operator.Int.Binary.Lte, operator.Float32.Binary.Lte, nil)
+        case "gt":  return parseCompareCommand(tag, offset, operator.Int.Binary.Gt,  operator.Float32.Binary.Gt,  nil)
+        case "gte": return parseCompareCommand(tag, offset, operator.Int.Binary.Gte, operator.Float32.Binary.Gte, nil)
 
         case "if":
             var ac, ao, ae = parseCommand(tag, offset)
@@ -156,12 +158,12 @@ func parseRequirement(tag string, _offset int) (r requirement, next int, err err
         case "required":
             return requirementRequired{}, offset, nil
         
-        case "eq":  return parseCompareRequirement(tag, offset, "=",  operationIntEq,  operationFloat32Eq,  operationStringEq)
-        case "neq": return parseCompareRequirement(tag, offset, "!=", operationIntNeq, operationFloat32Neq, operationStringNeq)
-        case "lt":  return parseCompareRequirement(tag, offset, "<",  operationIntLt,  operationFloat32Lt,  nil)
-        case "lte": return parseCompareRequirement(tag, offset, "<=", operationIntLte, operationFloat32Lte, nil)
-        case "gt":  return parseCompareRequirement(tag, offset, ">",  operationIntGt,  operationFloat32Gt,  nil)
-        case "gte": return parseCompareRequirement(tag, offset, ">=", operationIntGte, operationFloat32Gte, nil)
+        case "eq":  return parseCompareRequirement(tag, offset, "=",  operator.Int.Binary.Eq,  operator.Float32.Binary.Eq,  operationStringEq)
+        case "neq": return parseCompareRequirement(tag, offset, "!=", operator.Int.Binary.Neq, operator.Float32.Binary.Neq, operationStringNeq)
+        case "lt":  return parseCompareRequirement(tag, offset, "<",  operator.Int.Binary.Lt,  operator.Float32.Binary.Lt,  nil)
+        case "lte": return parseCompareRequirement(tag, offset, "<=", operator.Int.Binary.Lte, operator.Float32.Binary.Lte, nil)
+        case "gt":  return parseCompareRequirement(tag, offset, ">",  operator.Int.Binary.Gt,  operator.Float32.Binary.Gt,  nil)
+        case "gte": return parseCompareRequirement(tag, offset, ">=", operator.Int.Binary.Gte, operator.Float32.Binary.Gte, nil)
         
         default:
             return r, 0, fmt.Errorf("unknown requirement: '%s'", start)
