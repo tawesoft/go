@@ -46,10 +46,16 @@ func parseBinaryBooleanCommand(tag string, offset int, f func(bool, bool) bool) 
 
 // parseCCompareCommand performs the common task of parsing a command that is a function with two arguments
 // and returns a boolean (e.g. LessThan)
-func parseCompareCommand(tag string, offset int, fi func(int, int) bool, ff func(float32, float32) bool) (c command, next int, _err error) {
+func parseCompareCommand(
+    tag string,
+    offset int,
+    fi func(int, int) bool,
+    ff func(float32, float32) bool,
+    fs func(string, string) bool,
+) (c command, next int, _err error) {
     var c1, c2, o, e = parseCommand2(tag, offset)
     if e != nil { return c, 0, e }
-    return commandCompare{c1, c2, fi, ff}, o, nil
+    return commandCompare{c1, c2, fi, ff, fs}, o, nil
 }
 
 // parseCommand parses and/or/not/ext/GetIntegerv/GetFloatv/if/eq/neq/lt/lte/gt/gte/value commands and returns an
@@ -62,12 +68,12 @@ func parseCommand(tag string, _offset int) (c command, next int, err error) {
         case "and": return parseBinaryBooleanCommand(tag, offset, operationBooleanAnd)
         case "or":  return parseBinaryBooleanCommand(tag, offset, operationBooleanOr)
         
-        case "eq":  return parseCompareCommand(tag, offset, operationIntEq,  operationFloat32Eq)
-        case "neq": return parseCompareCommand(tag, offset, operationIntNeq, operationFloat32Neq)
-        case "lt":  return parseCompareCommand(tag, offset, operationIntLt,  operationFloat32Lt)
-        case "lte": return parseCompareCommand(tag, offset, operationIntLte, operationFloat32Lte)
-        case "gt":  return parseCompareCommand(tag, offset, operationIntGt,  operationFloat32Gt)
-        case "gte": return parseCompareCommand(tag, offset, operationIntGte, operationFloat32Gte)
+        case "eq":  return parseCompareCommand(tag, offset, operationIntEq,  operationFloat32Eq,  operationStringEq)
+        case "neq": return parseCompareCommand(tag, offset, operationIntNeq, operationFloat32Neq, operationStringNeq)
+        case "lt":  return parseCompareCommand(tag, offset, operationIntLt,  operationFloat32Lt,  nil)
+        case "lte": return parseCompareCommand(tag, offset, operationIntLte, operationFloat32Lte, nil)
+        case "gt":  return parseCompareCommand(tag, offset, operationIntGt,  operationFloat32Gt,  nil)
+        case "gte": return parseCompareCommand(tag, offset, operationIntGte, operationFloat32Gte, nil)
 
         case "if":
             var ac, ao, ae = parseCommand(tag, offset)
@@ -91,6 +97,11 @@ func parseCommand(tag string, _offset int) (c command, next int, err error) {
             if o < 0 { return c, 0, fmt.Errorf("expected name after ext") }
             return commandExt{c1}, o, nil
         
+        case "GetString":
+            var c1, o = parseAtom(tag, offset)
+            if o < 0 { return c, 0, fmt.Errorf("expected name after GetString") }
+            return commandGetString{c1}, o, nil
+            
         case "GetIntegerv":
             var c1, o = parseAtom(tag, offset)
             if o < 0 { return c, 0, fmt.Errorf("expected name after GetIntegerv") }
@@ -116,8 +127,14 @@ func parseParts(s string) (string, string) {
     }
 }
 
-
-func parseCompareRequirement(tag string, offset int, symbol string, fi func(int, int) bool, ff func(float32, float32) bool) (r requirement, next int, _err error) {
+func parseCompareRequirement(
+    tag string,
+    offset int,
+    symbol string,
+    fi func(int, int) bool,
+    ff func(float32, float32) bool,
+    fs func(string, string) bool,
+) (r requirement, next int, _err error) {
     var r1, o = parseAtom(tag, offset)
     if o < 0 { return r, 0, fmt.Errorf("expected constant after comparison") }
     return requirementComparison{
@@ -125,6 +142,7 @@ func parseCompareRequirement(tag string, offset int, symbol string, fi func(int,
         symbol:     symbol,
         operationi: fi,
         operationf: ff,
+        operations: fs,
     }, o, nil
 }
 
@@ -137,13 +155,13 @@ func parseRequirement(tag string, _offset int) (r requirement, next int, err err
     switch start {
         case "required":
             return requirementRequired{}, offset, nil
-
-        case "eq":  return parseCompareRequirement(tag, offset, "=",  operationIntEq,  operationFloat32Eq)
-        case "neq": return parseCompareRequirement(tag, offset, "!=", operationIntNeq, operationFloat32Neq)
-        case "lt":  return parseCompareRequirement(tag, offset, "<",  operationIntLt,  operationFloat32Lt)
-        case "lte": return parseCompareRequirement(tag, offset, "<=", operationIntLte, operationFloat32Lte)
-        case "gt":  return parseCompareRequirement(tag, offset, ">",  operationIntGt,  operationFloat32Gt)
-        case "gte": return parseCompareRequirement(tag, offset, ">=", operationIntGte, operationFloat32Gte)
+        
+        case "eq":  return parseCompareRequirement(tag, offset, "=",  operationIntEq,  operationFloat32Eq,  operationStringEq)
+        case "neq": return parseCompareRequirement(tag, offset, "!=", operationIntNeq, operationFloat32Neq, operationStringNeq)
+        case "lt":  return parseCompareRequirement(tag, offset, "<",  operationIntLt,  operationFloat32Lt,  nil)
+        case "lte": return parseCompareRequirement(tag, offset, "<=", operationIntLte, operationFloat32Lte, nil)
+        case "gt":  return parseCompareRequirement(tag, offset, ">",  operationIntGt,  operationFloat32Gt,  nil)
+        case "gte": return parseCompareRequirement(tag, offset, ">=", operationIntGte, operationFloat32Gte, nil)
         
         default:
             return r, 0, fmt.Errorf("unknown requirement: '%s'", start)
@@ -232,6 +250,22 @@ func checkFloatRequirements(field reflect.StructField, result float32, rs []requ
     return errors
 }
 
+func checkStringRequirements(field reflect.StructField, result string, rs []requirement) (errors Errors) {
+    for _, r := range rs {
+        var err = r.evalString(field.Name, result)
+        if err == nil { continue }
+        
+        errors.append(Error{
+            Field: field.Name,
+            Tag:   field.Tag.Get("glcaps"),
+            Requirement: r,
+            Message: err.Error(),
+        })
+    }
+    
+    return errors
+}
+
 func parseStructField(binding *Binding, extensions []string, field reflect.StructField, setter reflect.Value, value interface{}) (errors Errors) {
 
     var parse = func(field reflect.StructField) (_tag tag, ok bool) {
@@ -275,6 +309,11 @@ func parseStructField(binding *Binding, extensions []string, field reflect.Struc
                     var result = t.command.evalFloat(binding, extensions)
                     errors.append(checkFloatRequirements(field, result, t.requirements)...)
                     setter.SetFloat(float64(result))
+
+                case reflect.String:
+                    var result = t.command.evalString(binding, extensions)
+                    errors.append(checkStringRequirements(field, result, t.requirements)...)
+                    setter.SetString(result)
             }
         }
     }

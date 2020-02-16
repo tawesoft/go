@@ -18,6 +18,7 @@ func (extensions Extensions) Contains(key string) bool {
 type Binding struct {
     GetIntegerv func(name uint32, data *int32)
     GetFloatv   func(name uint32, data *float32)
+    GetString   func(name uint32) string // required to return a Go string, not a C string!
     GetStringi  func(name uint32, index uint32) string // required to return a Go string, not a C string!
 }
 
