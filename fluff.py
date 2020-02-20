@@ -372,6 +372,7 @@ def make_base_html():
         body                         {{ min-width: 800px; padding: 1em; }}
         h2, h3                       {{ margin-top: 2em; }}
         a                            {{ color: #b63355; text-decoration: none; }}
+        a:hover                      {{ text-decoration: underline; }}
         table                        {{ width: 100%; border-spacing: 0 0; }}
         table, thead, tbody, tr      {{ border: 0; border-collapse: separate; text-align: left; }}
         th                           {{ border-bottom: 1px solid #000; }}
@@ -385,7 +386,7 @@ def make_base_html():
         table.pkg td.stable          {{ text-align: center; }}
         table.pkg td.stable > span   {{ color: #b63355; }}
         table.pkg td.links           {{ padding-left: 0; }}
-        table.pkg td.links > a       {{ display: inline-block; background-color: #FEE; padding: 0.5em 1em; margin: 0.25em; }}
+        table.pkg td.links > a       {{ display: inline-block; background-color: #FEE; padding: 0.5em 1em; margin: 0.25em; text-decoration: none; }}
         table.pkg td.links > a:first-child {{ margin-left: 0; }}
         table.pkg td.links > a:hover {{ background-color: #b63355; color: #FFF; }}
         table.pkg tbody > tr         {{ height: 4em; line-height: 1.5em; }}
