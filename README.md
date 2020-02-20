@@ -32,6 +32,24 @@ Package dialog implements simple cross platform native MessageBox/Alert dialogs 
 
 ---
 
+### email: format multipart RFC 2045 email
+
+`import "tawesoft.co.uk/go/email"`
+
+Package email implements the formatting of multipart RFC 2045 e-mail messages,
+including headers, attachments, HTML email, and plain text.
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_email] ∙ [docs][docs_email] ∙ [src][src_email] | [MIT][copy_email] | ✔ yes |
+
+[home_email]: https://tawesoft.co.uk/go/email
+[src_email]:  https://github.com/tawesoft/go/tree/master/email
+[docs_email]: https://godoc.org/tawesoft.co.uk/go/email
+[copy_email]: https://github.com/tawesoft/go/tree/master/email/COPYING.md
+
+---
+
 ### glcaps: read and check OpenGL capabilities
 
 `import "tawesoft.co.uk/go/glcaps"`

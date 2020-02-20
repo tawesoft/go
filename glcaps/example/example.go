@@ -59,7 +59,7 @@ func main() {
         }
         
         Supports struct {
-            NPOTTextures            bool `glcaps:"ext GL_ARB_texture_non_power_of_two"; required"`
+            NPOTTextures            bool `glcaps:"ext GL_ARB_texture_non_power_of_two; required"`
             BPTextureCompression    bool `glcaps:"ext GL_ARB_texture_compression_bptc; required"`
             BigTextures             bool `glcaps:"gte GetIntegerv GL_MAX_TEXTURE_SIZE 8192"`
             AnisotropicFiltering    bool `glcaps:"and ext GL_EXT_texture_filter_anisotropic gte GetFloatv GL_MAX_TEXTURE_MAX_ANISOTROPY 1.0"`

@@ -162,186 +162,6 @@ The Go Authors and Google Inc. are not affiliated with this project in any way.
 """)
 
 
-catalog = [
-
-    Module(
-        id="dialog",
-        desc=ModuleDesc(
-            short="simple cross-platform messagebox",
-            long="""
-Package dialog implements simple cross platform native MessageBox/Alert dialogs for Go.
-
-Currently only Windows and Linux targets are supported.
-
-On Linux, uses (in order of preference) `zenity`, `xmessage`, or stdio.
-"""
-        ),
-        license=licenseMIT0,
-        copyright="""
-Copyright © 2019 - 2020 Ben Golightly <ben@tawesoft.co.uk>
-Copyright © 2019 - 2020 Tawesoft Ltd <opensource@tawesoft.co.uk>
-        """,
-        example="""
-package main
-
-import "tawesoft.co.uk/go/dialog"
-
-func main() {
-    dialog.Alert("Message")
-    dialog.Alert("There are %d lights", 4)
-}
-""",
-    ),
-
-    Module(
-        id="glcaps",
-        desc=ModuleDesc(
-            short="read and check OpenGL capabilities",
-            long="""
-Package glcaps provides a nice interface to declare OpenGL capabilities you care about, including minimum required
-extensions or capabilities. Glcaps has no dependencies and is agnostic to the exact OpenGL binding used.
-
-"""+trademarkOpenGL,
-        ),
-        license=licenseMIT,
-        copyright="""
-Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
-Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
-""",
-        exampleFiles=[
-            "example/example.go",
-        ],
-    ),
-
-    Module(
-        id="humanize",
-        desc=ModuleDesc(
-            short="lightweight human-readable numbers",
-            long="""
-Package humanize implements lightweight human-readable numbers for Go.
-
-Why use this package?
-
-Compare tawesoft/go/humanize vs dustin/go-humanize: Tawesoft's parses input about 5 times faster with fewer memory
-allocations, and formats output about 25% quicker than dustin's. But dustin's is so far more complete, older, has a
-stable API, and has been tested by more people.
-""",
-        ),
-        license=licenseMIT0,
-        copyright="""
-Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
-Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
-""",
-        stable=False, # This module API is not yet stable and may be subject to occasional breaking changes.
-    ),
-
-    Module(
-        id="operator",
-        desc=ModuleDesc(
-            short="operators as functions",
-            long="""
-Package operator implements logical, arithmetic, bitwise and comparison
-operators as functions (like the Python operator module). Includes unary,
-binary, and nary functions with overflow checked variants.
-""",
-        ),
-        license=licenseMIT0,
-        copyright="""
-Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
-Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
-    """,
-        example="""
-package main
-
-import (
-    "fmt"
-    "tawesoft.co.uk/go/operator"
-)
-
-func foo(op func(int, int) int, a int, b int) int {
-    return op(a, b)
-}
-
-func fooChecked(op func(int8, int8) (int8, error), a int8, b int8) (int8, error) {
-    return op(a, b)
-}
-
-func main() {
-    fmt.Println(foo(operator.Int.Binary.Add, 5, 3))
-    fmt.Println(foo(operator.Int.Binary.Sub, 5, 3))
-    
-    var result, err = fooChecked(operator.Int8Checked.Binary.Add, 126, 2) // max int8 is 127!
-    if err != nil {
-        fmt.Printf("error: %v (expected!)\\n", err)
-    } else {
-        fmt.Println(result)
-    }
-}
-""",
-        exampleFiles=[
-            "examples/calculator/calculator.go",
-        ],
-    ),
-
-    Module(
-        id="ximage",
-        desc=ModuleDesc(
-            short="extended image types",
-            long="""
-Package ximage implements Red, RG, and RGB images matching the core
-image interface.
-
-Note that there are good reasons these image types aren't in the core image
-package. The native image types may have optimized fast-paths for many use
-cases.
-
-This package is a tradeoff of these optimizations against lower memory
-usage. This package is intended to be used in computer graphics (e.g.
-OpenGL) where images are uploaded to the GPU in a specific format (such as
-GL_R, GL_RG, or GL_RGB) and we don't care too much about the performance of
-native Go image manipulation.
-
-"""+trademarkOpenGL,
-        ),
-        license=licenseGo,
-        copyright="Copyright (c) 2009 The Go Authors. All rights reserved.",
-        seeAlso=[
-            "ximage/xcolor",
-        ],
-    ),
-
-    Module(
-        id="ximage/xcolor",
-        desc=ModuleDesc(
-            short="extended color types",
-            long="""
-Package xcolor implements Red, RedGreen, and RGB color models matching the core
-image/color interface.
-
-Note that there are good reasons these color types aren't in the core
-image.color package. The native color types may have optimized fast-paths
-for many use cases.
-
-This package is a tradeoff of these optimizations against lower memory
-usage. This package is intended to be used in computer graphics (e.g.
-OpenGL) where images are uploaded to the GPU in a specific format (such as
-GL_R, GL_RG, or GL_RGB) and we don't care about the performance of native
-Go image manipulation.
-
-"""+trademarkOpenGL,
-        ),
-        license=licenseGo,
-        copyright="Copyright (c) 2009 The Go Authors. All rights reserved.",
-        seeAlso=list([
-            "ximage",
-        ]),
-    ),
-
-]
-
-catalog.sort(key=lambda x: x.id)
-
-
 def make_base_go():
     """write a dummy tawesoft.go file in the base directory that imports everything as a home for documentation"""
     with open("tawesoft.go", "w") as fp:
@@ -731,6 +551,237 @@ def run(fn):
 def run_many(*args):
     for i in args:
         run(i)
+
+
+catalog = [
+
+    Module(
+        id="dialog",
+        desc=ModuleDesc(
+            short="simple cross-platform messagebox",
+            long="""
+Package dialog implements simple cross platform native MessageBox/Alert dialogs for Go.
+
+Currently only Windows and Linux targets are supported.
+
+On Linux, uses (in order of preference) `zenity`, `xmessage`, or stdio.
+"""
+        ),
+        license=licenseMIT0,
+        copyright="""
+Copyright © 2019 - 2020 Ben Golightly <ben@tawesoft.co.uk>
+Copyright © 2019 - 2020 Tawesoft Ltd <opensource@tawesoft.co.uk>
+        """,
+        example="""
+package main
+
+import "tawesoft.co.uk/go/dialog"
+
+func main() {
+    dialog.Alert("Message")
+    dialog.Alert("There are %d lights", 4)
+}
+""",
+    ),
+
+    Module(
+        id="email",
+        desc=ModuleDesc(
+            short="format multipart RFC 2045 email",
+            long="""
+Package email implements the formatting of multipart RFC 2045 e-mail messages,
+including headers, attachments, HTML email, and plain text.
+""",
+        ),
+        license=licenseMIT,
+        copyright="""
+Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
+Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
+""",
+        example="""
+package main
+
+import (
+    "net/mail"
+    "os"
+    
+    "tawesoft.co.uk/go/email"
+)
+
+func main() {
+    var eml = email.Message{
+        From:  mail.Address{"Alan Turing", "turing.alan@example.org"},
+        To:  []mail.Address{{"Grace Hopper", "amazing.grace@example.net"}},
+        Bcc: []mail.Address{{"BCC1", "bcc1@example.net"}, {"BCC2", "bbc2@example.net"}},
+        Subject: "Computer Science is Cool! ❤",
+        Text: `This is a test email!`,
+        Html: `<!DOCTYPE html><html lang="en"><body><p>This is a test email!</p></body></html>`,
+        Attachments: []*email.Attachment{
+            //email.FileAttachment("Entscheidungsproblem.pdf"),
+            //email.FileAttachment("funny-cat-meme.png"),
+        },
+        Headers: mail.Header{
+            "X-Category": []string{"newsletter", "marketing"},
+        },
+    }
+    
+    var err = eml.Print(os.Stdout)
+    if err != nil { panic(err) }
+}
+""",
+        exampleFiles=[
+            "examples/example1/example1.go",
+        ],
+    ),
+
+    Module(
+        id="glcaps",
+        desc=ModuleDesc(
+            short="read and check OpenGL capabilities",
+            long="""
+Package glcaps provides a nice interface to declare OpenGL capabilities you care about, including minimum required
+extensions or capabilities. Glcaps has no dependencies and is agnostic to the exact OpenGL binding used.
+
+"""+trademarkOpenGL,
+        ),
+        license=licenseMIT,
+        copyright="""
+Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
+Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
+""",
+        exampleFiles=[
+            "example/example.go",
+        ],
+    ),
+
+    Module(
+        id="humanize",
+        desc=ModuleDesc(
+            short="lightweight human-readable numbers",
+            long="""
+Package humanize implements lightweight human-readable numbers for Go.
+
+Why use this package?
+
+Compare tawesoft/go/humanize vs dustin/go-humanize: Tawesoft's parses input about 5 times faster with fewer memory
+allocations, and formats output about 25% quicker than dustin's. But dustin's is so far more complete, older, has a
+stable API, and has been tested by more people.
+""",
+        ),
+        license=licenseMIT0,
+        copyright="""
+Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
+Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
+""",
+        stable=False, # This API is not yet stable and may be subject to occasional breaking changes.
+    ),
+
+    Module(
+        id="operator",
+        desc=ModuleDesc(
+            short="operators as functions",
+            long="""
+Package operator implements logical, arithmetic, bitwise and comparison
+operators as functions (like the Python operator module). Includes unary,
+binary, and nary functions with overflow checked variants.
+""",
+        ),
+        license=licenseMIT0,
+        copyright="""
+Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
+Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
+    """,
+        example="""
+package main
+
+import (
+    "fmt"
+    "tawesoft.co.uk/go/operator"
+)
+
+func foo(op func(int, int) int, a int, b int) int {
+    return op(a, b)
+}
+
+func fooChecked(op func(int8, int8) (int8, error), a int8, b int8) (int8, error) {
+    return op(a, b)
+}
+
+func main() {
+    fmt.Println(foo(operator.Int.Binary.Add, 5, 3))
+    fmt.Println(foo(operator.Int.Binary.Sub, 5, 3))
+    
+    var result, err = fooChecked(operator.Int8Checked.Binary.Add, 126, 2) // max int8 is 127!
+    if err != nil {
+        fmt.Printf("error: %v (expected!)\\n", err)
+    } else {
+        fmt.Println(result)
+    }
+}
+""",
+        exampleFiles=[
+            "examples/calculator/calculator.go",
+        ],
+    ),
+
+    Module(
+        id="ximage",
+        desc=ModuleDesc(
+            short="extended image types",
+            long="""
+Package ximage implements Red, RG, and RGB images matching the core
+image interface.
+
+Note that there are good reasons these image types aren't in the core image
+package. The native image types may have optimized fast-paths for many use
+cases.
+
+This package is a tradeoff of these optimizations against lower memory
+usage. This package is intended to be used in computer graphics (e.g.
+OpenGL) where images are uploaded to the GPU in a specific format (such as
+GL_R, GL_RG, or GL_RGB) and we don't care too much about the performance of
+native Go image manipulation.
+
+"""+trademarkOpenGL,
+        ),
+        license=licenseGo,
+        copyright="Copyright (c) 2009 The Go Authors. All rights reserved.",
+        seeAlso=[
+            "ximage/xcolor",
+        ],
+    ),
+
+    Module(
+        id="ximage/xcolor",
+        desc=ModuleDesc(
+            short="extended color types",
+            long="""
+Package xcolor implements Red, RedGreen, and RGB color models matching the core
+image/color interface.
+
+Note that there are good reasons these color types aren't in the core
+image.color package. The native color types may have optimized fast-paths
+for many use cases.
+
+This package is a tradeoff of these optimizations against lower memory
+usage. This package is intended to be used in computer graphics (e.g.
+OpenGL) where images are uploaded to the GPU in a specific format (such as
+GL_R, GL_RG, or GL_RGB) and we don't care about the performance of native
+Go image manipulation.
+
+"""+trademarkOpenGL,
+        ),
+        license=licenseGo,
+        copyright="Copyright (c) 2009 The Go Authors. All rights reserved.",
+        seeAlso=list([
+            "ximage",
+        ]),
+    ),
+
+]
+
+catalog.sort(key=lambda x: x.id)
+
 
 run_many(
     make_base_html,
