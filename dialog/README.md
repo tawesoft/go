@@ -15,7 +15,7 @@ On Linux, uses (in order of preference) `zenity`, `xmessage`, or stdio.
 [home_]: https://tawesoft.co.uk/go/dialog
 [src_]:  https://github.com/tawesoft/go/tree/master/dialog
 [docs_]: https://godoc.org/tawesoft.co.uk/go/dialog
-[copy_]: https://github.com/tawesoft/go/tree/master/dialog/COPYING.md
+[copy_]: https://github.com/tawesoft/go/tree/master/dialog/_COPYING.md
 
 ## Download
 

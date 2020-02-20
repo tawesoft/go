@@ -25,7 +25,7 @@ the United States and/or other countries worldwide.
 [home_]: https://tawesoft.co.uk/go/ximage/xcolor
 [src_]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
 [docs_]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
-[copy_]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/COPYING.md
+[copy_]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/_COPYING.md
 
 ## Download
 

@@ -13,7 +13,7 @@ binary, and nary functions with overflow checked variants.
 [home_]: https://tawesoft.co.uk/go/operator
 [src_]:  https://github.com/tawesoft/go/tree/master/operator
 [docs_]: https://godoc.org/tawesoft.co.uk/go/operator
-[copy_]: https://github.com/tawesoft/go/tree/master/operator/COPYING.md
+[copy_]: https://github.com/tawesoft/go/tree/master/operator/_COPYING.md
 
 ## Download
 

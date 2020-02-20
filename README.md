@@ -28,7 +28,7 @@ Package dialog implements simple cross platform native MessageBox/Alert dialogs 
 [home_dialog]: https://tawesoft.co.uk/go/dialog
 [src_dialog]:  https://github.com/tawesoft/go/tree/master/dialog
 [docs_dialog]: https://godoc.org/tawesoft.co.uk/go/dialog
-[copy_dialog]: https://github.com/tawesoft/go/tree/master/dialog/COPYING.md
+[copy_dialog]: https://github.com/tawesoft/go/tree/master/dialog/_COPYING.md
 
 ---
 
@@ -46,7 +46,7 @@ including headers, attachments, HTML email, and plain text.
 [home_email]: https://tawesoft.co.uk/go/email
 [src_email]:  https://github.com/tawesoft/go/tree/master/email
 [docs_email]: https://godoc.org/tawesoft.co.uk/go/email
-[copy_email]: https://github.com/tawesoft/go/tree/master/email/COPYING.md
+[copy_email]: https://github.com/tawesoft/go/tree/master/email/_COPYING.md
 
 ---
 
@@ -64,7 +64,7 @@ extensions or capabilities. Glcaps has no dependencies and is agnostic to the ex
 [home_glcaps]: https://tawesoft.co.uk/go/glcaps
 [src_glcaps]:  https://github.com/tawesoft/go/tree/master/glcaps
 [docs_glcaps]: https://godoc.org/tawesoft.co.uk/go/glcaps
-[copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/COPYING.md
+[copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/_COPYING.md
 
 ---
 
@@ -81,7 +81,7 @@ Package humanize implements lightweight human-readable numbers for Go.
 [home_humanize]: https://tawesoft.co.uk/go/humanize
 [src_humanize]:  https://github.com/tawesoft/go/tree/master/humanize
 [docs_humanize]: https://godoc.org/tawesoft.co.uk/go/humanize
-[copy_humanize]: https://github.com/tawesoft/go/tree/master/humanize/COPYING.md
+[copy_humanize]: https://github.com/tawesoft/go/tree/master/humanize/_COPYING.md
 
 ---
 
@@ -100,7 +100,7 @@ binary, and nary functions with overflow checked variants.
 [home_operator]: https://tawesoft.co.uk/go/operator
 [src_operator]:  https://github.com/tawesoft/go/tree/master/operator
 [docs_operator]: https://godoc.org/tawesoft.co.uk/go/operator
-[copy_operator]: https://github.com/tawesoft/go/tree/master/operator/COPYING.md
+[copy_operator]: https://github.com/tawesoft/go/tree/master/operator/_COPYING.md
 
 ---
 
@@ -118,7 +118,7 @@ image interface.
 [home_ximage]: https://tawesoft.co.uk/go/ximage
 [src_ximage]:  https://github.com/tawesoft/go/tree/master/ximage
 [docs_ximage]: https://godoc.org/tawesoft.co.uk/go/ximage
-[copy_ximage]: https://github.com/tawesoft/go/tree/master/ximage/COPYING.md
+[copy_ximage]: https://github.com/tawesoft/go/tree/master/ximage/_COPYING.md
 
 ---
 
@@ -136,7 +136,7 @@ image/color interface.
 [home_ximage_xcolor]: https://tawesoft.co.uk/go/ximage/xcolor
 [src_ximage_xcolor]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
 [docs_ximage_xcolor]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
-[copy_ximage_xcolor]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/COPYING.md
+[copy_ximage_xcolor]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/_COPYING.md
 
 ---
 

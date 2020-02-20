@@ -15,7 +15,7 @@ the United States and/or other countries worldwide.
 [home_]: https://tawesoft.co.uk/go/glcaps
 [src_]:  https://github.com/tawesoft/go/tree/master/glcaps
 [docs_]: https://godoc.org/tawesoft.co.uk/go/glcaps
-[copy_]: https://github.com/tawesoft/go/tree/master/glcaps/COPYING.md
+[copy_]: https://github.com/tawesoft/go/tree/master/glcaps/_COPYING.md
 
 ## Download
 

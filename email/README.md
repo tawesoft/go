@@ -12,7 +12,7 @@ including headers, attachments, HTML email, and plain text.
 [home_]: https://tawesoft.co.uk/go/email
 [src_]:  https://github.com/tawesoft/go/tree/master/email
 [docs_]: https://godoc.org/tawesoft.co.uk/go/email
-[copy_]: https://github.com/tawesoft/go/tree/master/email/COPYING.md
+[copy_]: https://github.com/tawesoft/go/tree/master/email/_COPYING.md
 
 ## Download
 

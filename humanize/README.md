@@ -17,7 +17,7 @@ stable API, and has been tested by more people.
 [home_]: https://tawesoft.co.uk/go/humanize
 [src_]:  https://github.com/tawesoft/go/tree/master/humanize
 [docs_]: https://godoc.org/tawesoft.co.uk/go/humanize
-[copy_]: https://github.com/tawesoft/go/tree/master/humanize/COPYING.md
+[copy_]: https://github.com/tawesoft/go/tree/master/humanize/_COPYING.md
 
 ## Download
 

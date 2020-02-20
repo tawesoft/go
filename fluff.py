@@ -65,7 +65,7 @@ class Module:
 [home_{slug}]: https://tawesoft.co.uk/go/{id}
 [src_{slug}]:  https://github.com/tawesoft/go/tree/master/{id}
 [docs_{slug}]: https://godoc.org/tawesoft.co.uk/go/{id}
-[copy_{slug}]: https://github.com/tawesoft/go/tree/master/{id}/COPYING.md
+[copy_{slug}]: https://github.com/tawesoft/go/tree/master/{id}/_COPYING.md
 """.format(
             id=self.id,
             slug=(self.slug("_") if unique_urls is True else ""),
@@ -234,7 +234,7 @@ def make_module_license_txt():
 def make_module_copying_md():
     """write a copying markdown file with optional commentary in each module directory"""
     for module in catalog:
-        with open("%s/COPYING.md" % module.id, "w") as fp:
+        with open("%s/_COPYING.md" % module.id, "w") as fp:
             content = "# License\n\n```\ntawesoft.co.uk/go/%s\n\n%s\n\n%s\n```" % \
                  (module.id, module.copyright.strip(), module.license.text.strip())
 
@@ -529,7 +529,7 @@ div#footer {{
             </td>
             <td class="stable">{stable}</td>
             <td>
-                <a href="https://github.com/tawesoft/go/tree/master/{module.id}/COPYING.md">{module.license.id}</a>
+                <a href="https://github.com/tawesoft/go/tree/master/{module.id}/_COPYING.md">{module.license.id}</a>
             </td>
         </tr>
 """.strip()

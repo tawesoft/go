@@ -25,7 +25,7 @@ the United States and/or other countries worldwide.
 [home_]: https://tawesoft.co.uk/go/ximage
 [src_]:  https://github.com/tawesoft/go/tree/master/ximage
 [docs_]: https://godoc.org/tawesoft.co.uk/go/ximage
-[copy_]: https://github.com/tawesoft/go/tree/master/ximage/COPYING.md
+[copy_]: https://github.com/tawesoft/go/tree/master/ximage/_COPYING.md
 
 ## Download
 
