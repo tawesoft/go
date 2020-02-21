@@ -104,6 +104,24 @@ binary, and nary functions with overflow checked variants.
 
 ---
 
+### xff: DirectX (.x) file format decoder
+
+`import "tawesoft.co.uk/go/xff"`
+
+Package xff implements a decoder for the DirectX (.x) file format in
+Go (Golang).
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_xff] ∙ [docs][docs_xff] ∙ [src][src_xff] | [MIT][copy_xff] | ✘ **no** |
+
+[home_xff]: https://tawesoft.co.uk/go/xff
+[src_xff]:  https://github.com/tawesoft/go/tree/master/xff
+[docs_xff]: https://godoc.org/tawesoft.co.uk/go/xff
+[copy_xff]: https://github.com/tawesoft/go/tree/master/xff/_COPYING.md
+
+---
+
 ### ximage: extended image types
 
 `import "tawesoft.co.uk/go/ximage"`
