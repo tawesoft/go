@@ -10,6 +10,8 @@ import (
 
 // TODO TODO TODO
 // Refactor xff.File to intern templates and parse-time float precision
+// TODO major refactoring to make this easier
+// TODO comments explaining this file
 // TODO TODO TODO
 
 type SkinWeight struct {
