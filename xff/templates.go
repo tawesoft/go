@@ -6,7 +6,7 @@ type TemplateMember struct {
     Dimensions []string
 }
 
-func (m *TemplateMember) PrimitiveType() bool {
+func (m *TemplateMember) isPrimitiveType() bool {
     switch m.Type {
         case "WORD":   return true
         case "DWORD":  return true
@@ -17,41 +17,52 @@ func (m *TemplateMember) PrimitiveType() bool {
         case "BYTE":   return true
         case "STRING": return true
         case "float":  return true
-        default:        return false
+        default:       return false
     }
 }
 
-func (m *TemplateMember) Size() int {
+func (m *TemplateMember) size(templates map[string]*Template) int {
+    if m.Dimensions != nil { return 4 } // array
     switch m.Type {
         case "WORD":   return 2
         case "DWORD":  return 4
-        case "FLOAT":  return 0
-        case "DOUBLE": return 0
-        case "CHAR":   return 0
-        case "UCHAR":  return 0
-        case "BYTE":   return 0
-        case "STRING": return 0 // index to strings
+        case "FLOAT":  return 4
+        case "DOUBLE": return 8
+        case "CHAR":   return 1
+        case "UCHAR":  return 1
+        case "BYTE":   return 1
+        case "STRING": return 4
         case "float":  return 4
-        default:       return 0 // index to children
+        default:
+            return templates[m.Type].size(templates)
+            
     }
 }
 
 type Template struct {
     Name string
-    UUID string
+    UUID UUID_t
     Mode byte // 'o'pen, 'c'losed, 'r'estricted
     Members []TemplateMember
 }
 
+func (t *Template) size(templates map[string]*Template) int {
+    var acc int
+    for _, member := range t.Members {
+        acc += member.size(templates)
+    }
+    return acc
+}
+
 var TemplateAnimation = Template{
     Name: "Animation",
-    UUID: "3D82AB4F-62DA-11cf-AB39-0020AF71E433",
+    UUID: MustHexToUUID("3D82AB4F-62DA-11cf-AB39-0020AF71E433"),
     Mode: 'o', // open
 }
 
 var TemplateAnimationKey = Template{
     Name: "AnimationKey",
-    UUID: "10DD46A8-775B-11CF-8F52-0040333594A3",
+    UUID: MustHexToUUID("10DD46A8-775B-11CF-8F52-0040333594A3"),
     Mode: 'c', // closed
     Members: []TemplateMember{
         {
@@ -73,13 +84,13 @@ var TemplateAnimationKey = Template{
 // TemplateAnimationSet Contains one or more Animation objects
 var TemplateAnimationSet = Template{
     Name: "AnimationSet",
-    UUID: "3D82AB50-62DA-11cf-AB39-0020AF71E433",
+    UUID: MustHexToUUID("3D82AB50-62DA-11cf-AB39-0020AF71E433"),
     Mode: 'r', // restricted to Animation objects (TODO)
 }
 
 var TemplateCoords2d = Template{
     Name: "Coords2D",
-    UUID: "F6F23F44-7686-11cf-8F52-0040333594A3",
+    UUID: MustHexToUUID("F6F23F44-7686-11cf-8F52-0040333594A3"),
     Mode: 'c', // closed
     Members: []TemplateMember{
         {
@@ -95,7 +106,7 @@ var TemplateCoords2d = Template{
 
 var TemplateFloatKeys = Template{
     Name: "FloatKeys",
-    UUID: "10DD46A9-775B-11cf-8F52-0040333594A3",
+    UUID: MustHexToUUID("10DD46A9-775B-11cf-8F52-0040333594A3"),
     Mode: 'c', // closed
     Members: []TemplateMember{
         {
@@ -112,13 +123,13 @@ var TemplateFloatKeys = Template{
 
 var TemplateFrame = Template{
     Name: "Frame",
-    UUID: "3D82AB46-62DA-11CF-AB39-0020AF71E433",
+    UUID: MustHexToUUID("3D82AB46-62DA-11CF-AB39-0020AF71E433"),
     Mode: 'o', // open
 }
 
 var TemplateFrameTransformMatrix = Template{
     Name: "FrameTransformMatrix",
-    UUID: "F6F23F41-7686-11cf-8F52-0040333594A3",
+    UUID: MustHexToUUID("F6F23F41-7686-11cf-8F52-0040333594A3"),
     Mode: 'c', // closed
     Members: []TemplateMember{
         {
@@ -130,7 +141,7 @@ var TemplateFrameTransformMatrix = Template{
 
 var TemplateMatrix4x4 = Template{
     Name: "Matrix4x4",
-    UUID: "F6F23F45-7686-11cf-8F52-0040333594A3",
+    UUID: MustHexToUUID("F6F23F45-7686-11cf-8F52-0040333594A3"),
     Mode: 'c', // closed
     Members: []TemplateMember{
         {
@@ -143,7 +154,7 @@ var TemplateMatrix4x4 = Template{
 
 var TemplateMesh = Template{
     Name: "Mesh",
-    UUID: "3D82AB44-62DA-11CF-AB39-0020AF71E433",
+    UUID: MustHexToUUID("3D82AB44-62DA-11CF-AB39-0020AF71E433"),
     Mode: 'o', // open
     Members: []TemplateMember{
         {
@@ -169,7 +180,7 @@ var TemplateMesh = Template{
 
 var TemplateMeshFace = Template{
     Name: "MeshFace",
-    UUID: "3D82AB5F-62DA-11cf-AB39-0020AF71E433",
+    UUID: MustHexToUUID("3D82AB5F-62DA-11cf-AB39-0020AF71E433"),
     Mode: 'c', // closed
     Members: []TemplateMember{
         {
@@ -186,7 +197,7 @@ var TemplateMeshFace = Template{
 
 var TemplateMeshNormals = Template{
     Name: "MeshNormals",
-    UUID: "F6F23F43-7686-11cf-8F52-0040333594A3",
+    UUID: MustHexToUUID("F6F23F43-7686-11cf-8F52-0040333594A3"),
     Mode: 'c', // closed
     Members: []TemplateMember{
         {
@@ -212,7 +223,7 @@ var TemplateMeshNormals = Template{
 
 var TemplateMeshTextureCoords = Template{
     Name: "MeshTextureCoords",
-    UUID: "F6F23F40-7686-11cf-8F52-0040333594A3",
+    UUID: MustHexToUUID("F6F23F40-7686-11cf-8F52-0040333594A3"),
     Mode: 'c', // closed
     Members: []TemplateMember{
         {
@@ -229,7 +240,7 @@ var TemplateMeshTextureCoords = Template{
 
 var TemplateTimedFloatKeys = Template{
     Name: "TimedFloatKeys",
-    UUID: "F406B180-7B3B-11cf-8F52-0040333594A3",
+    UUID: MustHexToUUID("F406B180-7B3B-11cf-8F52-0040333594A3"),
     Mode: 'c', // closed
     Members: []TemplateMember{
         {
@@ -245,7 +256,7 @@ var TemplateTimedFloatKeys = Template{
 
 var TemplateVector = Template{
     Name: "Vector",
-    UUID: "3D82AB5E-62DA-11cf-AB39-0020AF71E433",
+    UUID: MustHexToUUID("3D82AB5E-62DA-11cf-AB39-0020AF71E433"),
     Mode: 'c', // closed
     Members: []TemplateMember{
         {

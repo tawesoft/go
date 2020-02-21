@@ -9,9 +9,9 @@ THIS IS A PREVIEW RELEASE. Currently the parser can just validate a document
 but doesn't return useful data. The full implementation will follow over
 the next day or so.
 
-This parser is a complete implementation that supports user-defined templates.
-It should be able to parse *every* well-formed DirectX (.x) file. Get in touch
-if you find any that don't parse correctly.
+This parser is (or aims to be) a complete implementation that supports
+user-defined templates. It should be able to parse *every* well-formed DirectX
+(.x) file. Get in touch if you find any that don't parse correctly.
 
 This is free and open source software. If you find this module useful enough
 that you use it in a commercial product, it is suggested that you donate a
