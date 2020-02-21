@@ -2,9 +2,9 @@
 Package xff implements a decoder for the DirectX (.x) file format in
 Go (Golang).
 
-THIS IS A PREVIEW RELEASE. Currently the parser can just validate a document
-but doesn't return useful data. The full implementation will follow over
-the next day or so.
+THIS IS A PREVIEW RELEASE. A few templates are missing and the returned data
+is not decoded from bytes to types properly. The testdata is missing. It needs
+a refactor. This will be fixed early next week (beginning Feb 24th 2020).
 
 This parser is (or aims to be) a complete implementation that supports
 user-defined templates. It should be able to parse *every* well-formed DirectX
