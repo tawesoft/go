@@ -165,6 +165,7 @@ func DecodeMyCustomObject(file *xff.File, data *xff.Data) *MyCustomObject {
          fooString: data.MustGetNamedSTRING("fooString", file.Templates),
      }
      
+    
     var length = int(data.MustGetNamedDWORD("nThings", file.Templates))
     var index, _, _ = data.MustGetNamedField("intThings", "DWORD", file.Templates)
     arrayIndex, _ := data.MustGetDWORD(index, file.Templates)
@@ -172,6 +173,7 @@ func DecodeMyCustomObject(file *xff.File, data *xff.Data) *MyCustomObject {
     for i := 0; i < int(length); i++ {
         obj.intThings[i] = uint32(data.Arrays[arrayIndex][i*4]) // TODO unpack properly!
     }
+    
      
      return obj
 }

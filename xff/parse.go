@@ -25,7 +25,7 @@ func mustReadExactSymbol(r io.ByteReader, expected byte, desc string) {
     var symbol, err = readSymbol(r)
     if err != nil { panic(err) }
     if symbol != expected {
-        panic(fmt.Errorf("expected %s but got '%c'", desc, symbol))
+        panic(fmt.Errorf("expected '%c' for %s but got '%c'", expected, desc, symbol))
     }
 }
 

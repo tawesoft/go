@@ -73,7 +73,6 @@ func Decode(r io.Reader, templates []*Template) (file *File, err error) {
     if err == io.EOF { err = nil }
     if err != nil { file = nil }
     
-    file.templatesByName = templatesByName
     return file, err
 }
 
@@ -147,10 +146,10 @@ func decodeTemplate(r *bufio.Reader, templates map[string]*Template) (t *Templat
     */
     t = &Template{}
     t.Name = mustReadAtom(r)
-    if mustReadSymbol(r) != '{' { return nil, fmt.Errorf("expected {") }
-    if mustReadSymbol(r) != '<' { return nil, fmt.Errorf("expected <") }
+    if mustReadSymbol(r) != '{' { return nil, fmt.Errorf("expected '{' to begin template") }
+    if mustReadSymbol(r) != '<' { return nil, fmt.Errorf("expected '<' to start UUID") }
     t.UUID = MustHexToUUID(mustReadAtom(r)) // TODO handle errors
-    if mustReadSymbol(r) != '>' { return nil, fmt.Errorf("expected >") }
+    if mustReadSymbol(r) != '>' { return nil, fmt.Errorf("expected '>' to close UUID") }
     t.Mode = 'c' // 'c'/closed by default
     
     t.Members = make([]TemplateMember, 0)
@@ -187,8 +186,9 @@ func decodeTemplate(r *bufio.Reader, templates map[string]*Template) (t *Templat
             dimensions = nil
         }
         
-        symbol = mustReadSymbol(r)
-        if symbol != ';' { return nil, fmt.Errorf("expected ';'") }
+        //symbol = mustReadSymbol(r)
+        //if symbol != ';' { return nil, fmt.Errorf("expected ';'") }
+        mustReadExactSymbol(r, ';', "end of template field")
         
         var member = TemplateMember{
             Name: fieldName,
@@ -282,9 +282,9 @@ func decodeDataBlock(r *bufio.Reader, f *File, t *Template, templates map[string
 }
 
 // decodeMembers decodes values according to a template
-func decodeMembers(r *bufio.Reader, data *Data, members []TemplateMember, templates map[string]*Template) (fns []func(*Data), err error) {
-    for _, member := range members {
-        fns, err = decodeMemberValue(r, data, &member, templates)
+func decodeMembers(r *bufio.Reader, data *Data, target *Data, members []TemplateMember, templates map[string]*Template) (fns []func(*Data), err error) {
+    for i, member := range members {
+        fns, err = decodeMemberValue(r, data, target, i, &member, templates)
         if err != nil { return nil, err }
     }
     
@@ -292,14 +292,14 @@ func decodeMembers(r *bufio.Reader, data *Data, members []TemplateMember, templa
 }
 
 // decodeMemberValue decodes a value according to a template member, possibly an array
-func decodeMemberValue(r *bufio.Reader, data *Data, member *TemplateMember, templates map[string]*Template) (fns []func(*Data), err error) {
+func decodeMemberValue(r *bufio.Reader, data *Data, target *Data, index int, member *TemplateMember, templates map[string]*Template) (fns []func(*Data), err error) {
     
     if member.Dimensions == nil {
         // read a single value
         
         f, err := decodeSingleValue(r, data, member, -1, templates)
         if err != nil { return nil, err }
-        if f != nil { fns = append(fns, f) }
+        if f != nil { f(data); }
         
     } else if len(member.Dimensions) == 1 {
         // read a 1D array
@@ -308,20 +308,33 @@ func decodeMemberValue(r *bufio.Reader, data *Data, member *TemplateMember, temp
         if err != nil {
             // array of variable length
             var len32 uint32
-            len32, err = data.GetNamedDWORD(member.Dimensions[0], templates)
+            
+            var offset, size int
+            _, offset, size, err = target.GetNamedField(member.Dimensions[0], "DWORD", templates)
+            
+            offset2, _, _ := data.GetField(index, templates)
+            offset += offset2
+            
+            // len32, err = target.GetNamedDWORD(member.Dimensions[0], templates)
+            
             if err != nil { return nil, fmt.Errorf("unable to lookup variable dimension length for field %s referencing %s: %v", member.Name, member.Dimensions[0], err) }
+            
+            fmt.Printf("offset %d, size %d\n", offset, size)
+            len32 = binary.LittleEndian.Uint32(data.Bytes[offset : offset + size])
+            fmt.Printf("array length %d\n", len32)
+            
             ln = int64(len32)
         }
         
-        var index = data.appendArray()
+        var arrayIndex = data.appendArray()
         
         for i := 0; i < int(ln); i++ {
-            f, err := decodeSingleValue(r, data, member, index, templates)
+            f, err := decodeSingleValue(r, data, member, arrayIndex, templates)
             if err != nil { return nil, err }
-            if f != nil { fns = append(fns, f) }
+            if f != nil { f(data); }
             
             if i + 1 < int(ln) {
-                if mustReadSymbol(r) != ',' { return nil, fmt.Errorf("expected , while reading array") }
+                mustReadExactSymbol(r, ',', "array item separator")
             }
         }
         
@@ -330,9 +343,10 @@ func decodeMemberValue(r *bufio.Reader, data *Data, member *TemplateMember, temp
         return nil, fmt.Errorf("multidimensional arrays not yet supported")
     }
     
-    if mustReadSymbol(r) != ';' { return nil, fmt.Errorf("expected ';'") }
+    //if mustReadSymbol(r) != ';' { return nil, fmt.Errorf("expected ';'") }
+    mustReadExactSymbol(r, ';', fmt.Sprintf("end of object member value while parsing %s.%s", target.SpecName(), member.Name))
     
-    return fns, nil
+    return nil, nil
 }
 
 // decodeMemberValue decodes a value according to a template member, but its not an array
@@ -345,25 +359,29 @@ func decodeSingleValue(r *bufio.Reader, data *Data, member *TemplateMember, arra
                 var dword int64
                 dword, err = strconv.ParseInt(mustReadAtom(r), 10, 32)
                 if dword < 0 { dword = -dword }
-                return func(d *Data) { d.appendDWORD(uint32(dword), arrayIndex) }, nil
+                //return func(d *Data) { d.appendDWORD(uint32(dword), arrayIndex) }, nil
+                data.appendDWORD(uint32(dword), arrayIndex)
                 
             case "float":
                 var float float64
                 float, err = strconv.ParseFloat(mustReadAtom(r), 32)
-                return func(d *Data) { d.appendFloat32(float32(float), arrayIndex) }, nil
+                //return func(d *Data) { d.appendFloat32(float32(float), arrayIndex) }, nil
+                data.appendFloat32(float32(float), arrayIndex)
                 
             case "WORD":
                 var word int64
                 word, err = strconv.ParseInt(mustReadAtom(r), 10, 16)
                 if word < 0 { word = -word }
-                return func(d *Data) { d.appendWORD(uint16(word), arrayIndex) }, nil
+                // return func(d *Data) { d.appendWORD(uint16(word), arrayIndex) }, nil
+                data.appendWORD(uint16(word), arrayIndex)
                 
             case "STRING":
                 if arrayIndex >= 0 { return nil, fmt.Errorf("string arrays not yet supported") }
                 mustReadExactSymbol(r, '"', "open quote")
                 var s = mustReadString(r)
                 mustReadExactSymbol(r, '"', "close quote")
-                return func(d *Data) { d.appendString(s, arrayIndex) }, nil
+                //return func(d *Data) { d.appendString(s, arrayIndex) }, nil
+                data.appendString(s, arrayIndex)
                 
             case "FLOAT":  fallthrough
             case "DOUBLE": fallthrough
@@ -382,7 +400,7 @@ func decodeSingleValue(r *bufio.Reader, data *Data, member *TemplateMember, arra
         var subt = templates[member.Type]
         
         // TODO this should be refactored so that decodeMembers and decodeData return data without modifying data
-        var subdata = &Data{Spec: subt}
+        var subdata = &Data{Spec: subt} // just used for spec
         fns, err := decodeMembers(r, data, subdata, subt.Members, templates)
         if err != nil { return nil, err }
         // data.appendChild(subdata)
