@@ -9,19 +9,24 @@ import (
 )
 
 type lexeme struct {
-    token [256]byte
+    token []byte
     index int
 }
 
-func (l *lexeme) Append(c byte) bool {
-    if l.index == 255 { return false }
-    l.token[l.index] = c
-    l.index++
-    return true
+func (l *lexeme) Append(c byte) {
+    l.token = append(l.token, c)
 }
 
 func (l *lexeme) String() string {
-    return string(l.token[:l.index])
+    return string(l.token)
+}
+
+func mustReadExactSymbol(r io.ByteReader, expected byte, desc string) {
+    var symbol, err = readSymbol(r)
+    if err != nil { panic(err) }
+    if symbol != expected {
+        panic(fmt.Errorf("expected %s but got '%c'", desc, symbol))
+    }
 }
 
 func mustReadSymbol(r io.ByteReader) byte {
@@ -65,6 +70,39 @@ func readSymbol(r io.ByteReader) (symbol byte, err error) {
     return 0, io.EOF
 }
 
+func mustReadString(r *bufio.Reader) string {
+    var result, err = readString(r)
+    if err != nil { panic(err) }
+    return result
+}
+
+// readString reads a string excluding the enclosing quotes
+func readString(r *bufio.Reader) (result string, err error) {
+    var i byte
+    var l lexeme
+    var escape bool = false
+    
+    for idx := 0; err == nil; idx++ {
+        i, err = r.ReadByte()
+        
+        if (i == '\\') && !escape {
+            escape = true
+        } else if (i == '"') && !escape {
+            r.UnreadByte()
+            result = l.String()
+            goto done
+        } else {
+            escape = false
+            l.Append(i)
+        }
+    }
+    
+    err = io.EOF
+    
+    done:
+        return result, err
+}
+
 func mustReadAtom(r *bufio.Reader) string {
     var word, err = readAtom(r)
     if err != nil { panic(err) }
@@ -98,7 +136,7 @@ func readAtom(r *bufio.Reader) (word string, err error) {
                     case '\n': // pass
                     default:
                         state = stateCapture
-                        if !l.Append(i) { err = fmt.Errorf("token too long"); goto done }
+                        l.Append(i)
                 }
             case stateComment:
                 switch i {
@@ -125,7 +163,7 @@ func readAtom(r *bufio.Reader) (word string, err error) {
                         word = l.String()
                         goto done
                     default:
-                        if !l.Append(i) { err = fmt.Errorf("token too long"); goto done }
+                        l.Append(i)
                 }
         }
     }

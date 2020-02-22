@@ -23,31 +23,80 @@ type File struct {
     Children []Data
     ReferencesByName map[string]*Data
     ReferencesByUUID map[UUID_t]*Data
-    Templates map[string]*Template
+    templatesByName map[string]*Template
+    Templates map[string]*Template // TODO remove this
 }
 
 func (f *File) appendChild(data *Data) {
     f.Children = append(f.Children, *data)
 }
 
+// Data is a decoded object in a DirectX (.x) file format. Each object has a type (DirectX calls this a Template),
+// and some values according to that type, and (if the Template is not closed) child objects of any (if the template is
+// open) or a restricted set of (if the template is restricted) template type. An object's values can be primitive
+// types (like the DWORD, DirectX's version of a uint32), an array of primitive types, a typed object, or an array of
+// typed objects, and child objects.
 type Data struct {
-    Name string
+    Name string // may be empty
     UUID UUID_t // not currently implemented
-    Spec *Template // if nil, the name is a reference
+    Spec *Template // if nil, the name is a reference to another named object
+    
+    // TODO make these internal
     Bytes []byte
     Arrays [][]byte
     Strings []string
     Children []Data
 }
 
-func (b *Data) SpecName() string {
-    if b.Spec == nil { return "" }
-    return b.Spec.Name
+// IsReference returns true if the data object is not a fully instantiated object but instead a reference to another
+// object (either by Name or UUID) that may or may not exist and may or may not have been decoded yet. If it is a
+// reference, the Spec Template field is a nil pointer, because it doesn't have a Template yet.
+func (b *Data) IsReference() bool {
+    return b.Spec == nil
 }
 
-// GetNamedField returns the offset (for GetFloat, GetDWORD, etc) and size (for incrementing offsets in sequential
-// access) of a data field in a data block by name. Note that GetNamedField (and GetNamedFloat, GetNameDDWORD, etc.)
-// should be preferred where possible to check for type errors.
+// SpecName returns a data object's Template's name (useful for debugging) or, if the data object doesn't have a
+// Template because instead of being a fully instantiated object it's a reference to another named object (which may
+// or may not have been decoded at this point), it returns an empty string. This saves checking for the nil pointer.
+func (d *Data) SpecName() string {
+    if d.Spec == nil { return "" }
+    return d.Spec.Name
+}
+
+
+// TODO get this on a template, not the data!
+// getNamedField returns the index (e.g. "the 2nd field"; start counting at zero), offset (bytes) into the packed data,
+// and size (bytes) in the packed data of a data object according to a field of a certain name.
+func (f *File) getNamedField(data *Data, fieldName string, fieldType string) (index int, offset int, size int, err error) {
+    
+    for i := 0; i < len(data.Spec.Members); i++ {
+        offset += size
+        var member = data.Spec.Members[i]
+        size = data.Spec.Members[i].size(f.templatesByName)
+        
+        if member.Name == fieldName {
+            if member.Type != fieldType {
+                return 0, 0, 0, fmt.Errorf("invalid access to named field %s of object %s and type %s as type %s",
+                    fieldName, data.SpecName(), member.Type, fieldType)
+            }
+            
+            return i, offset, size, nil
+        }
+    }
+    
+    return 0, 0, 0, fmt.Errorf("named field %s of object %s not found", fieldName, data.SpecName())
+}
+
+
+
+
+// ---- OLD VERSIONS BELOW ----
+
+// GetField returns the offset (for GetFloat, GetDWORD, etc) and size (for incrementing offsets in sequential
+// access) of a data field in a data block by a known index (e.g. "the second field"; start counting at zero).
+//
+// Note that GetNamedField (and GetNamedFloat, GetNameDDWORD, etc.) should be preferred where possible because
+// these check for type errors.
 func (b *Data) GetField(index int, templates map[string]*Template) (offset int, size int, err error) {
     for i := 0; i < len(b.Spec.Members); i++ {
         offset += size

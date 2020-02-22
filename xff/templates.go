@@ -34,11 +34,17 @@ func (m *TemplateMember) size(templates map[string]*Template) int {
         case "STRING": return 4
         case "float":  return 4
         default:
+            // templates[m.Type] is guaranteed to succeed at this point
             return templates[m.Type].size(templates)
-            
     }
 }
 
+// A DirectX (.x) file format Template defines the structure of an object. Some Templates are built-in, some Templates
+// are defined ad-hoc at the start of some files, and they can even be passed in to the Decode function at runtime.
+// A Template should be considered constant and read-only once instantiated, because a decoded object will need to hold
+// a reference to the Template used. The preferred way to identify which Template is associated with a decoded object
+// is to use the UUID not pointer equality because a template may be defined by either of the three methods listed
+// above. You can get a UUID of a built-in template easily e.g. TemplateAnimation.UUID.
 type Template struct {
     Name string
     UUID UUID_t
@@ -46,8 +52,7 @@ type Template struct {
     Members []TemplateMember
 }
 
-func (t *Template) size(templates map[string]*Template) int {
-    var acc int
+func (t *Template) size(templates map[string]*Template) (acc int) {
     for _, member := range t.Members {
         acc += member.size(templates)
     }
@@ -81,14 +86,16 @@ var TemplateAnimationKey = Template{
     },
 }
 
-// TemplateAnimationSet Contains one or more Animation objects
+// TemplateAnimationSet is a DirectX (.x) file Template for an AnimationSet object that contains one or more
+// Animation objects
 var TemplateAnimationSet = Template{
     Name: "AnimationSet",
     UUID: MustHexToUUID("3D82AB50-62DA-11cf-AB39-0020AF71E433"),
     Mode: 'r', // restricted to Animation objects (TODO)
 }
 
-var TemplateCoords2d = Template{
+// TemplateCoords2D is a DirectX (.x) file Template for a Coords2D object that contains a (u, v) component
+var TemplateCoords2D = Template{
     Name: "Coords2D",
     UUID: MustHexToUUID("F6F23F44-7686-11cf-8F52-0040333594A3"),
     Mode: 'c', // closed
@@ -274,19 +281,19 @@ var TemplateVector = Template{
     },
 }
 
-var Templates = map[string]*Template{
-    TemplateAnimation.Name:             &TemplateAnimation,
-    TemplateAnimationKey.Name:          &TemplateAnimationKey,
-    TemplateAnimationSet.Name:          &TemplateAnimationSet,
-    TemplateCoords2d.Name:              &TemplateCoords2d,
-    TemplateFloatKeys.Name:             &TemplateFloatKeys,
-    TemplateFrame.Name:                 &TemplateFrame,
-    TemplateFrameTransformMatrix.Name:  &TemplateFrameTransformMatrix,
-    TemplateMatrix4x4.Name:             &TemplateMatrix4x4,
-    TemplateMesh.Name:                  &TemplateMesh,
-    TemplateMeshFace.Name:              &TemplateMeshFace,
-    TemplateMeshNormals.Name:           &TemplateMeshNormals,
-    TemplateMeshTextureCoords.Name:     &TemplateMeshTextureCoords,
-    TemplateTimedFloatKeys.Name:        &TemplateTimedFloatKeys,
-    TemplateVector.Name:                &TemplateVector,
+var defaultTemplates = []*Template{
+    &TemplateAnimation,
+    &TemplateAnimationKey,
+    &TemplateAnimationSet,
+    &TemplateCoords2D,
+    &TemplateFloatKeys,
+    &TemplateFrame,
+    &TemplateFrameTransformMatrix,
+    &TemplateMatrix4x4,
+    &TemplateMesh,
+    &TemplateMeshFace,
+    &TemplateMeshNormals,
+    &TemplateMeshTextureCoords,
+    &TemplateTimedFloatKeys,
+    &TemplateVector,
 }
