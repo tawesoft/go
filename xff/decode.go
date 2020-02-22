@@ -240,13 +240,8 @@ func decodeDataBlock(r *bufio.Reader, f *File, t *Template, templates map[string
     }
     
     // Read members first
-    fns, err := decodeMembers(r, data, data, t.Members, templates)
+    err = decodeMembers(r, data, data.Spec, 0, t.Members, templates)
     if err != nil { return nil, err }
-    if fns != nil {
-        for _, f := range fns {
-            f(data)
-        }
-    }
     
     // Read additional data blocks up to closing '}'
     for {
@@ -281,24 +276,25 @@ func decodeDataBlock(r *bufio.Reader, f *File, t *Template, templates map[string
     return data, err
 }
 
-// decodeMembers decodes values according to a template
-func decodeMembers(r *bufio.Reader, data *Data, target *Data, members []TemplateMember, templates map[string]*Template) (fns []func(*Data), err error) {
+// decodeMembers decodes values according to a template. `target` is where the data is written to; data specifies how
+// the data is decoded.
+func decodeMembers(r *bufio.Reader, target *Data, spec *Template, suboffset int, members []TemplateMember, templates map[string]*Template) (err error) {
     for _, member := range members {
-        fns, err = decodeMemberValue(r, data, target, &member, templates)
-        if err != nil { return nil, err }
+        err = decodeMemberValue(r, target, spec, suboffset, &member, templates)
+        if err != nil { return err }
     }
     
-    return fns, err
+    return err
 }
 
 // decodeMemberValue decodes a value according to a template member, possibly an array of such
-func decodeMemberValue(r *bufio.Reader, data *Data, target *Data, member *TemplateMember, templates map[string]*Template) (fns []func(*Data), err error) {
+func decodeMemberValue(r *bufio.Reader, target *Data, spec *Template, suboffset int, member *TemplateMember, templates map[string]*Template) (err error) {
     
     if member.Dimensions == nil {
         // read a single value
         
-        f, err := decodeSingleValue(r, data, member, -1, templates)
-        if err != nil { return nil, err }
+        f, err := decodeSingleValue(r, target, suboffset, member, -1, templates)
+        if err != nil { return err }
         if f != nil { f(target); }
         
     } else if len(member.Dimensions) == 1 {
@@ -310,11 +306,11 @@ func decodeMemberValue(r *bufio.Reader, data *Data, target *Data, member *Templa
             var len32 uint32
             
             var offset, size int
-            _, offset, size, err = data.GetNamedField(member.Dimensions[0], "DWORD", templates)
-            
+            _, offset, size, err = (&Data{Spec: spec}).GetNamedField(member.Dimensions[0], "DWORD", templates)
             // len32, err = target.GetNamedDWORD(member.Dimensions[0], templates)
+            offset += suboffset
             
-            if err != nil { return nil, fmt.Errorf("unable to lookup variable dimension length for field %s referencing %s: %v", member.Name, member.Dimensions[0], err) }
+            if err != nil { return fmt.Errorf("unable to lookup variable dimension length for field %s referencing %s: %v", member.Name, member.Dimensions[0], err) }
             
             fmt.Printf("offset %d, size %d\n", offset, size)
             len32 = binary.LittleEndian.Uint32(target.Bytes[offset : offset + size])
@@ -326,8 +322,8 @@ func decodeMemberValue(r *bufio.Reader, data *Data, target *Data, member *Templa
         var arrayIndex = target.appendArray()
         
         for i := 0; i < int(ln); i++ {
-            f, err := decodeSingleValue(r, data, member, arrayIndex, templates)
-            if err != nil { return nil, err }
+            f, err := decodeSingleValue(r, target, suboffset, member, arrayIndex, templates)
+            if err != nil { return  err }
             if f != nil { f(target); }
             
             if i + 1 < int(ln) {
@@ -337,16 +333,16 @@ func decodeMemberValue(r *bufio.Reader, data *Data, target *Data, member *Templa
         
     } else {
         // Read a multidimensional array
-        return nil, fmt.Errorf("multidimensional arrays not yet supported")
+        return fmt.Errorf("multidimensional arrays not yet supported")
     }
     
     mustReadExactSymbol(r, ';', fmt.Sprintf("end of object member value while parsing %s.%s", target.SpecName(), member.Name))
     
-    return nil, nil
+    return nil
 }
 
 // decodeMemberValue decodes a value according to a template member, but its not an array
-func decodeSingleValue(r *bufio.Reader, data *Data, member *TemplateMember, arrayIndex int, templates map[string]*Template) (f func(*Data), err error) {
+func decodeSingleValue(r *bufio.Reader, data *Data, suboffset int, member *TemplateMember, arrayIndex int, templates map[string]*Template) (f func(*Data), err error) {
     
     if member.isPrimitiveType() {
         switch member.Type {
@@ -385,25 +381,11 @@ func decodeSingleValue(r *bufio.Reader, data *Data, member *TemplateMember, arra
         }
     } else {
         // read a named data type (using a template)
-        //var subt, ok = templates[member.Type]
-        //if !ok { return nil, fmt.Errorf("unrecognised named data type %s for %s in %s", member.Type, member.Name, data.Spec.Name) }
+
+        var spec = templates[member.Type] // guaranteed to work at this point
         
-        // lookup template by field type is guaranteed to work at this point
-        var subt = templates[member.Type]
-        
-        // TODO this should be refactored so that decodeMembers and decodeData return data without modifying data
-        var subdata = &Data{Spec: subt} // just used for spec
-        fns, err := decodeMembers(r, subdata,  data, subt.Members, templates)
+        err := decodeMembers(r, data, spec, len(data.Bytes), spec.Members, templates)
         if err != nil { return nil, err }
-        // data.appendChild(subdata)
-        if fns != nil { panic("expected nil") }
-        return func(d *Data) {
-            if fns != nil {
-                for _, f := range fns {
-                    f(d)
-                }
-            }
-        }, nil
     }
     
     return nil, nil
