@@ -19,14 +19,14 @@ name, or the binary encoded DirectX .x file format, arrays of strings, or
 multidimensional arrays. Send in a sample if you find something that doesn't
 work (and should) and it'll get fixed quickly!
 
-This is free and open source software. It took about five days to write - so
-if you find this module useful enough that you use it in a commercial product then
-there is a polite expectation that you donate a sum to the author equal to the
-retail cost of one copy of your product. To do so, make a payment at
+This is free and open source software. It took six days to write
+the first production-ready version - so if you find this module useful enough
+that you end up using it in a commercial product then there is a polite
+expectation of a donation to the author. The suggested donation is a sum equal
+to the retail cost of a single copy of your product. To do so, make a payment at
 https://www.paypal.me/TawesoftLtd and forward a copy of your receipt to
 "xff-thanks@tawesoft.co.uk". Alternatively you can purchase commercial support
-through open-source@tawesoft.co.uk. If you're making a computer game I'd
-appreciate one free copy, too. This is, of course, entirely optional.
+through open-source@tawesoft.co.uk. This is, of course, entirely optional.
 
 DirectX is a registered trademark of Microsoft Corporation in the United States
 and/or other countries.
