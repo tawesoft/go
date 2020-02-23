@@ -7,30 +7,27 @@ import (
     "encoding/binary"
     "fmt"
     "io"
-    "runtime/debug"
     "strconv"
 )
 
 // Decode parses the DirectX (.x) file format, with an optional list of user-defined templates (may be empty or nil),
-// and on success returns a File object containing the decoded data.
+// and on success returns a File object containing the decoded data. A DirectX (.x) file may define its own templates.
 func Decode(r io.Reader, templates []*Template) (file *File, err error) {
+    // Parse errors just panic and are recovered here; finer grained control is not part of the public interface
+    // so just catching the panic is nice and simple.
     defer func() {
         if r := recover(); r != nil {
-            err = fmt.Errorf("%v\n%s", r.(error), debug.Stack())
+            err = fmt.Errorf("DirectX (.x) file format decode error: %v\n", r.(error)) //debug.Stack())
         }
     }()
     
     var fp = bufio.NewReader(r)
     
-    var format byte // 't'/text or 'b'/binary
-    var floatSize int // 32 or 64
+    var format, _ = decodeHeader(fp)
+    if format != 't' { panic(fmt.Errorf("non-text formats not implemented (yet)")) }
     
-    format, floatSize, err = decodeHeader(fp)
-    if err != nil { return nil, fmt.Errorf("error decoding DirectX (.x) file header: %v", err) }
-    
-    if format != 't' { return nil, fmt.Errorf("format not implemented") }
-    if floatSize != 32 { return nil, fmt.Errorf("float size not implemented") }
-    
+    // templates are replaced such that in-file templates are prioritised first, caller-supplied templates second,
+    // and default templates last.
     var templatesByName = make(map[string]*Template)
     for _, template := range defaultTemplates {
         templatesByName[template.Name] = template
@@ -42,16 +39,15 @@ func Decode(r io.Reader, templates []*Template) (file *File, err error) {
     }
     
     file = &File{
-        Children: make([]Data, 0),
+        Children: make([]Data, 0), // never nil
         ReferencesByName: make(map[string]*Data),
         ReferencesByUUID: make(map[UUID_t]*Data),
         templatesByName: templatesByName,
-        Templates: templatesByName, // TODO remove
     }
     
     for {
         var word string
-        word, err = readAtom(fp)
+        word, err = readAtom(fp) // EOF is allowed here
         if err != nil { break }
     
         if word == "template" {
@@ -61,7 +57,7 @@ func Decode(r io.Reader, templates []*Template) (file *File, err error) {
             templatesByName[t.Name] = t
         } else {
             var t, ok = templatesByName[word]
-            if !ok { return nil, fmt.Errorf("unknown data name %s", word) }
+            if !ok { panic(fmt.Errorf("unknown object type '%s'", word)) }
             
             var data *Data
             data, err = decodeDataBlock(fp, file, t, templatesByName)
@@ -76,14 +72,9 @@ func Decode(r io.Reader, templates []*Template) (file *File, err error) {
     return file, err
 }
 
-// DecodeHeader reads the header of a DirectX .x file and returns the format and floatSize on success.
-//
-// * format will be either 't' (text) or 'b' (binary).
-//
-// * floatSize will be either 32 or 64.
-//
-func decodeHeader(r io.Reader) (format byte, floatSize int, err error) {
-    // https://docs.microsoft.com/en-us/windows/win32/direct3d9/reserved-words--header--and-comments
+// DecodeHeader reads the header of a DirectX .x file and returns the format and floatSize on success:
+// `format` will be either 't' (text) or 'b' (binary) and `floatSize` will be either 32 or 64.
+func decodeHeader(r io.Reader) (format byte, floatSize int) {
     var record struct {
         Magic     [4]byte
         Version   [4]byte
@@ -91,27 +82,39 @@ func decodeHeader(r io.Reader) (format byte, floatSize int, err error) {
         FloatSize [4]byte
     }
     
-    err = binary.Read(r, binary.LittleEndian, &record)
-    if err != nil { goto fail }
+    var err = binary.Read(r, binary.LittleEndian, &record)
+    if (err != nil) || string(record.Magic[:]) != "xof " {
+        panic(fmt.Errorf("invalid magic bytes (not a DirectX .x file)"))
+    }
     
-    if string(record.Magic[:]) != "xof " { err = fmt.Errorf("invalid magic bytes (not a DirectX .x file)"); goto fail }
-    if string(record.Version[:]) != "0303" { err = fmt.Errorf("unsupported version"); goto fail }
+    switch string(record.Version[:]) {
+        case "0303":
+            // fine
+        case "0302":
+            // probably fine!
+            // what's the difference?!
+            // who knows! its not an open spec!
+            // at a guess, v3.2 probably has fewer default templates defined by default but that doesn't matter
+        default:
+            panic(fmt.Errorf("unsupported file version %v", record.Version))
+    }
     
     switch string(record.Format[:]) {
         case "txt ": format = 't'
         case "bin ": format = 'b'
-        default: err = fmt.Errorf("unsupported format"); goto fail
+        default:
+            panic(fmt.Errorf("unsupported file type %v", record.Format))
     }
 
     switch string(record.FloatSize[:]) {
         case "0064": floatSize = 64
         case "0032": floatSize = 32
-        default: err = fmt.Errorf("unsupported float size"); goto fail
+        default:
+            // don't actually care what this value is in text mode but lets be strict and validate it anyway
+            panic(fmt.Errorf("unsupported file float size %v", record.FloatSize))
     }
     
-    // fallthrough
-    fail:
-        return format, floatSize, err
+    return format, floatSize
 }
 
 // decodeTemplate reads a template section of a DirectX .x file. Note that the reader at this step has already
@@ -142,14 +145,14 @@ func decodeTemplate(r *bufio.Reader, templates map[string]*Template) (t *Templat
     
     There's no technical reason why forward references cannot be implemented, but it appears that no-one else
     supports them either. All we really want to know is that a template is not recursive but we get that for free by
-    checking each template member is defined yet.
+    checking if each template member is defined yet.
     */
     t = &Template{}
     t.Name = mustReadAtom(r)
-    if mustReadSymbol(r) != '{' { return nil, fmt.Errorf("expected '{' to begin template") }
-    if mustReadSymbol(r) != '<' { return nil, fmt.Errorf("expected '<' to start UUID") }
-    t.UUID = MustHexToUUID(mustReadAtom(r)) // TODO handle errors
-    if mustReadSymbol(r) != '>' { return nil, fmt.Errorf("expected '>' to close UUID") }
+    mustReadExpectedSymbol(r, '{', "start of template")
+    mustReadExpectedSymbol(r, '<', "start of UUID")
+    t.UUID = MustHexToUUID(mustReadAtom(r))
+    mustReadExpectedSymbol(r, '>', "close of UUID")
     t.Mode = 'c' // 'c'/closed by default
     
     t.Members = make([]TemplateMember, 0)
@@ -161,7 +164,7 @@ func decodeTemplate(r *bufio.Reader, templates map[string]*Template) (t *Templat
         // Try to end the block
         var symbol = mustReadSymbol(r)
         if symbol == '}' { break }
-        if r.UnreadByte() != nil { return nil, fmt.Errorf("I/O rewind error") }
+        mustUnreadByte(r)
         
         // otherwise its a data type
         var word = mustReadAtom(r)
@@ -176,8 +179,7 @@ func decodeTemplate(r *bufio.Reader, templates map[string]*Template) (t *Templat
                 if mustReadSymbol(r) != ']' { return nil, fmt.Errorf("expected ]") }
                 
                 // try to end the line
-                symbol = mustReadSymbol(r)
-                if r.UnreadByte() != nil { return nil, fmt.Errorf("I/O rewind error") }
+                symbol = mustPeekSymbol(r)
                 if symbol == ';' { break }
             }
         } else {
@@ -188,7 +190,7 @@ func decodeTemplate(r *bufio.Reader, templates map[string]*Template) (t *Templat
         
         //symbol = mustReadSymbol(r)
         //if symbol != ';' { return nil, fmt.Errorf("expected ';'") }
-        mustReadExactSymbol(r, ';', "end of template field")
+        mustReadExpectedSymbol(r, ';', "end of template field")
         
         var member = TemplateMember{
             Name: fieldName,
@@ -226,7 +228,7 @@ func decodeDataBlock(r *bufio.Reader, f *File, t *Template, templates map[string
     var name string
     var symbol = mustReadSymbol(r)
     if symbol != '{' {
-        if r.UnreadByte() != nil { return nil, fmt.Errorf("I/O rewind error") }
+        mustUnreadByte(r)
         name = mustReadAtom(r)
         if mustReadSymbol(r) != '{' {
             return nil, fmt.Errorf("expected {")
@@ -247,7 +249,7 @@ func decodeDataBlock(r *bufio.Reader, f *File, t *Template, templates map[string
     for {
         // More data?
         if mustReadSymbol(r) == '}' { break }
-        if r.UnreadByte() != nil { return nil, fmt.Errorf("I/O rewind error") } // TODO peek instead
+        mustUnreadByte(r)
         if t.Mode == 'c' { return nil, fmt.Errorf("unexpected extra data in closed data type") }
         
         if mustReadSymbol(r) == '{' {
@@ -258,7 +260,7 @@ func decodeDataBlock(r *bufio.Reader, f *File, t *Template, templates map[string
             
             if mustReadSymbol(r) != '}' { return nil, fmt.Errorf("expected } to end reference") }
         } else {
-            if r.UnreadByte() != nil { return nil, fmt.Errorf("I/O rewind error") } // TODO peek instead
+            mustUnreadByte(r)
         }
         
         var word string
@@ -312,9 +314,7 @@ func decodeMemberValue(r *bufio.Reader, target *Data, spec *Template, suboffset 
             
             if err != nil { return fmt.Errorf("unable to lookup variable dimension length for field %s referencing %s: %v", member.Name, member.Dimensions[0], err) }
             
-            fmt.Printf("offset %d, size %d\n", offset, size)
             len32 = binary.LittleEndian.Uint32(target.Bytes[offset : offset + size])
-            fmt.Printf("array length %d\n", len32)
             
             ln = int64(len32)
         }
@@ -327,7 +327,7 @@ func decodeMemberValue(r *bufio.Reader, target *Data, spec *Template, suboffset 
             if f != nil { f(target); }
             
             if i + 1 < int(ln) {
-                mustReadExactSymbol(r, ',', "array item separator")
+                mustReadExpectedSymbol(r, ',', "array item separator")
             }
         }
         
@@ -336,7 +336,7 @@ func decodeMemberValue(r *bufio.Reader, target *Data, spec *Template, suboffset 
         return fmt.Errorf("multidimensional arrays not yet supported")
     }
     
-    mustReadExactSymbol(r, ';', fmt.Sprintf("end of object member value while parsing %s.%s", target.SpecName(), member.Name))
+    mustReadExpectedSymbol(r, ';', fmt.Sprintf("end of object member value while parsing %s.%s", target.SpecName(), member.Name))
     
     return nil
 }
@@ -366,9 +366,9 @@ func decodeSingleValue(r *bufio.Reader, data *Data, suboffset int, member *Templ
                 
             case "STRING":
                 if arrayIndex >= 0 { return nil, fmt.Errorf("string arrays not yet supported") }
-                mustReadExactSymbol(r, '"', "open quote")
+                mustReadExpectedSymbol(r, '"', "open quote")
                 var s = mustReadString(r)
-                mustReadExactSymbol(r, '"', "close quote")
+                mustReadExpectedSymbol(r, '"', "close quote")
                 return func(d *Data) { d.appendString(s, arrayIndex) }, nil
                 
             case "FLOAT":  fallthrough

@@ -161,11 +161,11 @@ type MyCustomObject2 struct {
 
 // Given a data object of type MyCustomType, let's decode it into a native Go type.
 func DecodeMyCustomObject(file *xff.File, data *xff.Data) *MyCustomObject {
+    /*
      var obj = &MyCustomObject{
          fooString: data.MustGetNamedSTRING("fooString", file.Templates),
      }
      
-    
     var length = int(data.MustGetNamedDWORD("nThings", file.Templates))
     var index, _, _ = data.MustGetNamedField("intThings", "DWORD", file.Templates)
     arrayIndex, _ := data.MustGetDWORD(index, file.Templates)
@@ -174,8 +174,10 @@ func DecodeMyCustomObject(file *xff.File, data *xff.Data) *MyCustomObject {
         obj.intThings[i] = uint32(data.Arrays[arrayIndex][i*4]) // TODO unpack properly!
     }
     
+    return obj
+    */
      
-     return obj
+     return &MyCustomObject{}
 }
 
 // lets recurse over a data object and its children and print stuff out about it
@@ -190,7 +192,6 @@ func printData(file *xff.File, data *xff.Data, indent int) {
         if data.Spec.UUID == MyCustomTypeUUID {
             fmt.Printf("%sCool: its on object of our first custom type!\n", indentStr)
             fmt.Printf("%s%+v\n", indentStr, DecodeMyCustomObject(file, data))
-            fmt.Printf("%s%+v\n", indentStr, data)
         } else if data.Spec.UUID == MyCustomType2.UUID {
             fmt.Printf("%sCool: its an object of our second custom type!\n", indentStr)
         }
@@ -219,7 +220,10 @@ func main() {
     }
     
     file, err := xff.Decode(strings.NewReader(example), extraTemplates)
-    if err != nil { panic(err) }
+    if err != nil {
+        fmt.Printf("Error: %s\n", err.Error())
+        return
+    }
     
     for _, child := range(file.Children) {
         printData(file, &child, 0)

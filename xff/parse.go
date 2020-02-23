@@ -21,8 +21,9 @@ func (l *lexeme) String() string {
     return string(l.token)
 }
 
-func mustReadExactSymbol(r io.ByteReader, expected byte, desc string) {
+func mustReadExpectedSymbol(r io.ByteReader, expected byte, desc string) {
     var symbol, err = readSymbol(r)
+    if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
     if err != nil { panic(err) }
     if symbol != expected {
         panic(fmt.Errorf("expected '%c' for %s but got '%c'", expected, desc, symbol))
@@ -31,8 +32,37 @@ func mustReadExactSymbol(r io.ByteReader, expected byte, desc string) {
 
 func mustReadSymbol(r io.ByteReader) byte {
     var symbol, err = readSymbol(r)
+    if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
     if err != nil { panic(err) }
     return symbol
+}
+
+func mustPeekSymbol(r *bufio.Reader) byte {
+    var symbol, err = readSymbol(r)
+    if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
+    if err != nil { panic(err) }
+    mustUnreadByte(r)
+    return symbol
+}
+
+func mustReadString(r *bufio.Reader) string {
+    var result, err = readString(r)
+    if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
+    if err != nil { panic(err) }
+    return result
+}
+
+func mustReadAtom(r *bufio.Reader) string {
+    var word, err = readAtom(r)
+    if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
+    if err != nil { panic(err) }
+    return word
+}
+
+// mustUnreadByte should always succeed, because we're never rewinding more than a single byte
+func mustUnreadByte(r *bufio.Reader) {
+    var err = r.UnreadByte()
+    if err != nil { panic(fmt.Errorf("I/O rewind error: %s", err)) }
 }
 
 // readSymbol reads a single symbol, ignoring whitespace and comments, and returns it as a byte.
@@ -70,12 +100,6 @@ func readSymbol(r io.ByteReader) (symbol byte, err error) {
     return 0, io.EOF
 }
 
-func mustReadString(r *bufio.Reader) string {
-    var result, err = readString(r)
-    if err != nil { panic(err) }
-    return result
-}
-
 // readString reads a string excluding the enclosing quotes
 func readString(r *bufio.Reader) (result string, err error) {
     var i byte
@@ -101,12 +125,6 @@ func readString(r *bufio.Reader) (result string, err error) {
     
     done:
         return result, err
-}
-
-func mustReadAtom(r *bufio.Reader) string {
-    var word, err = readAtom(r)
-    if err != nil { panic(err) }
-    return word
 }
 
 // readAtom reads a single token delimited by comma, semicolon, whitespace, braces, brackets, quotation marks, and

@@ -1,8 +1,23 @@
 package xff
 
+const (
+    TemplateOpen       = 'o' // any child objects allowed
+    TemplateClosed     = 'c' // no child objects allowed
+    TemplateRestricted = 'r' // child objects of certain types are allowed
+)
+
+// TemplateMember describes an individual field in a Template
 type TemplateMember struct {
+    
+    // Name used to access data matching this field in an object
     Name string
+    
+    // Type of data: either a primitive type (like DWORD) or another Template
     Type string
+    
+    // Size of data. If this is nil, its a single value. Otherwise, its an array of one or more dimensions. The
+    // dimensions may be constant (e.g. "16") or dynamically defined by a field value stored earlier in the object
+    // and referenced by name (e.g. "nVertexes").
     Dimensions []string
 }
 
@@ -14,6 +29,8 @@ func (m *TemplateMember) isPrimitiveType() bool {
         case "DOUBLE": return true
         case "CHAR":   return true
         case "UCHAR":  return true
+        case "SWORD":  return true
+        case "SDWORD": return true
         case "BYTE":   return true
         case "STRING": return true
         case "float":  return true
@@ -21,8 +38,15 @@ func (m *TemplateMember) isPrimitiveType() bool {
     }
 }
 
+// size returns the size of a template member. In the case of most simple types this is trivial and a known constant.
+// In the case of an array or a string, this is an index to an alternative data structure so that the size can be a
+// known constant. In the case of template member being the type of another template, this has to ask for the size of
+// *that* template.
+//
+// PERF: We could easily cache these values but the decoder is plenty fast enough anyway. The cache would have to be
+// local to the File not the TemplateMember.
 func (m *TemplateMember) size(templates map[string]*Template) int {
-    if m.Dimensions != nil { return 4 } // array
+    if m.Dimensions != nil { return 4 } // array, so a DWORD as an indirect index
     switch m.Type {
         case "WORD":   return 2
         case "DWORD":  return 4
@@ -30,11 +54,13 @@ func (m *TemplateMember) size(templates map[string]*Template) int {
         case "DOUBLE": return 8
         case "CHAR":   return 1
         case "UCHAR":  return 1
+        case "SWORD":  return 2
+        case "SDWORD": return 4
         case "BYTE":   return 1
-        case "STRING": return 4
+        case "STRING": return 4 // a DWORD as an indirect index
         case "float":  return 4
         default:
-            // templates[m.Type] is guaranteed to succeed at this point
+            // templates[m.Type] is guaranteed to succeed at this point and to not be recursive
             return templates[m.Type].size(templates)
     }
 }
@@ -52,6 +78,7 @@ type Template struct {
     Members []TemplateMember
 }
 
+// size returns the size of the template as the sum of the sizes of its members
 func (t *Template) size(templates map[string]*Template) (acc int) {
     for _, member := range t.Members {
         acc += member.size(templates)
