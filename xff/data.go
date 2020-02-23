@@ -92,6 +92,12 @@ func (d *Data) SpecName() string {
     return d.Spec.Name
 }
 
+// appendReference appends a named data reference to a data object. If this is a backwards-reference it might be
+// possible to typecheck it here but so far this is left for the user to resolve.
+func (d *Data) appendReference(name string) {
+    d.appendChild(&Data{Name: name, Spec: nil})
+}
+
 // TODO get this on a template, not the data!
 // getNamedField returns the index (e.g. "the 2nd field"; start counting at zero), offset (bytes) into the packed data,
 // and size (bytes) in the packed data of a data object according to a field of a certain name.

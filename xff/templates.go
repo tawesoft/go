@@ -21,6 +21,7 @@ type TemplateMember struct {
     Dimensions []string
 }
 
+// isPrimitiveType is used to differentiate between a primitive type and a type that is described by a Template
 func (m *TemplateMember) isPrimitiveType() bool {
     switch m.Type {
         case "WORD":   return true
@@ -38,13 +39,13 @@ func (m *TemplateMember) isPrimitiveType() bool {
     }
 }
 
-// size returns the size of a template member. In the case of most simple types this is trivial and a known constant.
-// In the case of an array or a string, this is an index to an alternative data structure so that the size can be a
-// known constant. In the case of template member being the type of another template, this has to ask for the size of
-// *that* template.
+// size returns the size a template member takes up as packed bytes. In the case of primitive types this is trivial and
+// a known constant. In the case of an array or a string, this is an index to an alternative data structure so that the
+// size can be a known constant (the size of that DWORD index). In the case of template member being the type of
+// another template, this has to ask for the size of that template (recursively).
 //
-// PERF: We could easily cache these values but the decoder is plenty fast enough anyway. The cache would have to be
-// local to the File not the TemplateMember.
+// PERF: could easily cache these values but the decoder is plenty fast enough anyway. If this was done the cache would
+// have to be local to the File not the TemplateMember.
 func (m *TemplateMember) size(templates map[string]*Template) int {
     if m.Dimensions != nil { return 4 } // array, so a DWORD as an indirect index
     switch m.Type {
@@ -60,7 +61,7 @@ func (m *TemplateMember) size(templates map[string]*Template) int {
         case "STRING": return 4 // a DWORD as an indirect index
         case "float":  return 4
         default:
-            // templates[m.Type] is guaranteed to succeed at this point and to not be recursive
+            // templates[m.Type] is guaranteed to succeed at this point and to not be infinitely recursive
             return templates[m.Type].size(templates)
     }
 }
@@ -70,11 +71,11 @@ func (m *TemplateMember) size(templates map[string]*Template) int {
 // A Template should be considered constant and read-only once instantiated, because a decoded object will need to hold
 // a reference to the Template used. The preferred way to identify which Template is associated with a decoded object
 // is to use the UUID not pointer equality because a template may be defined by either of the three methods listed
-// above. You can get a UUID of a built-in template easily e.g. TemplateAnimation.UUID.
+// above. You can get a UUID of a built-in template type easily e.g. TemplateAnimation.UUID.
 type Template struct {
     Name string
     UUID UUID_t
-    Mode byte // 'o'pen, 'c'losed, 'r'estricted
+    Mode byte // TemplateOpen, TemplateClosed, TemplateRestricted
     Members []TemplateMember
 }
 
@@ -89,13 +90,13 @@ func (t *Template) size(templates map[string]*Template) (acc int) {
 var TemplateAnimation = Template{
     Name: "Animation",
     UUID: MustHexToUUID("3D82AB4F-62DA-11cf-AB39-0020AF71E433"),
-    Mode: 'o', // open
+    Mode: TemplateOpen,
 }
 
 var TemplateAnimationKey = Template{
     Name: "AnimationKey",
     UUID: MustHexToUUID("10DD46A8-775B-11CF-8F52-0040333594A3"),
-    Mode: 'c', // closed
+    Mode: TemplateClosed,
     Members: []TemplateMember{
         {
             Name:       "keyType",
@@ -118,14 +119,14 @@ var TemplateAnimationKey = Template{
 var TemplateAnimationSet = Template{
     Name: "AnimationSet",
     UUID: MustHexToUUID("3D82AB50-62DA-11cf-AB39-0020AF71E433"),
-    Mode: 'r', // restricted to Animation objects (TODO)
+    Mode: TemplateRestricted,
 }
 
 // TemplateCoords2D is a DirectX (.x) file Template for a Coords2D object that contains a (u, v) component
 var TemplateCoords2D = Template{
     Name: "Coords2D",
     UUID: MustHexToUUID("F6F23F44-7686-11cf-8F52-0040333594A3"),
-    Mode: 'c', // closed
+    Mode: TemplateClosed,
     Members: []TemplateMember{
         {
             Name:       "u",
@@ -141,7 +142,7 @@ var TemplateCoords2D = Template{
 var TemplateFloatKeys = Template{
     Name: "FloatKeys",
     UUID: MustHexToUUID("10DD46A9-775B-11cf-8F52-0040333594A3"),
-    Mode: 'c', // closed
+    Mode: TemplateClosed,
     Members: []TemplateMember{
         {
             Name:       "nValues",
@@ -158,13 +159,13 @@ var TemplateFloatKeys = Template{
 var TemplateFrame = Template{
     Name: "Frame",
     UUID: MustHexToUUID("3D82AB46-62DA-11CF-AB39-0020AF71E433"),
-    Mode: 'o', // open
+    Mode: TemplateOpen,
 }
 
 var TemplateFrameTransformMatrix = Template{
     Name: "FrameTransformMatrix",
     UUID: MustHexToUUID("F6F23F41-7686-11cf-8F52-0040333594A3"),
-    Mode: 'c', // closed
+    Mode: TemplateClosed,
     Members: []TemplateMember{
         {
             Name:       "frameMatrix",
@@ -176,7 +177,7 @@ var TemplateFrameTransformMatrix = Template{
 var TemplateMatrix4x4 = Template{
     Name: "Matrix4x4",
     UUID: MustHexToUUID("F6F23F45-7686-11cf-8F52-0040333594A3"),
-    Mode: 'c', // closed
+    Mode: TemplateClosed,
     Members: []TemplateMember{
         {
             Name:       "matrix",
@@ -189,7 +190,7 @@ var TemplateMatrix4x4 = Template{
 var TemplateMesh = Template{
     Name: "Mesh",
     UUID: MustHexToUUID("3D82AB44-62DA-11CF-AB39-0020AF71E433"),
-    Mode: 'o', // open
+    Mode: TemplateOpen,
     Members: []TemplateMember{
         {
             Name:       "nVertices",
@@ -215,7 +216,7 @@ var TemplateMesh = Template{
 var TemplateMeshFace = Template{
     Name: "MeshFace",
     UUID: MustHexToUUID("3D82AB5F-62DA-11cf-AB39-0020AF71E433"),
-    Mode: 'c', // closed
+    Mode: TemplateClosed,
     Members: []TemplateMember{
         {
             Name:       "nFaceVertexIndices",
@@ -232,7 +233,7 @@ var TemplateMeshFace = Template{
 var TemplateMeshNormals = Template{
     Name: "MeshNormals",
     UUID: MustHexToUUID("F6F23F43-7686-11cf-8F52-0040333594A3"),
-    Mode: 'c', // closed
+    Mode: TemplateClosed,
     Members: []TemplateMember{
         {
             Name:       "nNormals",
@@ -258,7 +259,7 @@ var TemplateMeshNormals = Template{
 var TemplateMeshTextureCoords = Template{
     Name: "MeshTextureCoords",
     UUID: MustHexToUUID("F6F23F40-7686-11cf-8F52-0040333594A3"),
-    Mode: 'c', // closed
+    Mode: TemplateClosed,
     Members: []TemplateMember{
         {
             Name:       "nTextureCoords",
@@ -275,7 +276,7 @@ var TemplateMeshTextureCoords = Template{
 var TemplateTimedFloatKeys = Template{
     Name: "TimedFloatKeys",
     UUID: MustHexToUUID("F406B180-7B3B-11cf-8F52-0040333594A3"),
-    Mode: 'c', // closed
+    Mode: TemplateClosed,
     Members: []TemplateMember{
         {
             Name:       "time",
@@ -291,7 +292,7 @@ var TemplateTimedFloatKeys = Template{
 var TemplateVector = Template{
     Name: "Vector",
     UUID: MustHexToUUID("3D82AB5E-62DA-11cf-AB39-0020AF71E433"),
-    Mode: 'c', // closed
+    Mode: TemplateClosed,
     Members: []TemplateMember{
         {
             Name:       "x",

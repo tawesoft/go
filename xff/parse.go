@@ -6,6 +6,7 @@ import (
     "bufio"
     "fmt"
     "io"
+    "strconv"
 )
 
 type lexeme struct {
@@ -21,6 +22,7 @@ func (l *lexeme) String() string {
     return string(l.token)
 }
 
+// mustReadExpectedSymbol panics unless the expected symbol is consumed or on I/O error
 func mustReadExpectedSymbol(r io.ByteReader, expected byte, desc string) {
     var symbol, err = readSymbol(r)
     if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
@@ -30,6 +32,7 @@ func mustReadExpectedSymbol(r io.ByteReader, expected byte, desc string) {
     }
 }
 
+// mustReadSymbol reads a symbol but panics on I/O error
 func mustReadSymbol(r io.ByteReader) byte {
     var symbol, err = readSymbol(r)
     if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
@@ -37,6 +40,18 @@ func mustReadSymbol(r io.ByteReader) byte {
     return symbol
 }
 
+// mustAcceptSymbol returns true if the expected symbol is consumed, or false and the reader is not advanced.
+// Note "must" here means "must succeed without I/O error", not "must accept the symbol".
+func mustAcceptSymbol(r *bufio.Reader, expected byte) bool {
+    var symbol, err = readSymbol(r)
+    if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
+    if err != nil { panic(err) }
+    if symbol == expected { return true }
+    mustUnreadByte(r)
+    return false
+}
+
+// mustPeekSymbol looks at the next symbol and unwinds. It panics on I/O error.
 func mustPeekSymbol(r *bufio.Reader) byte {
     var symbol, err = readSymbol(r)
     if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
@@ -45,6 +60,7 @@ func mustPeekSymbol(r *bufio.Reader) byte {
     return symbol
 }
 
+// mustReadString panics on I/O error
 func mustReadString(r *bufio.Reader) string {
     var result, err = readString(r)
     if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
@@ -52,6 +68,7 @@ func mustReadString(r *bufio.Reader) string {
     return result
 }
 
+// mustReadAtom panics on I/O error
 func mustReadAtom(r *bufio.Reader) string {
     var word, err = readAtom(r)
     if err == io.EOF { panic(fmt.Errorf("unexpected EOF")) }
@@ -59,7 +76,29 @@ func mustReadAtom(r *bufio.Reader) string {
     return word
 }
 
-// mustUnreadByte should always succeed, because we're never rewinding more than a single byte
+// mustReadInt panics unless an atom can be read and parsed as an integer
+func mustReadInt(r *bufio.Reader, bits int) int64 {
+     value, err := strconv.ParseInt(mustReadAtom(r), 0, bits)
+     if err != nil { panic(fmt.Errorf("int decode error: %v", err)) }
+     return value
+}
+
+// mustReadUint panics unless an atom can be read and parsed as an unsigned integer
+func mustReadUint(r *bufio.Reader, bits int) uint64 {
+     value, err := strconv.ParseUint(mustReadAtom(r), 0, bits)
+     if err != nil { panic(fmt.Errorf("int decode error: %v", err)) }
+     return value
+}
+
+// mustReadFloat panics unless an atom can be read and parsed as an float
+func mustReadFloat(r *bufio.Reader, bits int) float64 {
+     value, err := strconv.ParseFloat(mustReadAtom(r), bits)
+     if err != nil { panic(fmt.Errorf("float decode error: %v", err)) }
+     return value
+}
+
+// mustUnreadByte should always succeed, because we're never rewinding more than a single byte. If it panics, that's
+// a bug with our program not a parse error
 func mustUnreadByte(r *bufio.Reader) {
     var err = r.UnreadByte()
     if err != nil { panic(fmt.Errorf("I/O rewind error: %s", err)) }

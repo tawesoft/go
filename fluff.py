@@ -743,8 +743,9 @@ templates and should be able to parse *every* well-formed DirectX (.x) file.
 There are a few features not yet implemented - not because they are difficult
 to implement, but because I can't find any real-world examples using that
 feature to test against. Things like object referencing by UIID instead of
-name, or the binary encoded DirectX .x file format. Send in a sample if you
-find something that doesn't work (and should) and it'll get fixed quickly!
+name, or the binary encoded DirectX .x file format, arrays of strings, or
+multidimensional arrays. Send in a sample if you find something that doesn't
+work (and should) and it'll get fixed quickly!
 
 This is free and open source software. It took about five days to write - so
 if you find this module useful enough that you use it in a commercial product then

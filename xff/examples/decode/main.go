@@ -137,7 +137,7 @@ var MyCustomTypeUUID = xff.MustHexToUUID("0123456789ABCDEF0123456789ABCDEF")
 var MyCustomType2 = xff.Template{
     Name: "MyCustomType2",
     UUID: xff.MustHexToUUID("FEDCBA9876543210FEDCBA9876543210"),
-    Mode: 'o', // open, can contain any child objects // TODO restricted template
+    Mode: xff.TemplateOpen, // can contain any type of child objects
     Members: []xff.TemplateMember{
         {
             Name:       "nKeys",
