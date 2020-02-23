@@ -26,23 +26,23 @@ func Decode(r io.Reader, templates []*Template) (file *File, err error) {
     var format, _ = decodeHeader(fp)
     if format != 't' { panic(fmt.Errorf("non-text formats not implemented (yet)")) }
     
-    // templates are replaced such that in-file templates are prioritised first, caller-supplied templates second,
-    // and default templates last.
-    var templatesByName = make(map[string]*Template)
-    for _, template := range defaultTemplates {
-        templatesByName[template.Name] = template
-    }
-    if templates != nil {
-        for _, template := range templates {
-            templatesByName[template.Name] = template
-        }
-    }
-    
     file = &File{
         Children: make([]Data, 0), // never nil
         ReferencesByName: make(map[string]*Data),
         ReferencesByUUID: make(map[UUID_t]*Data),
-        templatesByName: templatesByName,
+        templatesByName:  make(map[string]*Template),
+        templatesByUUID:  make(map[UUID_t]*Template),
+    }
+    
+    // templates are replaced such that in-file templates are prioritised first, caller-supplied templates second,
+    // and default templates last.
+    for _, template := range defaultTemplates {
+        file.registerTemplate(template)
+    }
+    if templates != nil {
+        for _, template := range templates {
+            file.registerTemplate(template)
+        }
     }
     
     for {
@@ -51,10 +51,10 @@ func Decode(r io.Reader, templates []*Template) (file *File, err error) {
         if err != nil { break }
     
         if word == "template" {
-            var t = decodeTemplate(fp, templatesByName)
-            templatesByName[t.Name] = t
+            var t = decodeTemplate(fp, file.templatesByName)
+            file.registerTemplate(t)
         } else {
-            var t, ok = templatesByName[word]
+            var t, ok = file.templatesByName[word]
             if !ok { panic(fmt.Errorf("unknown object type '%s'", word)) }
             file.appendChild(decodeObject(fp, file, t))
         }
@@ -230,7 +230,7 @@ func decodeObject(r *bufio.Reader, f *File, t *Template) *Data {
     }
     
     // Read members first
-    decodeMembers(r, data, data.Spec, 0, t.Members, f.templatesByName)
+    decodeMembers(r, data, data.Spec, 0, -1, t.Members, f.templatesByName)
     
     // Read additional data blocks up to closing '}'
     for {
@@ -256,24 +256,24 @@ func decodeObject(r *bufio.Reader, f *File, t *Template) *Data {
 
 // decodeMembers decodes values according to a template. `target` is where the data is written to; spec specifies how
 // the data is decoded. The spec need not be the target's spec e.g. when a field's type is itself a Template.
-func decodeMembers(r *bufio.Reader, target *Data, spec *Template, suboffset int, members []TemplateMember, templates map[string]*Template) {
+func decodeMembers(r *bufio.Reader, target *Data, spec *Template, suboffset int, arrayIndex int, members []TemplateMember, templates map[string]*Template) {
     for _, member := range members {
-        decodeMemberValue(r, target, spec, suboffset, &member, templates)
+        decodeMemberValue(r, target, spec, suboffset, arrayIndex, &member, templates)
     }
 }
 
 // decodeMemberValue decodes a value according to a template member, possibly an array of such
-func decodeMemberValue(r *bufio.Reader, target *Data, spec *Template, suboffset int, member *TemplateMember, templates map[string]*Template) {
+func decodeMemberValue(r *bufio.Reader, target *Data, spec *Template, suboffset int, arrayIndex int, member *TemplateMember, templates map[string]*Template) {
     
     if member.Dimensions == nil {
-        decodeSingleValue(r, target, suboffset, member, -1, templates)
+        decodeSingleValue(r, target, member, arrayIndex, templates)
         
     } else if len(member.Dimensions) == 1 {
         // read a 1D array
         
         var ln, err = strconv.ParseInt(member.Dimensions[0], 10, 32)
         if err != nil {
-            // array of variable length
+            // array of variable length so look up that field
             var len32 uint32
             
             var offset, size int
@@ -290,10 +290,10 @@ func decodeMemberValue(r *bufio.Reader, target *Data, spec *Template, suboffset 
             ln = int64(len32)
         }
         
-        var arrayIndex = target.appendArray()
+        arrayIndex = target.appendArray(arrayIndex)
         
         for i := 0; i < int(ln); i++ {
-            decodeSingleValue(r, target, suboffset, member, arrayIndex, templates)
+            decodeSingleValue(r, target, member, arrayIndex, templates)
             
             if i + 1 < int(ln) {
                 mustReadExpectedSymbol(r, ',', "array item separator")
@@ -309,7 +309,7 @@ func decodeMemberValue(r *bufio.Reader, target *Data, spec *Template, suboffset 
 }
 
 // decodeMemberValue decodes a value according to a template member, but its not an array
-func decodeSingleValue(r *bufio.Reader, data *Data, suboffset int, member *TemplateMember, arrayIndex int, templates map[string]*Template) {
+func decodeSingleValue(r *bufio.Reader, data *Data, member *TemplateMember, arrayIndex int, templates map[string]*Template) {
     
     if member.isPrimitiveType() {
         switch member.Type {
@@ -337,6 +337,6 @@ func decodeSingleValue(r *bufio.Reader, data *Data, suboffset int, member *Templ
 
         var spec = templates[member.Type] // guaranteed to work at this point
         
-        decodeMembers(r, data, spec, len(data.Bytes), spec.Members, templates)
+        decodeMembers(r, data, spec, len(data.Bytes), arrayIndex, spec.Members, templates)
     }
 }

@@ -744,8 +744,8 @@ There are a few features not yet implemented - not because they are difficult
 to implement, but because I can't find any real-world examples using that
 feature to test against. Things like object referencing by UIID instead of
 name, or the binary encoded DirectX .x file format, arrays of strings, or
-multidimensional arrays. Send in a sample if you find something that doesn't
-work (and should) and it'll get fixed quickly!
+multidimensional arrays. If you find something that doesn't work (and should)
+then send in a sample and it'll get fixed quickly!
 
 This is free and open source software. It took six days to write
 the first production-ready version - so if you find this module useful enough

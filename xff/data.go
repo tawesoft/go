@@ -46,10 +46,16 @@ type File struct {
     // floatSize (32 or 64) is used in the binary encoding
     
     templatesByName map[string]*Template
+    templatesByUUID map[UUID_t]*Template
 }
 
 func (f *File) appendChild(data *Data) {
     f.Children = append(f.Children, *data)
+}
+
+func (f *File) registerTemplate(template *Template) {
+    f.templatesByName[template.Name] = template
+    f.templatesByUUID[template.UUID] = template
 }
 
 // Data is a decoded object in a DirectX (.x) file format. Each object has a type (DirectX calls this a Template),
@@ -101,6 +107,7 @@ func (d *Data) appendReference(name string) {
 // TODO get this on a template, not the data!
 // getNamedField returns the index (e.g. "the 2nd field"; start counting at zero), offset (bytes) into the packed data,
 // and size (bytes) in the packed data of a data object according to a field of a certain name.
+/*
 func (f *File) getNamedField(data *Data, fieldName string, fieldType string) (index int, offset int, size int, err error) {
     
     for i := 0; i < len(data.Spec.Members); i++ {
@@ -119,6 +126,191 @@ func (f *File) getNamedField(data *Data, fieldName string, fieldType string) (in
     }
     
     return 0, 0, 0, fmt.Errorf("named field %s of object %s not found", fieldName, data.SpecName())
+}
+*/
+
+// ArrayAccessor is an opaque type that is used to extract array values out of a certain field of any Data object of a
+// given Template type in a given File.
+type ArrayAccessor struct {
+    spec *TemplateMember
+    index int // into arrays array
+}
+
+// FieldAccessor is an opaque type that is used to extract values out of a certain field of any Data object of a given
+// Template type in a given File.
+type FieldAccessor struct {
+    spec *TemplateMember
+    offset int // into bytes array
+}
+
+func (a FieldAccessor) MustGetSTRING(data *Data) string {
+    var result, err = a.GetSTRING(data)
+    if err != nil { panic(err) }
+    return result
+}
+
+func (a FieldAccessor) GetSTRING(data *Data) (string, error) {
+    if a.spec.Type != "STRING" {
+        return "", fmt.Errorf("type mismatch: accessor for field %s is type %s", a.spec.Name, a.spec.Type)
+    }
+    var index = binary.LittleEndian.Uint32(data.Bytes[a.offset : a.offset + 4])
+    return data.Strings[index], nil
+}
+
+func (a FieldAccessor) MustGetDWORD(data *Data) uint32 {
+    var result, err = a.GetDWORD(data)
+    if err != nil { panic(err) }
+    return result
+}
+
+func (a FieldAccessor) GetDWORD(data *Data) (uint32, error) {
+    if a.spec.Type != "DWORD" {
+        return 0, fmt.Errorf("type mismatch: accessor for field %s is type %s", a.spec.Name, a.spec.Type)
+    }
+    return binary.LittleEndian.Uint32(data.Bytes[a.offset : a.offset + 4]), nil
+}
+
+func (a FieldAccessor) MustGetFloat(data *Data) float32 {
+    var result, err = a.GetFloat(data)
+    if err != nil { panic(err) }
+    return result
+}
+
+func (a FieldAccessor) GetFloat(data *Data) (float32, error) {
+    if a.spec.Type != "float" {
+        return 0, fmt.Errorf("type mismatch: accessor for field %s is type %s", a.spec.Name, a.spec.Type)
+    }
+    return math.Float32frombits(binary.LittleEndian.Uint32(data.Bytes[a.offset : a.offset + 4])), nil
+}
+
+func (a ArrayAccessor) MustGetDWORD(data *Data, index int) uint32 {
+    var result, err = a.GetDWORD(data, index)
+    if err != nil { panic(err) }
+    return result
+}
+
+func (a ArrayAccessor) GetDWORD(data *Data, index int) (uint32, error) {
+    if a.spec.Type != "DWORD" {
+        //return 0, fmt.Errorf("type mismatch: accessor for field %s is type %s", a.spec.Name, a.spec.Type)
+    }
+    var offset = index * 4
+    return binary.LittleEndian.Uint32(data.ArrayData[a.index][offset : offset + 4]), nil
+}
+
+func (a ArrayAccessor) MustGetFloat(data *Data, index int) float32 {
+    var result, err = a.GetFloat(data, index)
+    if err != nil { panic(err) }
+    return result
+}
+
+func (a ArrayAccessor) GetFloat(data *Data, index int) (float32, error) {
+    if a.spec.Type != "float" {
+        //return 0, fmt.Errorf("type mismatch: accessor for field %s is type %s (not float)", a.spec.Name, a.spec.Type)
+    }
+    var offset = index * 4
+    return math.Float32frombits(binary.LittleEndian.Uint32(data.ArrayData[a.index][offset : offset + 4])), nil
+}
+
+func (a ArrayAccessor) MustGetArray(data *Data, index int) ArrayAccessor {
+    var result, err = a.GetArray(data, index)
+    if err != nil { panic(err) }
+    return result
+}
+
+// GetArray returns an accessor to iterate over the values of an array field
+func (a ArrayAccessor) GetArray(data *Data, index int) (ArrayAccessor, error) {
+    if a.spec.Dimensions == nil {
+        return ArrayAccessor{}, fmt.Errorf("type mismatch: accessor for field %s is not an array", a.spec.Name)
+    }
+    var offset = index * 4
+    
+    var index2 = binary.LittleEndian.Uint32(data.ArrayData[a.index][offset : offset + 4])
+    return ArrayAccessor{a.spec, int(index2)}, nil
+}
+
+func (a FieldAccessor) MustGetDWORDArray(data *Data, items int) []uint32 {
+    var result, err = a.GetDWORDArray(data, items)
+    if err != nil { panic(err) }
+    return result
+}
+
+// TODO use GetDWORDS on ArrayAccessor instead
+func (a FieldAccessor) GetDWORDArray(data *Data, items int) ([]uint32, error) {
+    var arrayAccessor, err = a.GetArray(data)
+    if err != nil { return nil, err }
+    
+    var result = make([]uint32, items)
+    
+    for i := 0; i < items; i++ {
+        result[i], err = arrayAccessor.GetDWORD(data, i)
+        if err != nil { return nil, err }
+    }
+    
+    return result[:], nil
+}
+
+func (a FieldAccessor) MustGetFloatArray(data *Data, items int) []float32 {
+    var result, err = a.GetFloatArray(data, items)
+    if err != nil { panic(err) }
+    return result
+}
+
+// TODO use GetFloats on ArrayAccessor instead
+func (a FieldAccessor) GetFloatArray(data *Data, items int) ([]float32, error) {
+    var arrayAccessor, err = a.GetArray(data)
+    if err != nil { return nil, err }
+    
+    var result = make([]float32, items)
+    
+    for i := 0; i < items; i++ {
+        result[i], err = arrayAccessor.GetFloat(data, i)
+        if err != nil { return nil, err }
+    }
+    
+    return result[:], nil
+}
+
+func (a FieldAccessor) MustGetArray(data *Data) ArrayAccessor {
+    var accessor, err = a.GetArray(data)
+    if err != nil { panic(err) }
+    return accessor
+}
+
+// GetArray returns an accessor to iterate over the values of an array field
+func (a FieldAccessor) GetArray(data *Data) (ArrayAccessor, error) {
+    if a.spec.Dimensions == nil {
+        return ArrayAccessor{}, fmt.Errorf("type mismatch: field %s is not an array", a.spec.Name)
+    }
+    var index = binary.LittleEndian.Uint32(data.Bytes[a.offset : a.offset + 4])
+    return ArrayAccessor{a.spec, int(index)}, nil
+}
+
+// MustGetFieldAccessor is like GetFieldAccessor but it panics on error
+func (f *File) MustGetFieldAccessor(templateUUID UUID_t, fieldName string) FieldAccessor {
+    var accessor, err = f.GetFieldAccessor(templateUUID, fieldName)
+    if err != nil { panic(err) }
+    return accessor
+}
+
+// GetFieldAccessor returns an opaque type used to extract values out of a certain field of any Data object of a given
+// Template type in a given File.
+func (f *File) GetFieldAccessor(templateUUID UUID_t, fieldName string) (FieldAccessor, error) {
+    var offset, size int
+    
+    var spec, ok = f.templatesByUUID[templateUUID]
+    if !ok { return FieldAccessor{}, fmt.Errorf("template not found with UUID %v", templateUUID) }
+    
+    for i := 0; i < len(spec.Members); i++ {
+        offset += size
+        var member = spec.Members[i]
+        size = spec.Members[i].size(f.templatesByName)
+        
+        if member.Name == fieldName {
+            return FieldAccessor{&member, offset}, nil
+        }
+    }
+    
+    return FieldAccessor{}, fmt.Errorf("named field %s of template %s not found", fieldName, spec.Name)
 }
 
 
@@ -312,9 +504,9 @@ func (b *Data) appendString(value string, arrayIndex int) {
     b.Strings = append(b.Strings, value)
 }
 
-func (b *Data) appendArray() (index int) {
+func (b *Data) appendArray(arrayIndex int) (index int) {
     b.ArrayData = append(b.ArrayData, nil)
     var length = len(b.ArrayData)
-    b.appendDWORD(uint32(length - 1), -1)
+    b.appendDWORD(uint32(length - 1), arrayIndex)
     return length - 1
 }
