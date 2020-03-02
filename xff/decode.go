@@ -266,6 +266,9 @@ func decodeMembers(r *bufio.Reader, target *Data, spec *Template, suboffset int,
 func decodeMemberValue(r *bufio.Reader, target *Data, spec *Template, suboffset int, arrayIndex int, member *TemplateMember, templates map[string]*Template) {
     
     if member.Dimensions == nil {
+        // FIXME for some reason arrayIndex here breaks parsing of AnimationKey object types
+        // FIXME probably because the variable length keylookup below breaks
+        // FIXME which should be fixed by the new get (sub)field thing planned
         decodeSingleValue(r, target, member, arrayIndex, templates)
         
     } else if len(member.Dimensions) == 1 {

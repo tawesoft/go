@@ -15,6 +15,24 @@ go get -u tawesoft.co.uk/go
 Contents
 --------
 
+### atom: integer codes for strings
+
+`import "tawesoft.co.uk/go/atom"`
+
+Package atom defines an interface and simple implementations for uniquely mapping any set of known-constant strings to
+a set of integers for efficient communication and equality operations.
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_atom] ∙ [docs][docs_atom] ∙ [src][src_atom] | [MIT-0][copy_atom] | ✔ yes |
+
+[home_atom]: https://tawesoft.co.uk/go/atom
+[src_atom]:  https://github.com/tawesoft/go/tree/master/atom
+[docs_atom]: https://godoc.org/tawesoft.co.uk/go/atom
+[copy_atom]: https://github.com/tawesoft/go/tree/master/atom/_COPYING.md
+
+---
+
 ### dialog: simple cross-platform messagebox
 
 `import "tawesoft.co.uk/go/dialog"`

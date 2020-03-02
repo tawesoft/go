@@ -9,6 +9,7 @@ https://tawesoft.co.uk/go
 package tawesoft
 
 import (
+    _ "tawesoft.co.uk/go/atom"
     _ "tawesoft.co.uk/go/dialog"
     _ "tawesoft.co.uk/go/email"
     _ "tawesoft.co.uk/go/glcaps"
