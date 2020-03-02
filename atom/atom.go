@@ -25,7 +25,9 @@ Example:
         var atom1 = atoms.Get("Atom One")
         var atom2 = atoms.Get("Atom Two")
         
-        if atom1 == atom2 { /* do something ... */ }
+        if atom1 == atom2 {
+            // do something ...
+        }
     }
 
 For license information, documentation, source code, support, links, etc. please see
