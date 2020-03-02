@@ -28,6 +28,7 @@ type simpleAtoms struct {
     atomToName map[Atom]string
 }
 
+// SimpleAtoms returns an implementation of the Atoms interface
 func SimpleAtoms() Atoms {
     return &simpleAtoms{
         index:      0,
