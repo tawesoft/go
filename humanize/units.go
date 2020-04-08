@@ -63,3 +63,9 @@ const (
     PrefixExbi = PrefixPebi * 1024
 )
 
+// Optionally reads a space separating a number from a unit (e.g. "1 KiB") and if found, returns 1 to advance the
+// input stream by one rune, or 0 to keep it in the same place.
+func acceptUnitSeparator(format *Format, text string) int {
+    // https://physics.nist.gov/cuu/Units/checklist.html
+    if (len(text) > 0) && (text[0] == ' ') { return 1; } else { return 0; }
+}

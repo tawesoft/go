@@ -15,7 +15,7 @@ func TestFormatBytes(t *testing.T) {
     type test struct {
         value int64
         expected string
-        fn func(formatter *Formatter, value int64) string
+        fn func(format *Format, sigfigs int, value int64) string
     }
     
     var tests = []test{
@@ -41,7 +41,7 @@ func TestFormatBytes(t *testing.T) {
     }
     
     for _, i := range tests {
-        var result = i.fn(nil, i.value)
+        var result = i.fn(nil, 2, i.value)
         if result != i.expected {
             t.Errorf("FormatBytes(%d, %s): got %s but expected %s", i.value, GetFunctionName(i.fn), result, i.expected)
         }

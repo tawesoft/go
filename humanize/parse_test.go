@@ -20,7 +20,6 @@ func TestAcceptInteger(t *testing.T) {
         {"123",       3,  123},
         {"321",       3,  321},
         {"1,000,000", 9,  1e6},
-        {"1 000 000", 9,  1e6},
         {"123foo",    3,  123},
         {"321foo",    3,  321},
         {"-1",        2,   -1},
@@ -33,7 +32,7 @@ func TestAcceptInteger(t *testing.T) {
     }
     
     for _, i := range tests {
-        var result, length = AcceptInteger(i.text)
+        var result, length = AcceptInteger(nil, i.text)
         if result != i.expectedValue || length != i.expectedLength {
             t.Errorf("AcceptInteger(%s): got (%d, %d) but expected (%d, %d)", i.text, result, length, i.expectedValue, i.expectedLength)
         }
@@ -79,16 +78,21 @@ func TestParseBytes(t *testing.T) {
         {"1B",                   1, false},
         {"1 B",                  1, false},
         {"128B",               128, false},
+        {"128 B",              128, false},
         {"128k",           128_000, false},
         {"128kB",          128_000, false},
+        {"128 kB",         128_000, false},
         {"128Ki",         128*1024, false},
+        {"128 Ki",        128*1024, false},
         {"128KiB",        128*1024, false},
+        {"128 KiB",       128*1024, false},
+        {"1,000,000 B",        1e6, false},
         {"1GiB",    1024*1024*1024, false},
         {"-1GiB",  -1024*1024*1024, false},
     }
     
     for _, i := range tests {
-        var result, err = ParseBytes(i.text)
+        var result, err = ParseBytes(nil, i.text)
         if err != nil && i.err == false {
             t.Errorf("ParseBytes(%s): expected %d but got error: %v", i.text, i.expected, err)
         } else if err != nil && i.err == true {

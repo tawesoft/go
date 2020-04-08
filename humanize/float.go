@@ -5,25 +5,22 @@ import (
     "math"
 )
 
-func formatPureFloat(formatter *Formatter, suffix string, value float64) string {
+func formatPureFloat(format *Format, sigfigs int, suffix string, value float64) string {
     var i, f = math.Modf(value); f = math.Abs(f)
     var rounder = math.Copysign(0.5, value)
     
-    if value == 0.0 {
-        return fmt.Sprintf("0%s%s", formatter.UnitSeparator, suffix)
-    }
+    if value == 0.0 { return fmt.Sprintf("0 %s", suffix) }
     
-    if (formatter.DecimalPlaces < 1) || f == 0.0 {
+    if (sigfigs < 1) || f == 0.0 {
         // || (math.Abs(f) <= math.Pow(0.1, float64(formatter.SignificantFigures - 1))) {
-        return fmt.Sprintf("%d%s%s", int64(i+rounder), formatter.UnitSeparator, suffix)
+        return fmt.Sprintf("%d %s", int64(i+rounder), suffix)
     }
     
-    return fmt.Sprintf("%d%s%0*d%s%s",
+    return fmt.Sprintf("%d%c%0*d %s",
         int64(i+rounder),
-        formatter.DecimalSeparator,
-        formatter.DecimalPlaces,
-        int64((f*math.Pow10(formatter.DecimalPlaces))+0.5),
-        formatter.UnitSeparator,
+        format.DecimalSeparator,
+        sigfigs,
+        int64((f*math.Pow10(sigfigs))+0.5),
         suffix)
 }
 
@@ -51,8 +48,8 @@ var mappingsIEC = []mappingSI{
     { 4, "Ki", PrefixKibi},
 }
 
-func formatFloat(formatter *Formatter, mappings []mappingSI, value float64) string {
-    if formatter == nil { formatter = &DefaultFormatter }
+func formatFloat(format *Format, mappings []mappingSI, sigfigs int, value float64) string {
+    if format == nil { format = &SimpleFormat }
     
     if math.IsInf(value, 1) {
         return "Infinity"
@@ -61,7 +58,7 @@ func formatFloat(formatter *Formatter, mappings []mappingSI, value float64) stri
     } else if math.IsNaN(value) {
         return "NaN"
     } else if math.Abs(value) < 1.0 {
-        return formatPureFloat(formatter, "", value) // TODO small floats
+        return formatPureFloat(format, sigfigs, "", value)
     } else {
         var places = int(math.Log10(math.Abs(value))) + 1 // e.g. for 1500, 4
         
@@ -76,14 +73,14 @@ func formatFloat(formatter *Formatter, mappings []mappingSI, value float64) stri
             }
         }
         
-        return formatPureFloat(formatter, unit, value / divisor)
+        return formatPureFloat(format, sigfigs, unit, value / divisor)
     }
 }
 
-func FormatFloat(formatter *Formatter, value float64) string {
-    return formatFloat(formatter, mappingsSI, value)
+func FormatFloatSI(formatter *Format, sigfigs int, value float64) string {
+    return formatFloat(formatter, mappingsSI, sigfigs, value)
 }
 
-func FormatFloatIEC(formatter *Formatter, value float64) string {
-    return formatFloat(formatter, mappingsIEC, value)
+func FormatFloatIEC(formatter *Format, sigfigs int, value float64) string {
+    return formatFloat(formatter, mappingsIEC, sigfigs, value)
 }

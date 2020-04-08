@@ -7,7 +7,7 @@ import (
 
 func BenchmarkTawesoftFormatBytes(b *testing.B) {
     for i := 0; i < b.N; i++ {
-        value := FormatBytesIEC(nil, 42*1024*1024)
+        value := FormatBytesIEC(nil, 0, 42*1024*1024)
         if value != "42 MiB" { panic("assertion failed") }
     }
 }
@@ -21,7 +21,7 @@ func BenchmarkDustinFormatBytes(b *testing.B) {
 
 func BenchmarkTawesoftParseBytes(b *testing.B) {
     for i := 0; i < b.N; i++ {
-        value, err := ParseBytes("42 MiB")
+        value, err := ParseBytes(nil, "42 MiB")
         if value != 44040192 && err != nil { panic("assertion failed") }
     }
 }
