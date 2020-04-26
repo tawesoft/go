@@ -2,12 +2,13 @@ package humanize
 
 // https://physics.nist.gov/cuu/Units/checklist.html
 
-type Format struct {
-    // GroupSeparator separates groups of digits e.g. thousands
-    GroupSeparator     rune // e.g. `1000000 => 1<-GroupSeparator->000<-GroupSeparator->000 => "1,000,000"`
+// NumberFormat describes how numbers are formatted for a given locale (e.g. English) or encoding (e.g. Unicode).
+type NumberFormat struct {
+    // GroupSeparator separates groups of digits e.g. thousands when formatting a number
+    GroupSeparator rune // e.g. `1000000 => 1<-GroupSeparator->000<-GroupSeparator->000 => "1,000,000"`
     
     // DecimalSeparator separates integer and fractional parts of a decimal number
-    DecimalSeparator   rune // e.g. `1.23 => 1<--DecimalSeparator-->23 => "1.23"`
+    DecimalSeparator rune // e.g. `1.23 => 1<--DecimalSeparator-->23 => "1.23"`
     
     // Group digits is how many digits to group by e.g. 3 for thousands
     GroupDigits int // e.g. for 3, `1000000 => "1,000,000"`
@@ -24,21 +25,51 @@ type Format struct {
     Grouper func(index int, len int) bool
 }
 
-var SimpleFormat = Format{
+// EnglishAsciiNumberFormat is a default number format for an English-style locale in an ASCII environment.
+//
+// Example: `1,234,567.123`
+var EnglishAsciiNumberFormat = NumberFormat{
     GroupSeparator:   ',',
     DecimalSeparator: '.',
     GroupDigits:      3,
     GroupMinDigits:   5,
 }
 
-var UnicodeFormat = Format{
+// EnglishUnicodeNumberFormat is a default SI-style number format for an English-style locale in a Unicode environment.
+//
+// Example: `1 234 567.123`
+var EnglishUnicodeNumberFormat = NumberFormat{
     GroupSeparator:   '\u2009', // thin Space
     DecimalSeparator: '.',
     GroupDigits:      3,
     GroupMinDigits:   5,
 }
 
-var IndianFormat = Format{
+// FrenchAsciiNumberFormat is a default number format for a French-style locale in an ASCII environment.
+//
+// Example: `1 234 567.123`
+var FrenchAsciiNumberFormat = NumberFormat{
+    GroupSeparator:   ' ',
+    DecimalSeparator: ',',
+    GroupDigits:      3,
+    GroupMinDigits:   5,
+}
+
+// FrenchUnicodeNumberFormat is a default SI-style number format for a French-style locale in a Unicode environment.
+//
+// Example: `1 234 567,123`
+var FrenchUnicodeNumberFormat = NumberFormat{
+    GroupSeparator:   '\u2009', // thin Space
+    DecimalSeparator: ',',
+    GroupDigits:      3,
+    GroupMinDigits:   5,
+}
+
+// IndianNumberFormat is a number format that implements lakh and crore digit grouping. It is suitable for both
+// ASCII and Unicode environments.
+//
+// Examples: `1,23,45,678.123`, `1,000,00,00,000,00,00,000.123`.
+var IndianNumberFormat = NumberFormat{
     GroupSeparator:   ',',
     DecimalSeparator: '.',
     Grouper: func(index int, len int) bool {
@@ -61,3 +92,6 @@ var IndianFormat = Format{
         return (remainder == 0) || (remainder == 3) || (remainder == 5)
     },
 }
+
+// defaultNumberFormat is used internally as a fall-back when a nil format is specified.
+var defaultNumberFormat = EnglishAsciiNumberFormat

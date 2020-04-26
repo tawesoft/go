@@ -7,10 +7,10 @@ import (
 // AcceptInteger parses as much of an integer number as possible, ignoring the format.GroupSeparator. It returns a
 // 2 tuple: the value of the parsed integer, and the length of the characters successfully parsed. For example,
 // the string "1,000 M" returns (1000, 5) and the string "foo" returns (0, 0).
-func AcceptInteger(format *Format, s string) (value int64, length int) {
+func AcceptInteger(format *NumberFormat, s string) (value int64, length int) {
     var accu int64
     
-    if format == nil { format = &SimpleFormat }
+    if format == nil { format = &defaultNumberFormat }
     
     if len(s) == 0 { return 0, 0 }
     
@@ -71,7 +71,7 @@ func AcceptIntegerUnitPrefix(s string) (quantity int64, length int) {
 // (such as "k"). For example the number "1k" is parsed as the integer 1,000. If found, it returns a 2 tuple: the
 // normalised quantity, and the length of the characters parsed (e.g. in the case of "1k" this is 2). If not found,
 // length is zero and the quantity is zero.
-func ParseIntegerPartial(format *Format, text string) (int64, int) {
+func ParseIntegerPartial(format *NumberFormat, text string) (int64, int) {
     
     // e.g. 1,000
     var value, ilength = AcceptInteger(format, text)
@@ -87,7 +87,7 @@ func ParseIntegerPartial(format *Format, text string) (int64, int) {
 
 // ParseInteger works like ParseIntegerPartial, except the entire string must be successfully parsed: otherwise an
 // error is returned.
-func ParseInteger(format *Format, text string) (int64, error) {
+func ParseInteger(format *NumberFormat, text string) (int64, error) {
     
     var value, length = ParseIntegerPartial(format, text)
     
@@ -99,16 +99,18 @@ func ParseInteger(format *Format, text string) (int64, error) {
 }
 
 // FormatInteger returns a value such as "1,234,567"
-/*func FormatInteger(format *Format, value int64) string {
+/*func FormatInteger(format *NumberFormat, value int64) string {
     return FormatFloat(format, float64(value))
 }*/
 
-// FormatIntegerSI returns a value such as "1.2 M"
-func FormatIntegerSI(format *Format, sigfigs int, value int64) string {
+// FormatIntegerSI returns a value such as "1.2 M". Sigfigs is a minimum hint: numbers to the left of the decimal
+// point will use full precision e.g. "123 M".
+func FormatIntegerSI(format *NumberFormat, sigfigs int, value int64) string {
     return FormatFloatSI(format, sigfigs, float64(value))
 }
 
-// FormatIntegerIEC returns a value such as "1.2 Mi"
-func FormatIntegerIEC(format *Format, sigfigs int, value int64) string {
+// FormatIntegerIEC returns a value such as "1.2 Mi". Sigfigs is a minimum hint: numbers to the left of the decimal
+// // point will use full precision e.g. "123 Mi".
+func FormatIntegerIEC(format *NumberFormat, sigfigs int, value int64) string {
     return FormatFloatIEC(format, sigfigs, float64(value))
 }

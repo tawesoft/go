@@ -6,6 +6,11 @@ Package humanize implements lightweight human-readable numbers for Go.
 
 Why use this package?
 
+* Much more efficient than the leading package (parse input about 5x faster, fewer memory allocations)
+
+* Very flexible formatting and internationalisation means better numbers for your humans e.g.
+this package even supports the Indian System of Numeration for lakh and crore digit grouping. 
+
 Compare tawesoft/go/humanize vs dustin/go-humanize: Tawesoft's parses input about 5 times faster with fewer memory
 allocations, and formats output about 25% quicker than dustin's. But dustin's is so far more complete, older, has a
 stable API, and has been tested by more people.

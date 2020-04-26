@@ -49,6 +49,7 @@ class Module:
     exampleFiles: List[str] = field(default_factory=list)
     seeAlso:      List[str] = field(default_factory=list)
     stable:       bool = True
+    enabled:      bool = True
 
     def name(self):
         return os.path.basename(self.id)
@@ -775,6 +776,7 @@ func main() {
 
     Module(
         id="xff",
+        enabled=False,
         desc=ModuleDesc(
             short="DirectX (.x) file format decoder",
             long="""
@@ -872,8 +874,8 @@ Go image manipulation.
 
 ]
 
+catalog = list(filter(lambda x: x.enabled, catalog))
 catalog.sort(key=lambda x: x.id)
-
 
 run_many(
     make_base_html,

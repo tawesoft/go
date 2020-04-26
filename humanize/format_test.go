@@ -15,7 +15,7 @@ func TestFormatBytes(t *testing.T) {
     type test struct {
         value int64
         expected string
-        fn func(format *Format, sigfigs int, value int64) string
+        fn func(format *NumberFormat, sigfigs int, value int64) string
     }
     
     var tests = []test{
