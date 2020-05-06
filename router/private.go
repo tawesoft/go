@@ -223,7 +223,7 @@ func (router *Router) match(method string, path string, current *Route, params *
     match := current.match(component)
     
     if match && current.Key != "" {
-        if params == nil { *params = make(map[string]string) }
+        if *params == nil { *params = make(map[string]string) }
         (*params)[current.Key] = component
     }
     

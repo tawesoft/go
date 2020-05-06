@@ -213,7 +213,7 @@ func TestRouterMatching(t *testing.T) {
             {Name: "Bar", Pattern: "bar", Methods: "GET, POST"},
         }},
         {Name: "Users", Pattern: "users", Children: []Route{
-            {Name: "User By ID", Pattern: regexp.MustCompile(`^\d+$`), Children: []Route{
+            {Name: "User By ID", Key: "user-id", Pattern: regexp.MustCompile(`^\d+$`), Children: []Route{
                 {Name: "User Profile", Pattern: "profile"},
             }},
             {Name: "Me", Pattern: "me", Children: []Route{
@@ -252,6 +252,15 @@ func TestRouterMatching(t *testing.T) {
     match = router.Match("GET", "/foo")
     if match == nil || match.Route.Name != "Foo" {
         t.Errorf("incorrect match for GET /foo: %+v", match)
+    }
+    
+    // Check match.Value works
+    match = router.Match("GET", "/users/123/profile")
+    if match == nil || match.Route.Name != "User Profile" {
+        t.Errorf("incorrect match for GET /users/123/profile: %+v", match)
+    }
+    if match != nil && match.Value("user-id") != "123" && len(match.params) != 1 {
+        t.Errorf("incorrect match params for GET /users/123/profile: %v", match.params)
     }
     
     for k, v := range(matches) {
