@@ -3,6 +3,8 @@ package router
 import (
     "fmt"
     "net/http"
+    "regexp"
+    "strings"
 )
 
 // Router is a general purpose router of a HTTP method (like "GET") and path (like "/foo/bar") to a tree of
@@ -82,15 +84,14 @@ type Match struct {
     // Route is the route picked, or nil if no matching route was found.
     Route *Route
     
-    // Params is a mapping from each specified Key of a chain of routes to each matching path component, e.g.
-    // the path "/user/123" might match a route with pattern "user" and child route with pattern regexp.Compile(`\d+`)
-    // and key "userId". Params would then be the map {"userId": "123"}
-    Params map[string]string
+    // mapping of route keys => path parameters; may be nil
+    params map[string]string
 }
 
-// Value returns a Match parameter by key
+// Value returns a a parsed path parameter (e.g. "/user/123/profile") identified by a Route Key.
 func (match Match) Value(key string) string {
-    return match.Params[key]
+    if match.params == nil { return "" }
+    return match.params[key]
 }
 
 // Creates a new router with DefaultMethods set to GET
@@ -100,7 +101,7 @@ func New(root *Route) (*Router, error) {
     router.DefaultMethods = "GET"
     
     router.root = root
-    sortRoutes(router.root.Children)
+    sortRoutes(router.root.Children) // note, must be done first!
     
     routesByName, err := scanRouteNames(router.root)
     if err != nil { return nil, err }
@@ -120,9 +121,9 @@ func (router *Router) MatchHttpRequest(r *http.Request) *Match {
 // Match attempts to match a method (e.g. a HTTP method like "GET") and path (e.g. "/foo/bar") to a route in
 // a router's tree of routes. In the event that there is no match, returns nil.
 func (router *Router) Match(method string, path string) *Match {
-    params := make(map[string]string)
+    var params map[string]string
     
-    route := router.match(method, path, router.root, params)
+    route := router.match(method, path, router.root, &params)
     if route == nil { return nil }
     
     if !route.matchMethod(method, router.DefaultMethods) { return nil }
@@ -135,15 +136,42 @@ func (router *Router) Parent(route *Route) *Route {
     return router.parents[route]
 }
 
-// Format creates a URL for a route - the opposite of routing. Any regexp.Regexp patterns are replaced using the
-// route's Key as a key into the provided args map.
-func (router *Router) Format(route *Route, args map[string]string) (string, error) {
-    return "/#TODO", nil
+// Format creates a URL for a route - the opposite of routing. Any regexp.Regexp patterns are replaced using
+// each arg in sequence.
+func (router *Router) Format(route *Route, args ... string) (string, error) {
+    components := make([]string, 0)
+    current := route
+    index := len(args) - 1
+    
+    for current != nil {
+        
+        switch v := current.Pattern.(type) {
+            case nil:
+                components = append(components, "")
+            case string:
+                components = append(components, v)
+            case *regexp.Regexp:
+                if index < 0 {
+                    return "", fmt.Errorf("not enough arguments to format path")
+                }
+                components = append(components, args[index])
+                index--
+            default:
+                panic(fmt.Errorf("invalid Route Pattern type %T", v))
+        }
+        
+        current = router.Parent(current)
+    }
+    
+    //fmt.Println(components)
+    reverseStringList(components...)
+    
+    return strings.Join(components, "/"), nil
 }
 
 // MustFormat is like Format, but panics on error.
-func (router *Router) MustFormat(route *Route, args map[string]string) string {
-    result, err := router.Format(route, args)
+func (router *Router) MustFormat(route *Route, args ... string) string {
+    result, err := router.Format(route, args...)
     if err != nil {
         panic(fmt.Errorf("unable to format a route: %v", err))
     }

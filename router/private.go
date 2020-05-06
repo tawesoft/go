@@ -9,8 +9,9 @@ import (
 // visit applies `f(route)` to a tree of routes (DFS)
 func visit(route *Route, f func(route *Route)) {
     f(route)
-    for _, child := range route.Children {
-        visit(&child, f)
+    
+    for i := 0; i < len(route.Children); i++ {
+        visit(&route.Children[i], f)
     }
 }
 
@@ -19,8 +20,8 @@ func visiterr(route *Route, f func(route *Route) error) error {
     err := f(route)
     if err != nil { return err }
     
-    for _, child := range route.Children {
-        err = visiterr(&child, f)
+    for i := 0; i < len(route.Children); i++ {
+        err = visiterr(&route.Children[i], f)
         if err != nil { return err }
     }
     
@@ -30,8 +31,9 @@ func visiterr(route *Route, f func(route *Route) error) error {
 // visitp applies `f(route, parent)` to a tree of routes (DFS)
 func visitp(route *Route, parent *Route, f func(route *Route, parent *Route)) {
     f(route, parent)
-    for _, child := range route.Children {
-        visitp(&child, parent, f)
+    
+    for i := 0; i < len(route.Children); i++ {
+        visitp(&route.Children[i], route, f)
     }
 }
 
@@ -104,7 +106,7 @@ func scanMethods(root *Route) []string {
 }
  */
 
-// scnaRouteNames builds a mapping of `name => Route`
+// scanRouteNames builds a mapping of `name => Route`
 func scanRouteNames(root *Route) (map[string]*Route, error) {
     namedRoutes := make(map[string]*Route)
     
@@ -207,8 +209,7 @@ func (r *Route) match(component string) bool {
     }
 }
 
-
-func (router *Router) match(method string, path string, current *Route, params map[string]string) *Route {
+func (router *Router) match(method string, path string, current *Route, params *map[string]string) *Route {
     var component string
     var advance int
     
@@ -222,7 +223,8 @@ func (router *Router) match(method string, path string, current *Route, params m
     match := current.match(component)
     
     if match && current.Key != "" {
-        params[current.Key] = component
+        if params == nil { *params = make(map[string]string) }
+        (*params)[current.Key] = component
     }
     
     if match && current.Final {
