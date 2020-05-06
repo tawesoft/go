@@ -195,6 +195,17 @@ def make_module_go():
         if i.example:
             docstring += "\n\nExample:\n\n"+textwrap.indent(i.example.strip(), "    ", predicate=lambda _: True)
 
+        if i.exampleFiles:
+            examples = []
+            for example in i.exampleFiles:
+                path = "%s/%s" % (i.id, example)
+                examples.append("\n\nExample (%s):\n\n" % path)
+                with open(path, "r") as fp:
+                    data = fp.read()
+                    examples.append(textwrap.indent(data.strip(), "    ", predicate=lambda _: True))
+                examples.append("\n\n")
+            docstring += "".join(examples)
+
         with open("%s/%s.go" % (i.id, i.name()), "w") as fp:
             fp.write("""
 /*
@@ -771,6 +782,30 @@ func main() {
 """,
         exampleFiles=[
             "examples/calculator/calculator.go",
+        ],
+    ),
+
+    Module(
+        id="router",
+        desc=ModuleDesc(
+            short="general purpose (HTTP, etc.) router",
+            long="""
+Package router is a general purpose router of methods (e.g. HTTP "GET") and paths (e.g. "/user/123/profile") to
+some value e.g. a controller.
+
+Supports named routes, route parameters, constructing a path from a route, etc.
+
+Although built with HTTP routing in mind, this is a general purpose implementation that can route to any type
+of value - it is not limited to HTTP handlers.
+""",
+        ),
+        license=licenseMIT,
+        copyright="""
+Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
+Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
+""",
+        exampleFiles=[
+            "examples/example1/example1.go",
         ],
     ),
 

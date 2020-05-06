@@ -122,6 +122,24 @@ binary, and nary functions with overflow checked variants.
 
 ---
 
+### router: general purpose (HTTP, etc.) router
+
+`import "tawesoft.co.uk/go/router"`
+
+Package router is a general purpose router of methods (e.g. HTTP "GET") and paths (e.g. "/user/123/profile") to
+some value e.g. a controller.
+
+|  Links  | License | Stable? | 
+|:-------:|:-------:|:-------:| 
+| [home][home_router] ∙ [docs][docs_router] ∙ [src][src_router] | [MIT][copy_router] | ✔ yes |
+
+[home_router]: https://tawesoft.co.uk/go/router
+[src_router]:  https://github.com/tawesoft/go/tree/master/router
+[docs_router]: https://godoc.org/tawesoft.co.uk/go/router
+[copy_router]: https://github.com/tawesoft/go/tree/master/router/_COPYING.md
+
+---
+
 ### ximage: extended image types
 
 `import "tawesoft.co.uk/go/ximage"`
