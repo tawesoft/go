@@ -26,8 +26,7 @@ type Router struct {
 // ["", "user", "123", "profile"]. A path such as "/user/123/profile/" resolves into the components
 // ["", "user", "123", "profile", ""].
 type Route struct {
-    // Name (optional) is a way of uniquely identifying a specific route. It is used to generate a path from
-    // a route (i.e. the reverse of routing). The name must be unique to the whole router.
+    // Name (optional) is a way of uniquely identifying a specific route. The name must be unique to the whole router.
     Name string
     
     // Key (optional) is a way of uniquely identifying a path parameter (e.g. the path "/user/123/profile" might have
@@ -88,7 +87,10 @@ type Match struct {
     params map[string]string
 }
 
-// Value returns a a parsed path parameter (e.g. "/user/123/profile") identified by a Route Key.
+// Value returns a a parsed path parameter identified by a Route Key.
+//
+// For example, you might create a tree of routes such that the path "/user/123/profile" captures the path component
+// "123" and associates it with a "user-id" route.Key.
 func (match Match) Value(key string) string {
     if match.params == nil { return "" }
     return match.params[key]
