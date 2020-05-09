@@ -62,7 +62,7 @@ func TestRouterMethods(t *testing.T) {
 
 // TestRouteNames<Pass/Fail> tests that route name unique constraints hold
 func TestUniqueRouteNamesPass(t *testing.T) {
-    route := &Route{Name: "One", Children: []Route{
+    route := Route{Name: "One", Children: []Route{
         {Name: "OneA"},
         {Name: ""},
         {Name: ""},
@@ -77,7 +77,7 @@ func TestUniqueRouteNamesPass(t *testing.T) {
 }
 
 func TestUniqueRouteNamesFail(t *testing.T) {
-    route := &Route{Name: "One", Children: []Route{
+    route := Route{Name: "One", Children: []Route{
         {Name: "OneA"}, // not unique
         {Name: ""},
         {Name: ""},
@@ -104,7 +104,7 @@ func TestRouteOrdering(t *testing.T) {
     // * Final Wildcard (string "*" and Final is true)
     */
     
-    route := &Route{Children: []Route{
+    route := Route{Children: []Route{
         {Name: "2", Pattern: "foo"},
         {Name: "0", Pattern: ""},
         {Name: "3", Pattern: "bar"},
@@ -161,7 +161,7 @@ func TestRouteParent(t *testing.T) {
         parentName string
     }
     
-    routes := &Route{Name: "Root", Children: []Route{
+    routes := Route{Name: "Root", Children: []Route{
         {Name: "Home", Pattern: ""},
         {Name: "Foo", Pattern: "foo", Children: []Route{
             {Name: "Bar", Pattern: "bar", Methods: "GET, POST"},
@@ -177,6 +177,9 @@ func TestRouteParent(t *testing.T) {
     
     router, err := New(routes)
     if err != nil { panic(err) }
+    
+    // this is safe to modify now
+    routes = Route{}
     
     for i, test := range(tests) {
         route := router.Named(test.name)
@@ -207,12 +210,15 @@ func TestRouteParent(t *testing.T) {
 // TestRouterMatching tests matching paths against a router i.e. against a whole tree of routes
 func TestRouterMatching(t *testing.T) {
     
-    routes := &Route{Name: "Root", Children: []Route{
+    routes := Route{Name: "Root", Children: []Route{
         {Name: "Home", Pattern: ""},
         {Name: "Foo", Pattern: "foo", Children: []Route{
+            {Name: "Bar (PUT)", Pattern: "bar", Methods: "PUT"},
             {Name: "Bar", Pattern: "bar", Methods: "GET, POST"},
+            {Name: "Bar (Duplicate)", Pattern: "bar", Methods: "GET"}, // sorts later
         }},
         {Name: "Users", Pattern: "users", Children: []Route{
+            {Name: "User By ID (PUT)", Methods: "PUT", Key: "user-id", Pattern: regexp.MustCompile(`^\d+$`)},
             {Name: "User By ID", Key: "user-id", Pattern: regexp.MustCompile(`^\d+$`), Children: []Route{
                 {Name: "User Profile", Pattern: "profile"},
             }},
@@ -315,7 +321,7 @@ func TestRouteFormatting(t *testing.T) {
     }
     
     for i, row := range table {
-        router, err := New(&row.route)
+        router, err := New(row.route)
         if err != nil { panic(err) }
 
         for j, test := range(row.tests) {

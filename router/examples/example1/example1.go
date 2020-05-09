@@ -82,7 +82,7 @@ func main() {
         handle MyHandlerType
     }
     
-    routes := &router.Route{Name: "Root", Children: []router.Route{
+    routes := router.Route{Name: "Root", Children: []router.Route{
         {Name: "Home", Methods: "GET", Handler: MyHandler{HandleIndex}},
         {Name: "Users", Pattern: "users", Methods: "GET, POST", Handler: MyHandler{HandleUsersIndex}, Children: []router.Route{
             {Pattern: "me", Methods: "GET", Name: "My Profile", Handler: MyHandler{HandleUserMe}},

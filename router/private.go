@@ -210,6 +210,10 @@ func (r *Route) match(component string) bool {
 }
 
 func (router *Router) match(method string, path string, current *Route, params *map[string]string) *Route {
+    // NOTE: must only check the last match against the method argument so that
+    // we can match routes with identical Pattern values but differing Method
+    // values.
+    
     var component string
     var advance int
     
@@ -227,18 +231,35 @@ func (router *Router) match(method string, path string, current *Route, params *
         (*params)[current.Key] = component
     }
     
-    if match && current.Final {
-        // its the last match because its a Final pattern
-        return current
-    } else if match && (current.Children == nil || len(current.Children) == 0) {
-        // its the last match because its a match with no children AND
-        // the full path has been parsed.
-        if advance == len(path) { return current }
-    } else if match {
-        // the full path has been matched, so its this route
-        if advance == len(path) { return current }
+    if !match { return nil }
+    
+    if current.Final {
         
-        // otherwise its a partial match, that the child routes have to try and handle
+        // its the last match because its a Final pattern
+        if !current.matchMethod(method, router.DefaultMethods) { return nil }
+        return current
+        
+    } else if (current.Children == nil) || (len(current.Children) == 0) {
+        
+        // its the last possible match because its a match with no children
+        // so its a successful match if the full path has been parsed
+        if advance == len(path) {
+            if !current.matchMethod(method, router.DefaultMethods) { return nil }
+            return current
+        }
+        
+    } else if match {
+        
+        // its a match with children
+        
+        // if the full path has been matched, it has to be this route
+        if advance == len(path) {
+            if !current.matchMethod(method, router.DefaultMethods) { return nil }
+            return current
+        }
+        
+        // otherwise its a partial match, that the child routes have to try and
+        // handle.
         remainder := path[advance+1:]
         for _, i := range(current.Children) {
             match := router.match(method, remainder, &i, params)
