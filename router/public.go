@@ -116,6 +116,9 @@ type Match struct {
     // Route is the route picked - never nil
     Route *Route
     
+    // Router is the router that was matched on
+    Router *Router
+    
     // mapping of route keys => path parameters; may be nil: use Params()
     params map[string]string
 }
@@ -171,7 +174,7 @@ func (router *Router) Match(method string, path string) *Match {
     route := router.match(method, path, router.root, &params)
     if route == nil { return nil }
     
-    return &Match{route, params}
+    return &Match{route, router, params}
 }
 
 // Parent returns the parent Route of a Route in the router's tree of Routes. May be nil (i.e. at the root).
