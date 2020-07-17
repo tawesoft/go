@@ -209,7 +209,37 @@ func (r *Route) match(component string) bool {
     }
 }
 
-func (router *Router) match(method string, path string, current *Route, params *map[string]string) *Route {
+// submatch returns a slice of submatches like `(*Regexp) FindStringSubmatch`
+// from https://golang.org/pkg/regexp/#Regexp.FindStringSubmatch
+//
+// e.g. pattern `a(b*)(c*)(d|D)f` and string "acccDf" returns
+// ["acccDf", "", "ccc", "D"].
+//
+// These can be nested e.g. pattern `(a+)(\.(b+))?c` and string "aaa.bbbbbbbc"
+// returns ["aaa.bbbbbbbc" "aaa" ".bbbbbbb" "bbbbbbb"]
+//
+// Returns nil if no matches/submatches
+//
+// IMPORTANT: assumes in the case of a string pattern (rather than a regex
+// pattern) that match(component) is already true
+func (r *Route) submatch(component string) []string {
+
+    switch v := r.Pattern.(type) {
+        case nil:
+            return nil
+        case string:
+            return []string{component} // N.B. assumes match(component) is true!
+        case *regexp.Regexp:
+            return v.FindStringSubmatch(component)
+        default:
+            panic(fmt.Errorf("invalid Route Pattern type %T", v))
+    }
+}
+
+func (router *Router) match(method string, path string, current *Route,
+    params *map[string]string, subparams *map[string][]string) *Route {
+    // NOTE: modifies params, subparams
+    
     // NOTE: must only check the last match against the method argument so that
     // we can match routes with identical Pattern values but differing Method
     // values.
@@ -229,6 +259,12 @@ func (router *Router) match(method string, path string, current *Route, params *
     if match && current.Key != "" {
         if *params == nil { *params = make(map[string]string) }
         (*params)[current.Key] = component
+        
+        submatch := current.submatch(component)
+        if submatch != nil {
+            if *subparams == nil { *subparams = make(map[string][]string) }
+            (*subparams)[current.Key] = submatch
+        }
     }
     
     if !match { return nil }
@@ -262,7 +298,7 @@ func (router *Router) match(method string, path string, current *Route, params *
         // handle.
         remainder := path[advance+1:]
         for _, i := range(current.Children) {
-            match := router.match(method, remainder, &i, params)
+            match := router.match(method, remainder, &i, params, subparams)
             if match != nil { return match }
         }
     }

@@ -119,17 +119,24 @@ type Match struct {
     // Router is the router that was matched on
     Router *Router
     
-    // mapping of route keys => path parameters; may be nil: use Params()
+    // mapping of route keys => path parameters;
+    // this may be nil: use Value() or Values()
     params map[string]string
+    
+    // mapping of route keys => submatches of paath parameters, like
+    // `(*Regexp) FindStringSubmatch`
+    // from https://golang.org/pkg/regexp/#Regexp.FindStringSubmatch
+    // this may be nil: use Submatch() or Submatches()
+    subparams map[string][]string
 }
 
-// Params returns a non-nil mapping of the route keys => path parameters
+// Values returns a non-nil mapping of the route keys => path parameters
 func (match Match) Values() map[string]string {
     if match.params == nil { match.params = make(map[string]string) }
     return match.params
 }
 
-// Value returns a a parsed path parameter identified by a Route Key.
+// Value returns a parsed path parameter identified by a Route Key.
 //
 // For example, you might create a tree of routes such that the path
 // "/user/123/profile" captures the path component "123" and associates it
@@ -137,6 +144,28 @@ func (match Match) Values() map[string]string {
 func (match Match) Value(key string) string {
     if match.params == nil { return "" }
     return match.params[key]
+}
+
+// Submatches returns a non-nil mapping of the route keys => submatches of path
+// parameters.
+func (match Match) Submatches() map[string][]string {
+    if match.subparams == nil { match.subparams = make(map[string][]string) }
+    return match.subparams
+}
+
+// Submatch returns a submatch of a parsed path parameter identified by a
+// Route Key and
+//
+// For example, you might create a tree of routes such that the path
+// "/user/123.json" captures the path component "123.json" and associates it
+// with a "user-id" route.Key. For a pattern like "(\d+)(\.(\w+))?", the submatches for that key would be
+// ["123.json", "123", ".json", "json"], so index 1 gives "123".
+func (match Match) Submatch(key string, index int) string {
+    if match.subparams == nil { return "" }
+    args := match.subparams[key]
+    if args == nil { return "" }
+    if index >= len(args) { return "" }
+    return args[index]
 }
 
 // Creates a new router with DefaultMethods set to GET
@@ -170,11 +199,12 @@ func (router *Router) MatchHttpRequest(r *http.Request) *Match {
 // a router's tree of routes. In the event that there is no match, returns nil.
 func (router *Router) Match(method string, path string) *Match {
     var params map[string]string
+    var subparams map[string][]string
     
-    route := router.match(method, path, router.root, &params)
+    route := router.match(method, path, router.root, &params, &subparams)
     if route == nil { return nil }
     
-    return &Match{route, router, params}
+    return &Match{route, router, params, subparams}
 }
 
 // Parent returns the parent Route of a Route in the router's tree of Routes. May be nil (i.e. at the root).

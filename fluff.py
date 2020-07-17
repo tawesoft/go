@@ -570,6 +570,7 @@ catalog = [
 
     Module(
         id="atom",
+        enabled=False,
         desc=ModuleDesc(
             short="integer codes for strings",
             long="""
@@ -793,7 +794,7 @@ func main() {
 Package router is a general purpose router of methods (e.g. HTTP "GET") and paths (e.g. "/user/123/profile") to
 some value e.g. a controller.
 
-Supports named routes, route parameters, constructing a path from a route, etc.
+Supports named routes, route parameters, constructing a path from a route, pattern submatches, etc.
 
 Although built with HTTP routing in mind, this is a general purpose implementation that can route to any type
 of value - it is not limited to HTTP handlers.
@@ -806,6 +807,7 @@ Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
 """,
         exampleFiles=[
             "examples/example1/example1.go",
+            "examples/submatches/submatches.go",
         ],
     ),
 
