@@ -34,9 +34,9 @@
 // TODO: different representation of negative numbers e.g. `(123)` vs `-123`
 //
 // TODO: In cases where AcceptInteger/AcceptFloat reach a syntax error, they
-//       currently underestimate how many bytes they successfully parsed when
-//       the byte length of the string is not equal to the number of Unicode
-//       code points in the string.
+// currently underestimate how many bytes they successfully parsed when
+// the byte length of the string is not equal to the number of Unicode
+// code points in the string.
 //
 //
 // Usage:
@@ -44,15 +44,16 @@
 //    package main
 //
 //    import (
+//        "fmt"
 //        "golang.org/x/text/language"
 //        "tawesoft.co.uk/go/lxstrconv"
 //    )
 //
 //    func main() {
-//        f := NewDecimalFormat(language.French)
+//        f := lxstrconv.NewDecimalFormat(language.French)
 //
-//        value, legnth, err := f.ParseFloat("1 234,56")
-//        fmt.Printf("%f (%d bytes) %v\n", value, length, err)
+//        value, err := f.ParseFloat("1 234,56")
+//        fmt.Printf("%f %v\n", value, err)
 //    }
 //
 //
