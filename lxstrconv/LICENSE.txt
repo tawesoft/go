@@ -1,4 +1,4 @@
-tawesoft.co.uk/go/humanize
+tawesoft.co.uk/go/lxstrconv
 
 Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
 Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>

@@ -713,6 +713,7 @@ Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
 
     Module(
         id="humanize",
+        enabled=False,
         desc=ModuleDesc(
             short="lightweight human-readable numbers",
             long="""
@@ -720,14 +721,15 @@ Package humanize implements lightweight human-readable numbers for Go.
 
 Why use this package?
 
-* Much more efficient than the leading package (parse input about 5x faster, fewer memory allocations)
+Compared to dustin/go-humanize:
 
-* Very flexible formatting and internationalisation means better numbers for your humans e.g.
-this package even supports the Indian System of Numeration for lakh and crore digit grouping. 
+* Historically 5x faster parsing, but go-humanize
 
-Compare tawesoft/go/humanize vs dustin/go-humanize: Tawesoft's parses input about 5 times faster with fewer memory
-allocations, and formats output about 25% quicker than dustin's. But dustin's is so far more complete, older, has a
-stable API, and has been tested by more people.
+* Doesn't reimplement features left to i18n/l10n (like
+`golang.org/x/text/message` for number formatting)
+
+* Dustin has more features, is older and better tested, etc.
+
 """,
         ),
         license=licenseMIT0,

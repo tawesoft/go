@@ -68,23 +68,6 @@ extensions or capabilities. Glcaps has no dependencies and is agnostic to the ex
 
 ---
 
-### humanize: lightweight human-readable numbers
-
-`import "tawesoft.co.uk/go/humanize"`
-
-Package humanize implements lightweight human-readable numbers for Go.
-
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
-| [home][home_humanize] ∙ [docs][docs_humanize] ∙ [src][src_humanize] | [MIT-0][copy_humanize] | ✘ **no** |
-
-[home_humanize]: https://tawesoft.co.uk/go/humanize
-[src_humanize]:  https://github.com/tawesoft/go/tree/master/humanize
-[docs_humanize]: https://godoc.org/tawesoft.co.uk/go/humanize
-[copy_humanize]: https://github.com/tawesoft/go/tree/master/humanize/_COPYING.md
-
----
-
 ### operator: operators as functions
 
 `import "tawesoft.co.uk/go/operator"`

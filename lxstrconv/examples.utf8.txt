@@ -1,0 +1,15 @@
+These are values printed by golang.org/x/text
+
+Group Separators:
+
+language.BritishEnglish
+language.French
+language.Dutch
+language.Arabic
+language.Malayalam
+
+1,234,567,890
+1 234 567 890
+1.234.567.890
+١٬٢٣٤٬٥٦٧٬٨٩٠
+1,23,45,67,890

@@ -124,7 +124,7 @@ func (e *Message) Print(dest io.Writer) error {
         {"Date",         time.Now().Format(RFC5332C)},
         {"Subject",      optionalQEncode(e.Subject)},
         {"MIME-Version", "1.0"},
-        {"Message-Id",   msgid(e.From)},
+        {"Message-ID",   msgid(e.From)},
     }
     
     for _, v := range coreHeaders {
