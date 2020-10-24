@@ -39,7 +39,7 @@
 // code points in the string.
 //
 //
-// Usage:
+// Usage: (playground: https://play.golang.org/p/PFZkjOLhoRb)
 //
 //    package main
 //
