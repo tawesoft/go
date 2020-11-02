@@ -158,7 +158,7 @@ func (f decimalFormat) AcceptInt(s string) (value int64, length int, err error) 
     return int64(v), l, nil
 }
 
-// AcceptUiont: see AcceptInt
+// AcceptUint: see AcceptInt
 func (f decimalFormat) AcceptUint(s string) (value uint64, length int, err error) {
     var accu uint64
     
