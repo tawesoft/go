@@ -28,6 +28,8 @@ On Linux, uses (in order of preference) `zenity`, `xmessage`, or stdio.
 
 ## Example
 
+Usage is quite simple:
+
 ```go
 package main
 

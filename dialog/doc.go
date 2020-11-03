@@ -27,6 +27,8 @@
 // 
 // Example
 // 
+// Usage is quite simple:
+// 
 //     package main
 // 
 //     import "tawesoft.co.uk/go/dialog"
