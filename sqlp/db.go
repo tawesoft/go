@@ -76,7 +76,7 @@ func EscapeString(f *Features, s string) (string, error) {
 
 // OpenMode wraps a database opener (e.g. a sqlite3.Opener) with a syscall to
 // set the file permissions to a unix mode when the file is created (e.g. mode
-// 0006 for user read/write only) and, additionally, checks the connection using
+// 0600 for user read/write only) and, additionally, checks the connection using
 // db.Ping().
 //
 // Note - NOT safe to be used concurrently with other I/O due to use of syscall

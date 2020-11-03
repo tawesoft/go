@@ -1,0 +1,23 @@
+SPDX-License-Identifier: MIT-0
+short-desc: simple cross-platform messagebox
+stable: yes
+
+---
+
+Package dialog implements simple cross platform native MessageBox/Alert
+dialogs for Go.
+
+Currently, only supports Windows and Linux targets.
+
+On Linux, uses (in order of preference) `zenity`, `xmessage`, or stdio.
+
+Example
+
+    package main
+
+    import "tawesoft.co.uk/go/dialog"
+
+    func main() {
+        dialog.Alert("Hello world!")
+        dialog.Alert("There are %d lights", 4)
+    }

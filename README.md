@@ -17,7 +17,9 @@ Contents
 
 ### dialog: simple cross-platform messagebox
 
-`import "tawesoft.co.uk/go/dialog"`
+```go
+import "tawesoft.co.uk/go/dialog"
+```
 
 Package dialog implements simple cross platform native MessageBox/Alert dialogs for Go.
 

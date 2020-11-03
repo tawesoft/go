@@ -4,7 +4,7 @@
 
 2019-10-16
 
-    * Remove title argument from Alert function (see https://github.com/tawesoft/dialog/issues/1)
+    * Remove title argument from Alert function
 
 2019-10-01
 
