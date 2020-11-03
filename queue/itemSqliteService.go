@@ -21,43 +21,46 @@ var nilItemSqliteService = itemSqliteService{}
 
 type itemSqliteNew struct {
     UUID       []byte
+    Priority   int // default 0
     Created    int64 // time.Time // UTC
     RetryAfter int64 // time.Time // UTC
 }
 func (p itemSqliteNew) fields() string {
-    return "uuid, created, retryAfter"
+    return "uuid, priority, created, retryAfter"
 }
 func (p itemSqliteNew) placeholders() string {
-    return "?, ?, ?"
+    return "?, ?, ?, ?"
 }
 func (p itemSqliteNew) values() []interface{} {
-    return []interface{}{p.UUID, p.Created, p.RetryAfter}
+    return []interface{}{p.UUID, p.Priority, p.Created, p.RetryAfter}
 }
 
 type itemSqlite struct {
     ID ItemID
     UUID []byte
+    Priority int
     Message string
     Attempt int
     Created int64 // time.Time // UTC
     RetryAfter int64 // time.Time // UTC
 }
 func (p itemSqlite) fields() string {
-    return "items.id, messages.data, items.uuid, items.attempt, items.created, items.retryAfter"
+    return "items.id, items.uuid, items.priority, messages.data, items.attempt, items.created, items.retryAfter"
 }
 func (p itemSqlite) placeholders() string {
-    return "?, ?, ?, ?, ?, ?"
+    return "?, ?, ?, ?, ?, ?, ?"
 }
 func (p itemSqlite) values() []interface{} {
-    return []interface{}{p.ID, p.Message, p.UUID, p.Attempt, p.Created, p.RetryAfter}
+    return []interface{}{p.ID, p.UUID, p.Priority, p.Message,p.Attempt, p.Created, p.RetryAfter}
 }
 func (p *itemSqlite) pointers() []interface{} {
-    return []interface{}{&p.ID, &p.Message, &p.UUID, &p.Attempt, &p.Created, &p.RetryAfter}
+    return []interface{}{&p.ID, &p.UUID, &p.Priority, &p.Message, &p.Attempt, &p.Created, &p.RetryAfter}
 }
 func (p itemSqlite) toItem() Item {
     return Item{
         ID:         p.ID,
         UUID:       p.UUID,
+        Priority:   p.Priority,
         Message:    p.Message,
         Attempt:    p.Attempt,
         Created:    time.Unix(p.Created, 0),
@@ -73,13 +76,14 @@ func initItemSqliteService(db *sql.DB, dbname string, file string) error {
         CREATE TABLE IF NOT EXISTS `+ dbname +`.items (
             id         INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             uuid       BLOB NOT NULL,
+            priority   INTEGER NOT NULL DEFAULT 0,
             attempt    INTEGER NOT NULL DEFAULT 0,
             created    INTEGER NOT NULL, -- epoch seconds
             retryAfter INTEGER NOT NULL  -- epoch seconds
         );
 
-        CREATE UNIQUE INDEX IF NOT EXISTS `+ dbname +`.items_idx_nonce ON items(uuid);
-        CREATE        INDEX IF NOT EXISTS `+ dbname +`.items_idx_retryAfter ON items(retryAfter);
+        CREATE UNIQUE INDEX IF NOT EXISTS `+ dbname +`.items_idx_uuid ON items(uuid);
+        CREATE        INDEX IF NOT EXISTS `+ dbname +`.items_idx_sort ON items(priority DESC, retryAfter, id);
     `)
     if err != nil {
         return fmt.Errorf("error initialising item table: %+v", err)
@@ -123,6 +127,7 @@ func (s itemSqliteService) CreateItem(newItem NewItem) error {
         
         i := itemSqliteNew{
             UUID:       uuid,
+            Priority:   newItem.Priority,
             Created:    newItem.Created.Unix(),
             RetryAfter: newItem.RetryAfter.Unix(),
         }
@@ -155,7 +160,7 @@ func (s itemSqliteService) CreateItem(newItem NewItem) error {
     return nil
 }
 
-func (s itemSqliteService) PeekItems(n int, due time.Time) ([]Item, error) {
+func (s itemSqliteService) PeekItems(n int, minPriority int, due time.Time) ([]Item, error) {
     items, err := func () ([]Item, error) {
         var i itemSqlite
         
@@ -169,12 +174,15 @@ func (s itemSqliteService) PeekItems(n int, due time.Time) ([]Item, error) {
             items.id = messages.id
             AND
                 items.retryAfter <= ?
+            AND
+                items.priority >= ?
         ORDER BY
+            items.priority DESC,
             items.retryAfter,
             items.id
         LIMIT ?`
         
-        rows, err := s.db.Query(query, due.Unix(), n)
+        rows, err := s.db.Query(query, due.Unix(), minPriority, n)
         if err != nil { return nil, err }
         defer rows.Close()
         
@@ -200,31 +208,47 @@ func (s itemSqliteService) PeekItems(n int, due time.Time) ([]Item, error) {
     return items, nil
 }
 
-/*
-// selectRow is a general purpose SELECT for a single Session
-func (s *SessionDBService) selectRow(query string, args...interface{}) *Session {
-    result := &SessionDB{}
-    query = fmt.Sprintf("SELECT %s FROM sessions\n%s\nLIMIT 1", sessionDBFields, query)
-    err := s.db.QueryRow(query, args...).Scan(
-        &result.ID, &result.Key, &result.User, &result.RememberMe,
-        &result.Location, &result.UserAgentGuess,
-        &result.CreatedAt, &result.RefreshedAt, &result.DeletedAt)
-    if err == sql.ErrNoRows { return nil }
-    if err != nil { panic(err) }
+func (s itemSqliteService) RetryItem(id ItemID, priority int, due time.Time) error {
+    query := `
+        UPDATE
+            `+ s.dbname +`.items
+        SET
+            priority = ?,
+            retryAfter = ?
+        WHERE
+            id = ?
+    `
     
-    return result.ToSession()
+    result, err := s.db.Exec(query, priority, due.Unix(), id)
+    if err != nil {
+        return fmt.Errorf("error updating %s item %d: %+v", s.dbname, id, err)
+    }
+    if _, ok := sqlp.RowsAffectedBetween(result, 1, 1); !ok {
+        return fmt.Errorf("error updating %s item %d: rows affected != 1", s.dbname, id)
+    }
+    return nil
 }
 
-func (s *SessionDBService) ByID(id SessionID) *Session {
-    session := s.selectRow(`WHERE id == ?`, id)
-    return session
+func (s itemSqliteService) DeleteItem(id ItemID) error {
+    query := `
+        DELETE FROM
+            `+ s.dbname +`.items
+        WHERE
+            id = ?
+    `
+    
+    result, err := s.db.Exec(query, id)
+    if err != nil {
+        return fmt.Errorf("error deleting %s item %d: %+v", s.dbname, id, err)
+    }
+    if _, ok := sqlp.RowsAffectedBetween(result, 1, 1); !ok {
+        return fmt.Errorf("error deleting %s item %d: rows affected != 1", s.dbname, id)
+    }
+    return nil
 }
- */
 
 func (s itemSqliteService) Close() error {
-    _, err := s.db.Exec(`
-        DETACH DATABASE `+s.dbname +`;
-    `)
+    _, err := s.db.Exec(`DETACH DATABASE `+ s.dbname)
     if err != nil {
         return fmt.Errorf("error closing %s.item table: %+v", s.dbname, err)
     }

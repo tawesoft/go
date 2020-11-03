@@ -56,36 +56,56 @@ func main() {
     
     // Place some items in the queues due at different times in the future
     Must(queue1.CreateItem(queue.NewItem{
-        Message:    "Hello world! (Queue 1; in 5 seconds)",
+        Message:    "I'm the first item",
         Created:    time.Now().UTC(),
         RetryAfter: time.Now().UTC().Add(time.Second * 5),
     }))
     
     Must(queue1.CreateItem(queue.NewItem{
-        Message:    "Hello world! (Queue 1; in 60 seconds)",
+        Message:    "I'm a higher priority item",
+        Priority:   1,
+        Created:    time.Now().UTC(),
+        RetryAfter: time.Now().UTC().Add(time.Second * 6),
+    }))
+    
+    Must(queue1.CreateItem(queue.NewItem{
+        Message:    "I get deleted later",
+        Created:    time.Now().UTC(),
+        RetryAfter: time.Now().UTC().Add(time.Second * 6),
+    }))
+    
+    Must(queue1.CreateItem(queue.NewItem{
+        Message:    "I get rescheduled later",
+        Created:    time.Now().UTC(),
+        RetryAfter: time.Now().UTC().Add(time.Second * 7),
+    }))
+    
+    Must(queue1.CreateItem(queue.NewItem{
+        Message:    "I'm an item quite far in the future",
         Created:    time.Now().UTC(),
         RetryAfter: time.Now().UTC().Add(time.Second * 60),
     }))
     
-    Must(queue2.CreateItem(queue.NewItem{
-        Message:    "Hello world! (Queue 2)",
-        Created:    time.Now().UTC(),
-        RetryAfter: time.Now().UTC().Add(time.Second * 5),
-    }))
-    
-    Must(queue3.CreateItem(queue.NewItem{
-        Message:    "Hello world! (Queue 3)",
-        Created:    time.Now().UTC(),
-        RetryAfter: time.Now().UTC().Add(time.Second * 5),
-    }))
-    
     // Look up some items in the queue that are due in the future.
-    // At 15 seconds in, the first item in Queue 1 should be due, but the
-    // second item is not yet due.
+    // At 15 seconds in, the first two items in Queue 1 should be due, but the
+    // third item is not yet due.
     future := time.Now().UTC().Add(time.Second * 15)
-    items, err := queue1.PeekItems(5, future)
+    items, err := queue1.PeekItems(5, 0, future) // get up to 5 items of priority >= 0
     Must(err)
     for _, item := range items {
-        fmt.Printf("got item: %+v\n", item)
+        if item.Message == "I get deleted later" {
+            Must(queue1.DeleteItem(item.ID))
+        } else if item.Message == "I get rescheduled later" {
+            Must(queue1.RetryItem(item.ID, item.Priority, future.Add(time.Second * 60)))
+        }
+        
+        fmt.Printf("got item: %s\n", item)
+    }
+    
+    fmt.Println("after processing the queue:")
+    items, err = queue1.PeekItems(5, 0, future) // get up to 5 items of priority >= 0
+    Must(err)
+    for _, item := range items {
+        fmt.Printf("got item: %s\n", item)
     }
 }

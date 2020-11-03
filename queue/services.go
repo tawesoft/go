@@ -18,6 +18,10 @@ type Item struct {
     // used e.g. as a cryptographic nonce to prevent replays / duplicates
     UUID []byte
     
+    // Priority orders items in the queue so that due items with a higher
+    // priority come before other due items, even if they were due sooner.
+    Priority int // default 0
+    
     // Message is any user-supplied string of bytes
     Message string
     
@@ -34,8 +38,13 @@ type Item struct {
     RetryAfter time.Time // UTC
 }
 
+func (i Item) String() string {
+    return i.Message
+}
+
 type NewItem struct {
     Message    string
+    Priority   int
     Created    time.Time
     RetryAfter time.Time
 }
@@ -57,9 +66,9 @@ type QueueService interface{
 
 type Queue interface {
     CreateItem(item NewItem) error
-    PeekItems(n int, due time.Time) ([]Item, error)
-    //RetryItem(ItemID, time.Time) error
-    //DeleteItem(ItemID) error
+    PeekItems(n int, minPriority int, due time.Time) ([]Item, error)
+    RetryItem(id ItemID, priority int, due time.Time) error
+    DeleteItem(ItemID) error
     
     Close() error
     Delete() error
