@@ -160,7 +160,7 @@ func (p Package) writeGodoc() error {
         "//",
         "// License: "+p.Doc.SPDXLicenseIdentifier+" (see LICENSE.txt)",
         "//",
-        "// Stable? "+p.Doc.Stable,
+        "// Stable: "+p.Doc.Stable,
         "//",
         "// For more information, documentation, source code, examples, support, links,",
         "// etc. please see https://www.tawesoft.co.uk/go and ",
