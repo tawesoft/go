@@ -13,6 +13,7 @@ import (
 
 var PackageNames = []string{
     "dialog",
+    "glcaps",
 }
 
 func Must(err error) {
