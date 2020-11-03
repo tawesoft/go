@@ -63,7 +63,6 @@ func TestDecimalNumberFormatLocale(t *testing.T) {
     }
 }
 
-
 // TestDecimalNumberFormatParse tests parsing of decimal numbers in different
 // locales.
 func TestDecimalNumberFormatParse(t *testing.T) {

@@ -136,3 +136,10 @@ func main() {
     fmt.Printf("\nInfo %#v\n", MyCaps.Info)
 }
 ```
+
+## Getting Help
+
+This package is part of [tawesoft.co.uk/go](https://www.tawesoft.co.uk/go),
+a monorepo for small Go modules maintained by Tawesoft®.
+Check out that URL for more information about other Go modules from
+Tawesoft plus community and commercial support options.

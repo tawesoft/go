@@ -12,8 +12,16 @@ type queueSqliteService struct {
     uuidSvc UUIDService
 }
 
-// NewQueueSqliteService creates a new queueService implemented by a
-// quueueSqliteService
+// NewQueueSqliteService creates a new QueueService implemented by a SQLite
+// backend that persists queues to individual database files.
+//
+// The SQLite backend may place a limit on the number of attached queue
+// databases per connection (default 7).
+//
+// SQLite is used in SecureDelete mode so that deleted items are overwritten
+// by zeros on disk to protect possibly sensitive data.
+//
+// A queue databases is VACUUMed when first attached by OpenQueue
 func NewQueueSqliteService(uuidSvc UUIDService) (QueueService, error) {
     
     db, err := sqlite3.Open("sqlite3", ":memory:", sqlite3.Config{

@@ -1,0 +1,13 @@
+SPDX-License-Identifier: MIT
+short-desc: same-process durable message queue
+stable: candidate
+
+---
+
+Package queue implements simple, durable/ACID, same-process message queues
+supporting at-least-once or exactly-once delivery and best-effort ordering
+by priority and/or time.
+
+Examples
+
+See examples folder.

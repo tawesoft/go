@@ -27,7 +27,6 @@ func main() {
     // Delete any existing files to start from scratch just for the sake of the
     // demonstration.
     os.Remove("q1.db")
-    os.Remove("q2.db")
     
     // Give each item in the queue a unique ID e.g. if we're sending things to
     // a remote API and want to prevent duplicates.
@@ -46,13 +45,10 @@ func main() {
     queue1 := MustQueue(queueService.OpenQueue("q1", "q1.db"))
     defer queue1.Close()
     
-    queue2 := MustQueue(queueService.OpenQueue("q2", "q2.db"))
-    defer queue2.Close()
-    
     // SQLite queues don't have to be persisted to disk and can also be
     // in-memory only
-    queue3 := MustQueue(queueService.OpenQueue("q3", ":memory:"))
-    defer queue3.Close()
+    //queue2 := MustQueue(queueService.OpenQueue("q3", ":memory:"))
+    //defer queue2.Close()
     
     // Place some items in the queues due at different times in the future
     Must(queue1.CreateItem(queue.NewItem{
@@ -63,7 +59,7 @@ func main() {
     
     Must(queue1.CreateItem(queue.NewItem{
         Message:    "I'm a higher priority item",
-        Priority:   1,
+        Priority:   1, // default 0, so higher priority
         Created:    time.Now().UTC(),
         RetryAfter: time.Now().UTC().Add(time.Second * 6),
     }))
@@ -71,17 +67,17 @@ func main() {
     Must(queue1.CreateItem(queue.NewItem{
         Message:    "I get deleted later",
         Created:    time.Now().UTC(),
-        RetryAfter: time.Now().UTC().Add(time.Second * 6),
+        RetryAfter: time.Now().UTC().Add(time.Second * 7),
     }))
     
     Must(queue1.CreateItem(queue.NewItem{
         Message:    "I get rescheduled later",
         Created:    time.Now().UTC(),
-        RetryAfter: time.Now().UTC().Add(time.Second * 7),
+        RetryAfter: time.Now().UTC().Add(time.Second * 8),
     }))
     
     Must(queue1.CreateItem(queue.NewItem{
-        Message:    "I'm an item quite far in the future",
+        Message:    "I'm an item further in the future",
         Created:    time.Now().UTC(),
         RetryAfter: time.Now().UTC().Add(time.Second * 60),
     }))

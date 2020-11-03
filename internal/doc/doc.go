@@ -11,11 +11,6 @@ import (
     "unicode"
 )
 
-var PackageNames = []string{
-    "dialog",
-    "glcaps",
-}
-
 func Must(err error) {
     if err != nil { panic(err) }
 }
@@ -31,9 +26,10 @@ func MustString(x string, err error) string {
 }
 
 func main() {
-    sort.Strings(PackageNames)
-    packages := make([]Package, 0, len(PackageNames))
-    for _, name := range PackageNames {
+    packageNames := os.Args[1:]
+    sort.Strings(packageNames)
+    packages := make([]Package, 0, len(packageNames))
+    for _, name := range packageNames {
         packages = append(packages, LoadPackage(name))
     }
     
@@ -261,6 +257,16 @@ func (p Package) writeReadme() error {
             }
         }
     }
+    
+    data = append(data,
+        "",
+        "## Getting Help",
+        "",
+        "This package is part of [tawesoft.co.uk/go](https://www.tawesoft.co.uk/go),",
+        "a monorepo for small Go modules maintained by Tawesoft®.",
+        "Check out that URL for more information about other Go modules from",
+        "Tawesoft plus community and commercial support options.",
+    )
     
     bdata := []byte(strings.Join(data, "\n"))
     return ioutil.WriteFile(p.Name + "/README.md", bdata, 0644)

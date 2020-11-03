@@ -1,32 +1,46 @@
 # email - format multipart RFC 2045 email
 
+```shell script
+go get "tawesoft.co.uk/go/"
+```
+
+```go
+import "tawesoft.co.uk/go/email"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_email] ∙ [docs][docs_email] ∙ [src][src_email] | [MIT][copy_email] | ✘ **no** |
+
+[home_email]: https://tawesoft.co.uk/go/email
+[src_email]:  https://github.com/tawesoft/go/tree/master/dialog
+[docs_email]: https://godoc.org/tawesoft.co.uk/go/email
+[copy_email]: https://github.com/tawesoft/go/tree/master/email/LICENSE.txt
+
 ## About
 
 Package email implements the formatting of multipart RFC 2045 e-mail messages,
 including headers, attachments, HTML email, and plain text.
 
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
-| [home][home_] ∙ [docs][docs_] ∙ [src][src_] | [MIT][copy_] | ✔ yes |
+File attachments are lazy, and read from disk only at the time the e-mail is
+sent.
 
-[home_]: https://tawesoft.co.uk/go/email
-[src_]:  https://github.com/tawesoft/go/tree/master/email
-[docs_]: https://godoc.org/tawesoft.co.uk/go/email
-[copy_]: https://github.com/tawesoft/go/tree/master/email/_COPYING.md
+## Package Stability
 
-## Download
+It is likely that this package will change at some point as follows:
 
-```shell script
-go get -u tawesoft.co.uk/go
-```
+* A Message-ID header will no longer be implicitly generated for a Message.
 
-## Import
+* The Envelope struct will no longer have a message field - instead, use
+an (Envelope, Message) 2-tuple where you need both of these items.
 
-```
-import tawesoft.co.uk/go/email
-```
+This is a breaking change. As such, when this happens, the old behaviour will
+be made available at tawesoft.co.uk/go/legacy/email.
 
-## Example:
+## Example
+
+This example demonstrates formatting an email message and printing it to a
+Writer (here, `os.Stdout`).
 
 ```go
 package main
@@ -34,7 +48,7 @@ package main
 import (
     "net/mail"
     "os"
-    
+
     "tawesoft.co.uk/go/email"
 )
 
@@ -47,15 +61,22 @@ func main() {
         Text: `This is a test email!`,
         Html: `<!DOCTYPE html><html lang="en"><body><p>This is a test email!</p></body></html>`,
         Attachments: []*email.Attachment{
-            //email.FileAttachment("Entscheidungsproblem.pdf"),
-            //email.FileAttachment("funny-cat-meme.png"),
+            email.FileAttachment("Entscheidungsproblem.pdf"),
+            email.FileAttachment("funny-cat-meme.png"),
         },
         Headers: mail.Header{
             "X-Category": []string{"newsletter", "marketing"},
         },
     }
-    
+
     var err = eml.Print(os.Stdout)
     if err != nil { panic(err) }
 }
 ```
+
+## Getting Help
+
+This package is part of [tawesoft.co.uk/go](https://www.tawesoft.co.uk/go),
+a monorepo for small Go modules maintained by Tawesoft®.
+Check out that URL for more information about other Go modules from
+Tawesoft plus community and commercial support options.

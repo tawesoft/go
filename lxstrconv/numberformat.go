@@ -5,7 +5,7 @@ import (
 )
 
 // Unicode standard guarantees that this codepoint is never assigned
-const RuneNone = rune(0xFFFF)
+const runeNone = rune(0xFFFF)
 
 // NumberFormat defines an interface for parsing numbers in a specific format
 // (such as a decimal number in a specific locale, with support for a digit
@@ -35,7 +35,7 @@ func repeatingRune(s string) rune {
     sl := []rune(s)
     sort.Slice(sl, func(i int, j int) bool { return sl[i] < sl[j] })
     
-    current := RuneNone
+    current := runeNone
     
     for _, c := range sl {
         if c == current {
@@ -44,7 +44,7 @@ func repeatingRune(s string) rune {
         current = c
     }
     
-    return RuneNone
+    return runeNone
 }
 
 

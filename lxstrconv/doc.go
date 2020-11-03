@@ -1,46 +1,112 @@
-// SPDX-License-Identifier: MIT-0
+// tawesoft.co.uk/go/lxstrconv
+// 
+// Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
+// Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
+// 
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction,  including without limitation the rights
+// to use,  copy, modify,  merge,  publish, distribute, sublicense,  and/or sell
+// copies  of  the  Software,  and  to  permit persons  to whom  the Software is
+// furnished to do so.
+// 
+// THE SOFTWARE IS PROVIDED  "AS IS",  WITHOUT WARRANTY OF ANY KIND,  EXPRESS OR
+// IMPLIED,  INCLUDING  BUT  NOT LIMITED TO THE WARRANTIES  OF  MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE  AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+// AUTHORS  OR COPYRIGHT HOLDERS  BE LIABLE  FOR ANY  CLAIM,  DAMAGES  OR  OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+// 
 
 // Package lxstrconv is an attempt at implementing locale-aware parsing of
-// numbers.
-//
+// numbers that integrates with golang.org/x/text.
+// 
+// If golang.org/x/text is ever promoted to core then there will be a new version
+// of this package named `lstrconv` (dropping the 'x').
+// 
+// Package Stability
+// 
 // THIS IS A PREVIEW RELEASE, SUBJECT TO BREAKING CHANGES.
-//
-// This package integrates with `golang.org/x/text`. If that package is
-// ever promoted to core then there will be a new version of this package
-// named `lstrconv` (dropping the 'x').
-//
-// TODO: checks for integer overflow
-//
-// TODO: different representation of negative numbers e.g. `(123)` vs `-123`
-//
-// TODO: In cases where AcceptInteger/AcceptFloat reach a syntax error, they
+// 
+// Todo:
+// 
+// * checks for integer overflow
+// 
+// * different representations of negative numbers e.g. `(123)` vs `-123`
+// 
+// * In cases where AcceptInteger/AcceptFloat reach a syntax error, they
 // currently underestimate how many bytes they successfully parsed when
 // the byte length of the string is not equal to the number of Unicode
 // code points in the string.
-//
-// Usage: (playground: https://play.golang.org/p/PFZkjOLhoRb)
-//
-//    package main
-//
-//    import (
-//        "fmt"
-//        "golang.org/x/text/language"
-//        "tawesoft.co.uk/go/lxstrconv"
-//    )
-//
-//    func main() {
-//        f := lxstrconv.NewDecimalFormat(language.French)
-//
-//        value, err := f.ParseFloat("1 234,56")
-//        fmt.Printf("%f %v\n", value, err)
-//    }
-//
-//
-//
+// 
+// Example
+// 
+// This example demonstrates British, Dutch, and Arabic locale number parsing.
+// 
+//     package main
+// 
+//     import (
+//         "fmt"
+//         "golang.org/x/text/language"
+//         "tawesoft.co.uk/go/lxstrconv"
+//     )
+// 
+//     func checked(f float64, e error) float64 {
+//         if e != nil {
+//             panic(e)
+//         }
+//         return f
+//     }
+// 
+//     func main() {
+//         dutch   := lxstrconv.NewDecimalFormat(language.Dutch)
+//         british := lxstrconv.NewDecimalFormat(language.BritishEnglish)
+//         arabic  := lxstrconv.NewDecimalFormat(language.Arabic)
+// 
+//         fmt.Printf("%f\n", checked(british.ParseFloat("1,234.56")))
+//         fmt.Printf("%f\n", checked(dutch.ParseFloat("1.234,56")))
+//         fmt.Printf("%f\n", checked(arabic.ParseFloat("١٬٢٣٤٫٥٦")))
+//     }
+// 
+// Example
+// 
 // You can give end-users examples of the input you expect for a given locale
-// using the /x/text package (Playground: https://play.golang.org/p/zcj6ariGMX5):
+// using the /x/text package:
+// 
+//     package main
+// 
+//     import (
+//         "golang.org/x/text/language"
+//         "golang.org/x/text/message"
+//         "golang.org/x/text/number"
+//     )
+// 
+//     func main() {
+// 
+//         message.NewPrinter(language.English).Println(number.Decimal(123456789))
+//         // Prints 123,456,789
+// 
+//         message.NewPrinter(language.Dutch).Println(number.Decimal(123456789))
+//         // Prints 123.456.789
+// 
+//         message.NewPrinter(language.Malayalam).Println(number.Decimal(123456789))
+//         // Prints 12,34,56,789
+// 
+//         message.NewPrinter(language.Bengali).Println(number.Decimal(123456789))
+//         // Prints ১২,৩৪,৫৬,৭৮৯
+//     }
 //
-//    message.NewPrinter(language.English).Print(number.Decimal(123456789))
-//    // Prints: 123,456,789
+// Package Information
 //
-package lxstrconv
+// License: MIT (see LICENSE.txt)
+//
+// Stable: no
+//
+// For more information, documentation, source code, examples, support, links,
+// etc. please see https://www.tawesoft.co.uk/go and 
+// https://www.tawesoft.co.uk/go/lxstrconv
+package lxstrconv // import "tawesoft.co.uk/go/lxstrconv"
+
+// Code generated by internal. DO NOT EDIT.
+// Instead, edit .txt files and `go run internal/doc/doc.go`.

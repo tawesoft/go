@@ -26,7 +26,7 @@ func firstRune(s string) (rune, bool) {
     for _, c := range s {
         return c, true
     }
-    return RuneNone, false
+    return runeNone, false
 }
 
 // guessDecimalGroupSeparator guesses, for a printer in a given locale,
@@ -56,7 +56,7 @@ func guessDecimalDigits(p *message.Printer, out *[10]rune) {
         if len(s) == 1 {
             out[i] = s[0]
         } else {
-            out[i] = RuneNone
+            out[i] = runeNone
         }
     }
 }
@@ -179,7 +179,6 @@ func (f decimalFormat) AcceptUint(s string) (value uint64, length int, err error
     
     return accu, len(s), nil
 }
-
 
 // AcceptFloat parses as much of a floating point number as possible. It returns
 // a 2 tuple: the value of the parsed float, and the length of the characters
