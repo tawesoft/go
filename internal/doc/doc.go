@@ -159,6 +159,7 @@ func (p Package) writeGodoc() error {
         "// Package Information",
         "//",
         "// License: "+p.Doc.SPDXLicenseIdentifier+" (see LICENSE.txt)",
+        "//",
         "// Stable? "+p.Doc.Stable,
         "//",
         "// For more information, documentation, source code, examples, support, links,",
@@ -168,8 +169,6 @@ func (p Package) writeGodoc() error {
     
     if p.Changes != "" {
         data = append(data,
-            "//",
-            "// Changes",
             "//",
         )
         

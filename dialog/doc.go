@@ -41,13 +41,12 @@
 // Package Information
 //
 // License: MIT-0 (see LICENSE.txt)
+//
 // Stable? yes
 //
 // For more information, documentation, source code, examples, support, links,
 // etc. please see https://www.tawesoft.co.uk/go and 
 // https://www.tawesoft.co.uk/go/dialog
-//
-// Changes
 //
 //     2019-11-16
 //     
