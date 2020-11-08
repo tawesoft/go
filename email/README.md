@@ -13,7 +13,7 @@ import "tawesoft.co.uk/go/email"
 | [home][home_email] ∙ [docs][docs_email] ∙ [src][src_email] | [MIT][copy_email] | ✘ **no** |
 
 [home_email]: https://tawesoft.co.uk/go/email
-[src_email]:  https://github.com/tawesoft/go/tree/master/dialog
+[src_email]:  https://github.com/tawesoft/go/tree/master/email
 [docs_email]: https://godoc.org/tawesoft.co.uk/go/email
 [copy_email]: https://github.com/tawesoft/go/tree/master/email/LICENSE.txt
 
@@ -25,7 +25,9 @@ including headers, attachments, HTML email, and plain text.
 File attachments are lazy, and read from disk only at the time the e-mail is
 sent.
 
+
 ## Package Stability
+
 
 It is likely that this package will change at some point as follows:
 
@@ -37,10 +39,13 @@ an (Envelope, Message) 2-tuple where you need both of these items.
 This is a breaking change. As such, when this happens, the old behaviour will
 be made available at tawesoft.co.uk/go/legacy/email.
 
+
 ## Example
+
 
 This example demonstrates formatting an email message and printing it to a
 Writer (here, `os.Stdout`).
+
 
 ```go
 package main

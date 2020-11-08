@@ -1,3 +1,4 @@
+// Using operators as function arguments
 package main
 
 import (

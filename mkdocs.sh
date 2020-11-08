@@ -3,4 +3,10 @@ go run internal/doc/doc.go \
     email \
     glcaps \
     lxstrconv \
-    queue
+    operator \
+    queue \
+    router \
+    sqlp \
+    sqlp/sqlite3 \
+    ximage \
+    ximage/xcolor

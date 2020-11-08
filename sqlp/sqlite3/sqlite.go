@@ -1,5 +1,3 @@
-// Package sqlite implements a mattn/go-sqlite3 database with simple setup
-// of things like utf8 collation and tawesoft.co.uk/go/dev/sqlp features.
 package sqlite3
 
 import (

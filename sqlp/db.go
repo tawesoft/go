@@ -1,20 +1,3 @@
-// Package sqlp ("SQL-plus" or "squelp!") defines helpful interfaces and
-// implements extra features for Go SQL database drivers. Specific drivers are
-// implemented in the subdirectories.
-//
-// Features include:
-//
-// * Open a SQLite database with foreign keys, UTF8 collation, etc. made easy
-//   to avoid copy+pasting the same boilerplate into each project.
-//
-// * "Missing" essentials like escaping an SQL column name
-//   (https://github.com/golang/go/issues/18478) or examining an SQL error for
-//   properties such as IsUniqueConstraintError when inserting duplicate items
-//
-// * Interfaces like Queryable which is implemented by all of sql.DB, sql.Tx
-//   and sql.Stmt, for performing queries regardless of if they are in a
-//   transaction or not.
-//
 package sqlp
 
 import (
@@ -109,11 +92,12 @@ func OpenMode(
 
 // RowsAffectedBetween returns true iff the result rows affected is not an
 // error and falls between min and max (inclusive). Otherwise, returns false and
-// the first argument is the number of rows actually affected or -1 and false
-// if there was an error counting how many rows were affected (which should
-// only ever happen if there is a bug in your code e.g. trying to count rows
-// affected by a DDL command (such as a CREATE TABLE) or not checking a
-// previous error and using an invalid result).
+// the first argument is the number of rows actually affected.
+//
+// Rarely, returns -1 and false if there was an error counting how many rows
+// were affected (which should only ever happen if there is a bug in your code
+// e.g. trying to count rows affected by a DDL command (such as a CREATE TABLE)
+// or not checking a previous error and using an invalid result).
 func RowsAffectedBetween(result sql.Result, min int, max int) (int64, bool) {
     affected, err := result.RowsAffected()
     if err != nil { return -1, false }

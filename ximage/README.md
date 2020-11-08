@@ -1,5 +1,22 @@
 # ximage - extended image types
 
+```shell script
+go get "tawesoft.co.uk/go/"
+```
+
+```go
+import "tawesoft.co.uk/go/ximage"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_ximage] ∙ [docs][docs_ximage] ∙ [src][src_ximage] | [BSD-3-Clause][copy_ximage] | ✔ yes |
+
+[home_ximage]: https://tawesoft.co.uk/go/ximage
+[src_ximage]:  https://github.com/tawesoft/go/tree/master/ximage
+[docs_ximage]: https://godoc.org/tawesoft.co.uk/go/ximage
+[copy_ximage]: https://github.com/tawesoft/go/tree/master/ximage/LICENSE.txt
+
 ## About
 
 Package ximage implements Red, RG, and RGB images matching the core
@@ -15,30 +32,15 @@ OpenGL) where images are uploaded to the GPU in a specific format (such as
 GL_R, GL_RG, or GL_RGB) and we don't care too much about the performance of
 native Go image manipulation.
 
-OpenGL® and the oval logo are trademarks or registered trademarks of Hewlett Packard Enterprise in
-the United States and/or other countries worldwide.
+OpenGL® and the oval logo are trademarks or registered trademarks of
+Hewlett Packard Enterprise
+in the United States and/or other countries worldwide.
 
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
-| [home][home_] ∙ [docs][docs_] ∙ [src][src_] | [BSD-3-Clause][copy_] | ✔ yes |
+See also: ximage/xcolor (https://tawesoft.co.uk/go/ximage/xcolor)
 
-[home_]: https://tawesoft.co.uk/go/ximage
-[src_]:  https://github.com/tawesoft/go/tree/master/ximage
-[docs_]: https://godoc.org/tawesoft.co.uk/go/ximage
-[copy_]: https://github.com/tawesoft/go/tree/master/ximage/_COPYING.md
+## Getting Help
 
-## Download
-
-```shell script
-go get -u tawesoft.co.uk/go
-```
-
-## Import
-
-```
-import tawesoft.co.uk/go/ximage
-```
-
-## See Also:
-
-* ximage/xcolor (https://tawesoft.co.uk/go/ximage/xcolor)
+This package is part of [tawesoft.co.uk/go](https://www.tawesoft.co.uk/go),
+a monorepo for small Go modules maintained by Tawesoft®.
+Check out that URL for more information about other Go modules from
+Tawesoft plus community and commercial support options.

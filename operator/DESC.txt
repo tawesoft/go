@@ -1,0 +1,14 @@
+SPDX-License-Identifier: MIT-0
+short-desc: operators as functions
+stable: yes
+
+---
+
+Package operator implements logical, arithmetic, bitwise and comparison
+operators as functions (like the Python operator module). Includes unary,
+binary, and n-ary functions with overflow checked variants.
+
+Examples
+
+EXAMPLE: simple
+EXAMPLE: calculator

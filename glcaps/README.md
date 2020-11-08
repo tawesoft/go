@@ -13,7 +13,7 @@ import "tawesoft.co.uk/go/glcaps"
 | [home][home_glcaps] ∙ [docs][docs_glcaps] ∙ [src][src_glcaps] | [MIT][copy_glcaps] | ✔ yes |
 
 [home_glcaps]: https://tawesoft.co.uk/go/glcaps
-[src_glcaps]:  https://github.com/tawesoft/go/tree/master/dialog
+[src_glcaps]:  https://github.com/tawesoft/go/tree/master/glcaps
 [docs_glcaps]: https://godoc.org/tawesoft.co.uk/go/glcaps
 [copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/LICENSE.txt
 
@@ -26,12 +26,15 @@ no dependencies and is agnostic to the exact OpenGL binding used.
 OpenGL® and the oval logo are trademarks or registered trademarks of Hewlett
 Packard Enterprise in the United States and/or other countries worldwide.
 
+
 ## Example
+
 
 Usage involves defining an OpenGL binding and parsing into an annotated struct.
 
 See https://godoc.org/tawesoft.co.uk/go/glcaps#Parse for a description of the
 struct annotation syntax.
+
 
 ```go
 package main

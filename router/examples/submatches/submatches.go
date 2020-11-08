@@ -1,12 +1,12 @@
-// USAGE: run and then get http://localhost:8080/users/1.json
-// or http://localhost:8080/users/2.xml
-
+// Demonstrates HTTP routing with "submatch" patterns in a path component
+// with a server at localhost:8080
 package main
 
 import (
     "encoding/json"
     "encoding/xml"
     "fmt"
+    "html/template"
     "log"
     "net/http"
     "regexp"
@@ -26,17 +26,42 @@ var Users = map[int]User{
     2: {"Donald Knuth", "10 January 1938"},
 }
 
-func HandleUserById(w http.ResponseWriter, r *http.Request, match *router.Match) {
-    id, err := strconv.Atoi(match.Submatch("id", 1))
-    if err != nil { panic(err) }
-    fmt := match.Submatch("id", 2)
+func HandleIndex(w http.ResponseWriter, r *http.Request, match *router.Match) {
+    const tpl = `
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Users</title>
+    </head>
+    <body>
+        <h1>Users</h1>
+        {{range $i, $u := . }}
+            <div>{{ $u.Name }}:
+                <a href="/users/{{ $i }}.json">JSON</a> |
+                <a href="/users/{{ $i }}.xml">XML</a>
+            </div>
+        {{else}}
+            <div><strong>no rows</strong></div>
+        {{end}}
+    </body>
+</html>`
     
+    t, err := template.New("webpage").Parse(tpl)
+    if err != nil { panic(err) }
+    
+    err = t.Execute(w, Users)
+    if err != nil { panic(err) }
+}
+
+func HandleUserById(w http.ResponseWriter, r *http.Request, match *router.Match, id int, format string) {
     user := Users[id] // range handling not done
     var out []byte
     var werr error
     
-    switch fmt {
-        case "": fallthrough // default to JSON
+    switch format {
+        case "":
+            fallthrough // default to JSON
         case ".json":
             w.Header().Set("Content-Type", "application/json; charset=utf-8")
             out, werr = json.Marshal(user)
@@ -44,7 +69,7 @@ func HandleUserById(w http.ResponseWriter, r *http.Request, match *router.Match)
             w.Header().Set("Content-Type", "application/xml; charset=utf-8")
             out, werr = xml.Marshal(user)
         default:
-            panic("format not implemented")
+            panic("invalid format")
     }
     
     if werr != nil { panic(werr) }
@@ -52,19 +77,26 @@ func HandleUserById(w http.ResponseWriter, r *http.Request, match *router.Match)
     
 }
 
-type MyHandlerType func (http.ResponseWriter, *http.Request, *router.Match)
+type MyNormalHandlerType func(http.ResponseWriter, *http.Request, *router.Match)
+type MyAPIHandlerType func (http.ResponseWriter, *http.Request, *router.Match, int, string)
 
 func main() {
-    id := regexp.MustCompile(`^(\d{1,9})(\.\w{1,5})?$`) // e.g. 1234, 1234.json
+    // Let's make a convention: our API endpoints all end with a numeric ID
+    // and an optional format specifier, like .xml or .json e.g.
+    // "/users/123.json"
     
-    type MyHandler struct {
-        handle MyHandlerType
-    }
+    // A regex that captures two submatches
+    // e.g. "1234" => "1234", ""
+    // "1234.json" => "1234", ".json"
+    id := regexp.MustCompile(`^(\d{1,9})(\.\w{1,5})?$`)
+    idNumberMatch := 1 // first capture
+    idFormatMatch := 2 // second capture
     
     routes := router.Route{Children: []router.Route{
         {Pattern: "users", Children: []router.Route{
-            {Pattern: id, Key: "id", Methods: "GET", Handler: MyHandler{HandleUserById}},
+            {Pattern: id, Key: "id", Methods: "GET", Handler: MyAPIHandlerType(HandleUserById)},
         }},
+        {Handler: MyNormalHandlerType(HandleIndex)},
     }}
     
     router, err := router.New(routes)
@@ -75,7 +107,21 @@ func main() {
         
         // how you handle the match is up to you!
         if match != nil {
-            match.Route.Handler.(MyHandler).handle(w, r, match)
+            
+            if apiMatch, ok := match.Route.Handler.(MyAPIHandlerType); ok {
+
+                // Get the integer id as the first submatch of the id component
+                id, err := strconv.Atoi(match.Submatch("id", idNumberMatch))
+                if err != nil { panic(err) }
+                
+                // Get the format as the second submatch of the id component
+                format := match.Submatch("id", idFormatMatch)
+            
+                apiMatch(w, r, match, id, format)
+            } else {
+                match.Route.Handler.(MyNormalHandlerType)(w, r, match)
+            }
+
         } else {
             http.NotFound(w, r)
             fmt.Fprintf(w, "Not Found: Sorry, no matching route!")

@@ -8,140 +8,166 @@ This is permissively-licensed open source software but exact licenses may vary b
 Download
 --------
 
-```shell script
-go get -u tawesoft.co.uk/go
-```
+    go get -u tawesoft.co.uk/go
 
 Contents
 --------
 
-### dialog: simple cross-platform messagebox
+
+### dialog - simple cross-platform messagebox
 
 ```go
 import "tawesoft.co.uk/go/dialog"
 ```
 
-Package dialog implements simple cross platform native MessageBox/Alert dialogs for Go.
-
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
 | [home][home_dialog] ∙ [docs][docs_dialog] ∙ [src][src_dialog] | [MIT-0][copy_dialog] | ✔ yes |
 
 [home_dialog]: https://tawesoft.co.uk/go/dialog
 [src_dialog]:  https://github.com/tawesoft/go/tree/master/dialog
 [docs_dialog]: https://godoc.org/tawesoft.co.uk/go/dialog
-[copy_dialog]: https://github.com/tawesoft/go/tree/master/dialog/_COPYING.md
+[copy_dialog]: https://github.com/tawesoft/go/tree/master/dialog/LICENSE.txt
+### email - format multipart RFC 2045 email
 
----
+```go
+import "tawesoft.co.uk/go/email"
+```
 
-### email: format multipart RFC 2045 email
-
-`import "tawesoft.co.uk/go/email"`
-
-Package email implements the formatting of multipart RFC 2045 e-mail messages,
-including headers, attachments, HTML email, and plain text.
-
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
-| [home][home_email] ∙ [docs][docs_email] ∙ [src][src_email] | [MIT][copy_email] | ✔ yes |
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_email] ∙ [docs][docs_email] ∙ [src][src_email] | [MIT][copy_email] | ✘ **no** |
 
 [home_email]: https://tawesoft.co.uk/go/email
 [src_email]:  https://github.com/tawesoft/go/tree/master/email
 [docs_email]: https://godoc.org/tawesoft.co.uk/go/email
-[copy_email]: https://github.com/tawesoft/go/tree/master/email/_COPYING.md
+[copy_email]: https://github.com/tawesoft/go/tree/master/email/LICENSE.txt
+### glcaps - read and check OpenGL capabilities
 
----
+```go
+import "tawesoft.co.uk/go/glcaps"
+```
 
-### glcaps: read and check OpenGL capabilities
-
-`import "tawesoft.co.uk/go/glcaps"`
-
-Package glcaps provides a nice interface to declare OpenGL capabilities you care about, including minimum required
-extensions or capabilities. Glcaps has no dependencies and is agnostic to the exact OpenGL binding used.
-
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
 | [home][home_glcaps] ∙ [docs][docs_glcaps] ∙ [src][src_glcaps] | [MIT][copy_glcaps] | ✔ yes |
 
 [home_glcaps]: https://tawesoft.co.uk/go/glcaps
 [src_glcaps]:  https://github.com/tawesoft/go/tree/master/glcaps
 [docs_glcaps]: https://godoc.org/tawesoft.co.uk/go/glcaps
-[copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/_COPYING.md
+[copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/LICENSE.txt
+### lxstrconv - locale-aware number parsing
 
----
+```go
+import "tawesoft.co.uk/go/lxstrconv"
+```
 
-### operator: operators as functions
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_lxstrconv] ∙ [docs][docs_lxstrconv] ∙ [src][src_lxstrconv] | [MIT][copy_lxstrconv] | ✘ **no** |
 
-`import "tawesoft.co.uk/go/operator"`
+[home_lxstrconv]: https://tawesoft.co.uk/go/lxstrconv
+[src_lxstrconv]:  https://github.com/tawesoft/go/tree/master/lxstrconv
+[docs_lxstrconv]: https://godoc.org/tawesoft.co.uk/go/lxstrconv
+[copy_lxstrconv]: https://github.com/tawesoft/go/tree/master/lxstrconv/LICENSE.txt
+### operator - operators as functions
 
-Package operator implements logical, arithmetic, bitwise and comparison
-operators as functions (like the Python operator module). Includes unary,
-binary, and nary functions with overflow checked variants.
+```go
+import "tawesoft.co.uk/go/operator"
+```
 
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
 | [home][home_operator] ∙ [docs][docs_operator] ∙ [src][src_operator] | [MIT-0][copy_operator] | ✔ yes |
 
 [home_operator]: https://tawesoft.co.uk/go/operator
 [src_operator]:  https://github.com/tawesoft/go/tree/master/operator
 [docs_operator]: https://godoc.org/tawesoft.co.uk/go/operator
-[copy_operator]: https://github.com/tawesoft/go/tree/master/operator/_COPYING.md
+[copy_operator]: https://github.com/tawesoft/go/tree/master/operator/LICENSE.txt
+### queue - same-process durable message queue
 
----
+```go
+import "tawesoft.co.uk/go/queue"
+```
 
-### router: general purpose (HTTP, etc.) router
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_queue] ∙ [docs][docs_queue] ∙ [src][src_queue] | [MIT][copy_queue] | candidate |
 
-`import "tawesoft.co.uk/go/router"`
+[home_queue]: https://tawesoft.co.uk/go/queue
+[src_queue]:  https://github.com/tawesoft/go/tree/master/queue
+[docs_queue]: https://godoc.org/tawesoft.co.uk/go/queue
+[copy_queue]: https://github.com/tawesoft/go/tree/master/queue/LICENSE.txt
+### router - general purpose (HTTP, etc.) router
 
-Package router is a general purpose router of methods (e.g. HTTP "GET") and paths (e.g. "/user/123/profile") to
-some value e.g. a controller.
+```go
+import "tawesoft.co.uk/go/router"
+```
 
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
 | [home][home_router] ∙ [docs][docs_router] ∙ [src][src_router] | [MIT][copy_router] | ✔ yes |
 
 [home_router]: https://tawesoft.co.uk/go/router
 [src_router]:  https://github.com/tawesoft/go/tree/master/router
 [docs_router]: https://godoc.org/tawesoft.co.uk/go/router
-[copy_router]: https://github.com/tawesoft/go/tree/master/router/_COPYING.md
+[copy_router]: https://github.com/tawesoft/go/tree/master/router/LICENSE.txt
+### sqlp - SQL database extras
 
----
+```go
+import "tawesoft.co.uk/go/sqlp"
+```
 
-### ximage: extended image types
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_sqlp] ∙ [docs][docs_sqlp] ∙ [src][src_sqlp] | [MIT][copy_sqlp] | candidate |
 
-`import "tawesoft.co.uk/go/ximage"`
+[home_sqlp]: https://tawesoft.co.uk/go/sqlp
+[src_sqlp]:  https://github.com/tawesoft/go/tree/master/sqlp
+[docs_sqlp]: https://godoc.org/tawesoft.co.uk/go/sqlp
+[copy_sqlp]: https://github.com/tawesoft/go/tree/master/sqlp/LICENSE.txt
+### sqlp/sqlite3 - SQLite3 database extras
 
-Package ximage implements Red, RG, and RGB images matching the core
-image interface.
+```go
+import "tawesoft.co.uk/go/sqlp/sqlite3"
+```
 
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_sqlp/sqlite3] ∙ [docs][docs_sqlp/sqlite3] ∙ [src][src_sqlp/sqlite3] | [MIT][copy_sqlp/sqlite3] | candidate |
+
+[home_sqlp/sqlite3]: https://tawesoft.co.uk/go/sqlp/sqlite3
+[src_sqlp/sqlite3]:  https://github.com/tawesoft/go/tree/master/sqlp/sqlite3
+[docs_sqlp/sqlite3]: https://godoc.org/tawesoft.co.uk/go/sqlp/sqlite3
+[copy_sqlp/sqlite3]: https://github.com/tawesoft/go/tree/master/sqlp/sqlite3/LICENSE.txt
+### ximage - extended image types
+
+```go
+import "tawesoft.co.uk/go/ximage"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
 | [home][home_ximage] ∙ [docs][docs_ximage] ∙ [src][src_ximage] | [BSD-3-Clause][copy_ximage] | ✔ yes |
 
 [home_ximage]: https://tawesoft.co.uk/go/ximage
 [src_ximage]:  https://github.com/tawesoft/go/tree/master/ximage
 [docs_ximage]: https://godoc.org/tawesoft.co.uk/go/ximage
-[copy_ximage]: https://github.com/tawesoft/go/tree/master/ximage/_COPYING.md
+[copy_ximage]: https://github.com/tawesoft/go/tree/master/ximage/LICENSE.txt
+### ximage/xcolor - extended color types
 
----
+```go
+import "tawesoft.co.uk/go/ximage/xcolor"
+```
 
-### ximage/xcolor: extended color types
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_ximage/xcolor] ∙ [docs][docs_ximage/xcolor] ∙ [src][src_ximage/xcolor] | [BSD-3-Clause][copy_ximage/xcolor] | ✔ yes |
 
-`import "tawesoft.co.uk/go/ximage/xcolor"`
-
-Package xcolor implements Red, RedGreen, and RGB color models matching the core
-image/color interface.
-
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
-| [home][home_ximage_xcolor] ∙ [docs][docs_ximage_xcolor] ∙ [src][src_ximage_xcolor] | [BSD-3-Clause][copy_ximage_xcolor] | ✔ yes |
-
-[home_ximage_xcolor]: https://tawesoft.co.uk/go/ximage/xcolor
-[src_ximage_xcolor]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
-[docs_ximage_xcolor]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
-[copy_ximage_xcolor]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/_COPYING.md
-
----
+[home_ximage/xcolor]: https://tawesoft.co.uk/go/ximage/xcolor
+[src_ximage/xcolor]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
+[docs_ximage/xcolor]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
+[copy_ximage/xcolor]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/LICENSE.txt
 
 Links
 -----

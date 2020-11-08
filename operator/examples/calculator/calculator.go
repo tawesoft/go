@@ -1,3 +1,4 @@
+// Using operators in lookup tables for a command-line calculator program
 package main
 
 import (

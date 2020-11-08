@@ -1,5 +1,22 @@
 # ximage/xcolor - extended color types
 
+```shell script
+go get "tawesoft.co.uk/go/"
+```
+
+```go
+import "tawesoft.co.uk/go/ximage/xcolor"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_ximage/xcolor] ∙ [docs][docs_ximage/xcolor] ∙ [src][src_ximage/xcolor] | [BSD-3-Clause][copy_ximage/xcolor] | ✔ yes |
+
+[home_ximage/xcolor]: https://tawesoft.co.uk/go/ximage/xcolor
+[src_ximage/xcolor]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
+[docs_ximage/xcolor]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
+[copy_ximage/xcolor]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/LICENSE.txt
+
 ## About
 
 Package xcolor implements Red, RedGreen, and RGB color models matching the core
@@ -15,30 +32,13 @@ OpenGL) where images are uploaded to the GPU in a specific format (such as
 GL_R, GL_RG, or GL_RGB) and we don't care about the performance of native
 Go image manipulation.
 
-OpenGL® and the oval logo are trademarks or registered trademarks of Hewlett Packard Enterprise in
-the United States and/or other countries worldwide.
+OpenGL® and the oval logo are trademarks or registered trademarks of
+Hewlett Packard Enterprise
+in the United States and/or other countries worldwide.
 
-|  Links  | License | Stable? | 
-|:-------:|:-------:|:-------:| 
-| [home][home_] ∙ [docs][docs_] ∙ [src][src_] | [BSD-3-Clause][copy_] | ✔ yes |
+## Getting Help
 
-[home_]: https://tawesoft.co.uk/go/ximage/xcolor
-[src_]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
-[docs_]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
-[copy_]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/_COPYING.md
-
-## Download
-
-```shell script
-go get -u tawesoft.co.uk/go
-```
-
-## Import
-
-```
-import tawesoft.co.uk/go/ximage/xcolor
-```
-
-## See Also:
-
-* ximage (https://tawesoft.co.uk/go/ximage)
+This package is part of [tawesoft.co.uk/go](https://www.tawesoft.co.uk/go),
+a monorepo for small Go modules maintained by Tawesoft®.
+Check out that URL for more information about other Go modules from
+Tawesoft plus community and commercial support options.

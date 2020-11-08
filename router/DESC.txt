@@ -1,0 +1,19 @@
+SPDX-License-Identifier: MIT
+short-desc: general purpose (HTTP, etc.) router
+stable: yes
+
+---
+
+Package router is a general purpose router of methods (e.g. HTTP "GET") and
+paths (e.g. "/user/123/profile") to some value e.g. a controller.
+
+Supports named routes, route parameters, constructing a path from a route,
+pattern submatches, etc.
+
+Although built with HTTP routing in mind, this is a general purpose
+implementation that can route to any type of value - it is not limited to
+HTTP handlers.
+
+Examples
+
+EXAMPLE: httprouting

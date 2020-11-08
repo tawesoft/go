@@ -13,7 +13,7 @@ import "tawesoft.co.uk/go/queue"
 | [home][home_queue] ∙ [docs][docs_queue] ∙ [src][src_queue] | [MIT][copy_queue] | candidate |
 
 [home_queue]: https://tawesoft.co.uk/go/queue
-[src_queue]:  https://github.com/tawesoft/go/tree/master/dialog
+[src_queue]:  https://github.com/tawesoft/go/tree/master/queue
 [docs_queue]: https://godoc.org/tawesoft.co.uk/go/queue
 [copy_queue]: https://github.com/tawesoft/go/tree/master/queue/LICENSE.txt
 
@@ -23,7 +23,9 @@ Package queue implements simple, durable/ACID, same-process message queues
 supporting at-least-once or exactly-once delivery and best-effort ordering
 by priority and/or time.
 
+
 ## Examples
+
 
 See examples folder.
 

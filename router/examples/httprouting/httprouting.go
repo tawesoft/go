@@ -1,3 +1,6 @@
+// Demonstrates simple HTTP routing and named routes with a server at
+// localhost:8080
+
 package main
 
 import (

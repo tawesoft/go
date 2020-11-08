@@ -13,7 +13,7 @@ import "tawesoft.co.uk/go/lxstrconv"
 | [home][home_lxstrconv] ∙ [docs][docs_lxstrconv] ∙ [src][src_lxstrconv] | [MIT][copy_lxstrconv] | ✘ **no** |
 
 [home_lxstrconv]: https://tawesoft.co.uk/go/lxstrconv
-[src_lxstrconv]:  https://github.com/tawesoft/go/tree/master/dialog
+[src_lxstrconv]:  https://github.com/tawesoft/go/tree/master/lxstrconv
 [docs_lxstrconv]: https://godoc.org/tawesoft.co.uk/go/lxstrconv
 [copy_lxstrconv]: https://github.com/tawesoft/go/tree/master/lxstrconv/LICENSE.txt
 
@@ -25,7 +25,9 @@ numbers that integrates with golang.org/x/text.
 If golang.org/x/text is ever promoted to core then there will be a new version
 of this package named `lstrconv` (dropping the 'x').
 
+
 ## Package Stability
+
 
 THIS IS A PREVIEW RELEASE, SUBJECT TO BREAKING CHANGES.
 
@@ -40,9 +42,12 @@ currently underestimate how many bytes they successfully parsed when
 the byte length of the string is not equal to the number of Unicode
 code points in the string.
 
+
 ## Example
 
+
 This example demonstrates British, Dutch, and Arabic locale number parsing.
+
 
 ```go
 package main
@@ -75,6 +80,7 @@ Example
 
 You can give end-users examples of the input you expect for a given locale
 using the /x/text package:
+
 
 ```go
 package main

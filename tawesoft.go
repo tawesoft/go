@@ -12,8 +12,12 @@ import (
     _ "tawesoft.co.uk/go/dialog"
     _ "tawesoft.co.uk/go/email"
     _ "tawesoft.co.uk/go/glcaps"
+    _ "tawesoft.co.uk/go/lxstrconv"
     _ "tawesoft.co.uk/go/operator"
+    _ "tawesoft.co.uk/go/queue"
     _ "tawesoft.co.uk/go/router"
+    _ "tawesoft.co.uk/go/sqlp"
+    _ "tawesoft.co.uk/go/sqlp/sqlite3"
     _ "tawesoft.co.uk/go/ximage"
-    _ "tawesoft.co.uk/go/ximage/xcolor"        
+    _ "tawesoft.co.uk/go/ximage/xcolor"
 )
