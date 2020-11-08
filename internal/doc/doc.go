@@ -407,6 +407,8 @@ Contents
         data = append(data,
             fmt.Sprintf("### %s - %s", p.Name, p.Doc.ShortDesc),
             "",
+            p.MediumDesc(),
+            "",
             "```go",
             `import "tawesoft.co.uk/go/`+p.Name+`"`,
             "```",

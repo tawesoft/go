@@ -16,6 +16,9 @@ Contents
 
 ### dialog - simple cross-platform messagebox
 
+Package dialog implements simple cross platform native MessageBox/Alert
+dialogs for Go.
+
 ```go
 import "tawesoft.co.uk/go/dialog"
 ```
@@ -29,6 +32,9 @@ import "tawesoft.co.uk/go/dialog"
 [docs_dialog]: https://godoc.org/tawesoft.co.uk/go/dialog
 [copy_dialog]: https://github.com/tawesoft/go/tree/master/dialog/LICENSE.txt
 ### email - format multipart RFC 2045 email
+
+Package email implements the formatting of multipart RFC 2045 e-mail messages,
+including headers, attachments, HTML email, and plain text.
 
 ```go
 import "tawesoft.co.uk/go/email"
@@ -44,6 +50,10 @@ import "tawesoft.co.uk/go/email"
 [copy_email]: https://github.com/tawesoft/go/tree/master/email/LICENSE.txt
 ### glcaps - read and check OpenGL capabilities
 
+Package glcaps provides a nice interface to declare OpenGL capabilities you
+care about, including minimum required extensions or capabilities. Glcaps has
+no dependencies and is agnostic to the exact OpenGL binding used.
+
 ```go
 import "tawesoft.co.uk/go/glcaps"
 ```
@@ -57,6 +67,9 @@ import "tawesoft.co.uk/go/glcaps"
 [docs_glcaps]: https://godoc.org/tawesoft.co.uk/go/glcaps
 [copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/LICENSE.txt
 ### lxstrconv - locale-aware number parsing
+
+Package lxstrconv is an attempt at implementing locale-aware parsing of
+numbers that integrates with golang.org/x/text.
 
 ```go
 import "tawesoft.co.uk/go/lxstrconv"
@@ -72,6 +85,10 @@ import "tawesoft.co.uk/go/lxstrconv"
 [copy_lxstrconv]: https://github.com/tawesoft/go/tree/master/lxstrconv/LICENSE.txt
 ### operator - operators as functions
 
+Package operator implements logical, arithmetic, bitwise and comparison
+operators as functions (like the Python operator module). Includes unary,
+binary, and n-ary functions with overflow checked variants.
+
 ```go
 import "tawesoft.co.uk/go/operator"
 ```
@@ -85,6 +102,10 @@ import "tawesoft.co.uk/go/operator"
 [docs_operator]: https://godoc.org/tawesoft.co.uk/go/operator
 [copy_operator]: https://github.com/tawesoft/go/tree/master/operator/LICENSE.txt
 ### queue - same-process durable message queue
+
+Package queue implements simple, durable/ACID, same-process message queues
+supporting at-least-once or exactly-once delivery and best-effort ordering
+by priority and/or time.
 
 ```go
 import "tawesoft.co.uk/go/queue"
@@ -100,6 +121,9 @@ import "tawesoft.co.uk/go/queue"
 [copy_queue]: https://github.com/tawesoft/go/tree/master/queue/LICENSE.txt
 ### router - general purpose (HTTP, etc.) router
 
+Package router is a general purpose router of methods (e.g. HTTP "GET") and
+paths (e.g. "/user/123/profile") to some value e.g. a controller.
+
 ```go
 import "tawesoft.co.uk/go/router"
 ```
@@ -113,6 +137,10 @@ import "tawesoft.co.uk/go/router"
 [docs_router]: https://godoc.org/tawesoft.co.uk/go/router
 [copy_router]: https://github.com/tawesoft/go/tree/master/router/LICENSE.txt
 ### sqlp - SQL database extras
+
+Package sqlp ("SQL-plus" or "squelp!") defines helpful interfaces and
+implements extra features for Go SQL database drivers. Specific driver
+extras are implemented in the subdirectories.
 
 ```go
 import "tawesoft.co.uk/go/sqlp"
@@ -128,6 +156,9 @@ import "tawesoft.co.uk/go/sqlp"
 [copy_sqlp]: https://github.com/tawesoft/go/tree/master/sqlp/LICENSE.txt
 ### sqlp/sqlite3 - SQLite3 database extras
 
+Package sqlite enchances a mattn/go-sqlite3 database with simple setup
+of things like utf8 collation and tawesoft.co.uk/go/sqlp features.
+
 ```go
 import "tawesoft.co.uk/go/sqlp/sqlite3"
 ```
@@ -142,6 +173,9 @@ import "tawesoft.co.uk/go/sqlp/sqlite3"
 [copy_sqlp/sqlite3]: https://github.com/tawesoft/go/tree/master/sqlp/sqlite3/LICENSE.txt
 ### ximage - extended image types
 
+Package ximage implements Red, RG, and RGB images matching the core
+image interface.
+
 ```go
 import "tawesoft.co.uk/go/ximage"
 ```
@@ -155,6 +189,9 @@ import "tawesoft.co.uk/go/ximage"
 [docs_ximage]: https://godoc.org/tawesoft.co.uk/go/ximage
 [copy_ximage]: https://github.com/tawesoft/go/tree/master/ximage/LICENSE.txt
 ### ximage/xcolor - extended color types
+
+Package xcolor implements Red, RedGreen, and RGB color models matching the core
+image/color interface.
 
 ```go
 import "tawesoft.co.uk/go/ximage/xcolor"
