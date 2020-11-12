@@ -32,7 +32,7 @@ func Flatten(args ... interface{}) []interface{} {
 // containing, in sequence, each argument or - if an argument is an array or
 // a slice - that argument's contents, flattened recursively.
 //
-// e.g. Flatten(1, []interface{2, []int{3, 4}}, 5) => 1, 2, 3, 4, 5
+// e.g. FlattenRecursive([]interface{}{1, 2, []int{3, 4}}, 5) => 1, 2, 3, 4, 5
 func FlattenRecursive(args ... interface{}) []interface{} {
     result := make([]interface{}, 0)
     
