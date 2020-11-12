@@ -4,6 +4,7 @@ import (
     "context"
     "database/sql"
     "fmt"
+    "strings"
     "syscall"
 )
 
@@ -104,4 +105,13 @@ func RowsAffectedBetween(result sql.Result, min int, max int) (int64, bool) {
     if affected < int64(min) { return affected, false }
     if affected > int64(max) { return affected, false }
     return 0, true
+}
+
+// RepeatString returns a repeating, comma-separted string of `n` instances of
+// `x`, for building queries with multiple arguments.
+//
+// e.g. RepeatString('?', 3) returns "?, ?, ?"
+func RepeatString(x string, n int) string {
+    if n <= 0 { return "" }
+    return strings.Repeat(x + ", ", n - 1) + " " + x
 }

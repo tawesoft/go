@@ -8,6 +8,7 @@ import (
     
     "tawesoft.co.uk/go/sqlp"
     "tawesoft.co.uk/go/sqlp/sqlite3"
+    "tawesoft.co.uk/go/variadic"
 )
 
 type itemSqliteService struct {
@@ -83,7 +84,7 @@ func initItemSqliteService(db *sql.DB, dbname string, file string) error {
         );
 
         CREATE UNIQUE INDEX IF NOT EXISTS `+ dbname +`.items_idx_uuid ON items(uuid);
-        CREATE        INDEX IF NOT EXISTS `+ dbname +`.items_idx_sort ON items(priority DESC, retryAfter, id);
+        CREATE        INDEX IF NOT EXISTS `+ dbname +`.items_idx_sort ON items(priority DESC, retryAfter, created, id);
     `)
     if err != nil {
         return fmt.Errorf("error initialising item table: %+v", err)
@@ -160,7 +161,12 @@ func (s itemSqliteService) CreateItem(newItem NewItem) error {
     return nil
 }
 
-func (s itemSqliteService) PeekItems(n int, minPriority int, due time.Time) ([]Item, error) {
+func (s itemSqliteService) PeekItems(
+    n int,
+    minPriority int,
+    due time.Time,
+    excluding []ItemID,
+) ([]Item, error) {
     items, err := func () ([]Item, error) {
         var i itemSqlite
         
@@ -173,16 +179,20 @@ func (s itemSqliteService) PeekItems(n int, minPriority int, due time.Time) ([]I
         WHERE
             items.id = messages.id
             AND
+                items.priority >= ?
+            AND
                 items.retryAfter <= ?
             AND
-                items.priority >= ?
+                items.id NOT IN (`+ sqlp.RepeatString("?", len(excluding)) +`)
         ORDER BY
             items.priority DESC,
             items.retryAfter,
+            items.created,
             items.id
         LIMIT ?`
         
-        rows, err := s.db.Query(query, due.Unix(), minPriority, n)
+        args := variadic.FlattenExcludingNils(minPriority, due.Unix(), excluding, n)
+        rows, err := s.db.Query(query, args...)
         if err != nil { return nil, err }
         defer rows.Close()
         

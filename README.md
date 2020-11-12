@@ -171,6 +171,23 @@ import "tawesoft.co.uk/go/sqlp/sqlite3"
 [src_sqlp/sqlite3]:  https://github.com/tawesoft/go/tree/master/sqlp/sqlite3
 [docs_sqlp/sqlite3]: https://godoc.org/tawesoft.co.uk/go/sqlp/sqlite3
 [copy_sqlp/sqlite3]: https://github.com/tawesoft/go/tree/master/sqlp/sqlite3/LICENSE.txt
+### variadic - helpers for variadic functions
+
+Package variadic implements features that make it easier to work with
+variadic functions, like the functions `Flatten` and `FlattenExcludingNils`.
+
+```go
+import "tawesoft.co.uk/go/variadic"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_variadic] ∙ [docs][docs_variadic] ∙ [src][src_variadic] | [MIT][copy_variadic] | candidate |
+
+[home_variadic]: https://tawesoft.co.uk/go/variadic
+[src_variadic]:  https://github.com/tawesoft/go/tree/master/variadic
+[docs_variadic]: https://godoc.org/tawesoft.co.uk/go/variadic
+[copy_variadic]: https://github.com/tawesoft/go/tree/master/variadic/LICENSE.txt
 ### ximage - extended image types
 
 Package ximage implements Red, RG, and RGB images matching the core

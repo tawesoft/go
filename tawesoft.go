@@ -18,6 +18,7 @@ import (
     _ "tawesoft.co.uk/go/router"
     _ "tawesoft.co.uk/go/sqlp"
     _ "tawesoft.co.uk/go/sqlp/sqlite3"
+    _ "tawesoft.co.uk/go/variadic"
     _ "tawesoft.co.uk/go/ximage"
     _ "tawesoft.co.uk/go/ximage/xcolor"
 )

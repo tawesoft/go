@@ -86,8 +86,12 @@ func main() {
     // At 15 seconds in, the first two items in Queue 1 should be due, but the
     // third item is not yet due.
     future := time.Now().UTC().Add(time.Second * 15)
-    items, err := queue1.PeekItems(5, 0, future) // get up to 5 items of priority >= 0
+    
+    // get up to 5 items of priority zero or higher, excluding nil items
+    items, err := queue1.PeekItems(5, 0, future, nil)
     Must(err)
+    
+    // process the items, deleting one and rescheduling one until much later
     for _, item := range items {
         if item.Message == "I get deleted later" {
             Must(queue1.DeleteItem(item.ID))
@@ -98,8 +102,9 @@ func main() {
         fmt.Printf("got item: %s\n", item)
     }
     
-    fmt.Println("after processing the queue:")
-    items, err = queue1.PeekItems(5, 0, future) // get up to 5 items of priority >= 0
+    // repeat the search, expecting to see two fewer items
+    fmt.Println("\nafter processing the queue:")
+    items, err = queue1.PeekItems(5, 0, future, nil)
     Must(err)
     for _, item := range items {
         fmt.Printf("got item: %s\n", item)
