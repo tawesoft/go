@@ -27,7 +27,7 @@ managing multiple goroutines with graceful shutdown.
 ## Examples
 
 
-Opening privileged files and ports as root, then drops privileges
+Opens privileged files and ports as root, then drops privileges
 ```go
 package main
 
