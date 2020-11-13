@@ -7,3 +7,7 @@ stable: candidate
 Package start implements helpful features for starting a (system) process
 including dropping privileges (while inheriting privileged file handles) and
 managing multiple goroutines with graceful shutdown.
+
+Examples
+
+EXAMPLE: drop

@@ -1,4 +1,4 @@
-// Opening privileged files and ports as root, then dropping privileges
+// Opening privileged files and ports as root, then drops privileges
 package main
 
 import (
