@@ -14,10 +14,6 @@ type Item struct {
     // ID uniquely identifies the item in a single queue
     ID ItemID
     
-    // UUID uniquely identifies the item across multiple systems and can be
-    // used e.g. as a cryptographic nonce to prevent replays / duplicates
-    UUID []byte
-    
     // Priority orders items in the queue so that due items with a higher
     // priority come before other due items, even if they were due sooner.
     Priority int // default 0, limit +/- math.MaxInt16

@@ -22,7 +22,7 @@ type queueSqliteService struct {
 // by zeros on disk to protect possibly sensitive data.
 //
 // A queue databases is VACUUMed when first attached by OpenQueue
-func NewQueueSqliteService(uuidSvc UUIDService) (QueueService, error) {
+func NewQueueSqliteService() (QueueService, error) {
     
     db, err := sqlite3.Open("sqlite3", ":memory:", sqlite3.Config{
         ForeignKeys:  true,
@@ -35,12 +35,11 @@ func NewQueueSqliteService(uuidSvc UUIDService) (QueueService, error) {
     
     return queueSqliteService{
         db:      db,
-        uuidSvc: uuidSvc,
     }, nil
 }
 
 func (s queueSqliteService) OpenQueue(name string, path string) (Queue, error) {
-    return newItemSqliteService(s.db,s.uuidSvc,  name, path)
+    return newItemSqliteService(s.db, name, path)
 }
 
 func (s queueSqliteService) Close() error {

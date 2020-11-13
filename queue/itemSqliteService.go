@@ -15,30 +15,27 @@ type itemSqliteService struct {
     dbname  string
     dbpath  string
     db      *sql.DB
-    uuidSvc UUIDService
     msgSvc  messageSqliteService
 }
 var nilItemSqliteService = itemSqliteService{}
 
 type itemSqliteNew struct {
-    UUID       []byte
     Priority   int // default 0
     Created    int64 // time.Time // UTC
     RetryAfter int64 // time.Time // UTC
 }
 func (p itemSqliteNew) fields() string {
-    return "uuid, priority, created, retryAfter"
+    return "priority, created, retryAfter"
 }
 func (p itemSqliteNew) placeholders() string {
-    return "?, ?, ?, ?"
+    return "?, ?, ?"
 }
 func (p itemSqliteNew) values() []interface{} {
-    return []interface{}{p.UUID, p.Priority, p.Created, p.RetryAfter}
+    return []interface{}{p.Priority, p.Created, p.RetryAfter}
 }
 
 type itemSqlite struct {
     ID ItemID
-    UUID []byte
     Priority int
     Message string
     Attempt int
@@ -46,21 +43,20 @@ type itemSqlite struct {
     RetryAfter int64 // time.Time // UTC
 }
 func (p itemSqlite) fields() string {
-    return "items.id, items.uuid, items.priority, messages.data, items.attempt, items.created, items.retryAfter"
+    return "items.id, items.priority, messages.data, items.attempt, items.created, items.retryAfter"
 }
 func (p itemSqlite) placeholders() string {
-    return "?, ?, ?, ?, ?, ?, ?"
+    return "?, ?, ?, ?, ?, ?"
 }
 func (p itemSqlite) values() []interface{} {
-    return []interface{}{p.ID, p.UUID, p.Priority, p.Message,p.Attempt, p.Created, p.RetryAfter}
+    return []interface{}{p.ID, p.Priority, p.Message,p.Attempt, p.Created, p.RetryAfter}
 }
 func (p *itemSqlite) pointers() []interface{} {
-    return []interface{}{&p.ID, &p.UUID, &p.Priority, &p.Message, &p.Attempt, &p.Created, &p.RetryAfter}
+    return []interface{}{&p.ID, &p.Priority, &p.Message, &p.Attempt, &p.Created, &p.RetryAfter}
 }
 func (p itemSqlite) toItem() Item {
     return Item{
         ID:         p.ID,
-        UUID:       p.UUID,
         Priority:   p.Priority,
         Message:    p.Message,
         Attempt:    p.Attempt,
@@ -76,15 +72,13 @@ func initItemSqliteService(db *sql.DB, dbname string, file string) error {
 
         CREATE TABLE IF NOT EXISTS `+ dbname +`.items (
             id         INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            uuid       BLOB NOT NULL,
             priority   INTEGER NOT NULL DEFAULT 0,
             attempt    INTEGER NOT NULL DEFAULT 0,
             created    INTEGER NOT NULL, -- epoch seconds
             retryAfter INTEGER NOT NULL  -- epoch seconds
         );
 
-        CREATE UNIQUE INDEX IF NOT EXISTS `+ dbname +`.items_idx_uuid ON items(uuid);
-        CREATE        INDEX IF NOT EXISTS `+ dbname +`.items_idx_sort ON items(priority DESC, retryAfter, created, id);
+        CREATE INDEX IF NOT EXISTS `+ dbname +`.items_idx_sort ON items(priority DESC, retryAfter, created, id);
     `)
     if err != nil {
         return fmt.Errorf("error initialising item table: %+v", err)
@@ -94,7 +88,7 @@ func initItemSqliteService(db *sql.DB, dbname string, file string) error {
 
 // newItemSqliteService creates a new itemService implemented by a
 // itemSqliteService
-func newItemSqliteService(db *sql.DB, uuidSvc UUIDService, name string, rawpath string) (itemSqliteService, error) {
+func newItemSqliteService(db *sql.DB, name string, rawpath string) (itemSqliteService, error) {
     var err error
     
     name, err = sqlite3.Features.EscapeIdentifier(name)
@@ -112,7 +106,6 @@ func newItemSqliteService(db *sql.DB, uuidSvc UUIDService, name string, rawpath 
         dbname:  name,
         dbpath:  rawpath,
         db:      db,
-        uuidSvc: uuidSvc,
         msgSvc:  msgSvc,
     }, nil
 }
@@ -123,11 +116,7 @@ func (s itemSqliteService) CreateItem(newItem NewItem) error {
         if err != nil { return err }
         defer tx.Rollback()
         
-        uuid, err := s.uuidSvc.Generate()
-        if err != nil { return fmt.Errorf("UUID error: %+v", err) }
-        
         i := itemSqliteNew{
-            UUID:       uuid,
             Priority:   newItem.Priority,
             Created:    newItem.Created.Unix(),
             RetryAfter: newItem.RetryAfter.Unix(),

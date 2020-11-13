@@ -171,6 +171,24 @@ import "tawesoft.co.uk/go/sqlp/sqlite3"
 [src_sqlp/sqlite3]:  https://github.com/tawesoft/go/tree/master/sqlp/sqlite3
 [docs_sqlp/sqlite3]: https://godoc.org/tawesoft.co.uk/go/sqlp/sqlite3
 [copy_sqlp/sqlite3]: https://github.com/tawesoft/go/tree/master/sqlp/sqlite3/LICENSE.txt
+### start - system process setup
+
+Package start implements helpful features for starting a (system) process
+including dropping privileges (while inheriting privileged file handles) and
+managing multiple goroutines with graceful shutdown.
+
+```go
+import "tawesoft.co.uk/go/start"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_start] ∙ [docs][docs_start] ∙ [src][src_start] | [MIT][copy_start] | candidate |
+
+[home_start]: https://tawesoft.co.uk/go/start
+[src_start]:  https://github.com/tawesoft/go/tree/master/start
+[docs_start]: https://godoc.org/tawesoft.co.uk/go/start
+[copy_start]: https://github.com/tawesoft/go/tree/master/start/LICENSE.txt
 ### variadic - helpers for variadic functions
 
 Package variadic implements features that make it easier to work with

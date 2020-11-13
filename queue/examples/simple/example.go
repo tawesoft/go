@@ -28,17 +28,10 @@ func main() {
     // demonstration.
     os.Remove("q1.db")
     
-    // Give each item in the queue a unique ID e.g. if we're sending things to
-    // a remote API and want to prevent duplicates.
-    uuidService := queue.NewUUID4Service()
-    
-    // Alternatively, if you don't care about this:
-    // uuidService := queue.NewUUIDNuullService()
-    
     // Create a service that can create queues. We'll use the Sqlite
     // implementation with each queue backed by its own file as an attached
     // database.
-    queueService := MustQueueService(queue.NewQueueSqliteService(uuidService))
+    queueService := MustQueueService(queue.NewQueueSqliteService())
     defer queueService.Close()
     
     // Create two seperate queues backed by different files
