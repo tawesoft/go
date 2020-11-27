@@ -1,0 +1,4 @@
+2020-11-27
+
+    * Drop() functionality has been moved to tawesoft.co.uk/go/drop with
+      changes to Inheritables from a struct to an interface.

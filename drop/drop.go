@@ -1,4 +1,4 @@
-package start
+package drop
 
 import (
     "fmt"
@@ -8,19 +8,27 @@ import (
     "syscall"
 )
 
-func isSuperuser() bool {
-    return os.Getuid() == 0
+// Inheritable
+type Inheritable interface {
+    Name() string
+    Open() (*os.File, error)
+    Inherit(*os.File) error
 }
 
-type Inheritable struct {
-    Name string
-    Open func() (*os.File, error)
-    Set  func(*os.File) error
-}
-
+// Drop works in two ways, depending on the privileges of the current process.
+//
+// As the superuser (root), drop executes a new copy of the running program as
+// the given user, then exits. The current stdio streams, and zero-or-more
+// "inheritable" files, are persisted and inherited by the new process.
+//
+// As a non-superuser, drop inherits the files from the calling process.
+//
+// NOTE: it is not a good idea to open any resource, other than those passed
+// as Inheritable, prior to a call to drop. Open as few resources, and do as
+// little as possible, while root. Call Drop as early as possible.
 func Drop(
     username string,
-    files[]Inheritable,
+    files ... Inheritable,
 ) error {
     if runtime.GOOS != "linux" {
         return fmt.Errorf("unsupported: Drop only works on Linux")
@@ -66,31 +74,32 @@ func Drop(
         closeAll(handles)
         
         // close immediately
+        os.Exit(0)
+        
+        // alternatively supervise (waste of memory, use system services)
         /*
         err = cmd.Wait()
         if err != nil {
             return fmt.Errorf("child process exited with error: %v", err)
         }
         */
-
-        os.Exit(0)
         
     } else { // inherit
         
         for i := 0; i < len(files); i++ {
-            handle := os.NewFile(uintptr(3 + i), files[i].Name)
+            handle := os.NewFile(uintptr(3 + i), files[i].Name())
             if handle == nil {
                 closeAll(handles)
-                return fmt.Errorf("error inheriting file %s", files[i].Name)
+                return fmt.Errorf("error inheriting file %s", files[i].Name())
             }
             handles = append(handles, handle)
         }
         
         for i := 0; i < len(files); i++ {
-            err := files[i].Set(handles[i])
+            err := files[i].Inherit(handles[i])
             if err != nil {
                 closeAll(handles)
-                return fmt.Errorf("error inheriting file %s: %v", files[i].Name, err)
+                return fmt.Errorf("error inheriting file %s: %v", files[i].Name(), err)
             }
         }
     }

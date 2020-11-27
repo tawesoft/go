@@ -31,6 +31,24 @@ import "tawesoft.co.uk/go/dialog"
 [src_dialog]:  https://github.com/tawesoft/go/tree/master/dialog
 [docs_dialog]: https://godoc.org/tawesoft.co.uk/go/dialog
 [copy_dialog]: https://github.com/tawesoft/go/tree/master/dialog/LICENSE.txt
+### drop - drop privileges and inherit handles
+
+Package drop implements the ability to start a process as root, open
+privileged resources as files, drop privileges to become a given user account,
+and inherit file handles across the dropping of privileges.
+
+```go
+import "tawesoft.co.uk/go/drop"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_drop] ∙ [docs][docs_drop] ∙ [src][src_drop] | [MIT][copy_drop] | candidate |
+
+[home_drop]: https://tawesoft.co.uk/go/drop
+[src_drop]:  https://github.com/tawesoft/go/tree/master/drop
+[docs_drop]: https://godoc.org/tawesoft.co.uk/go/drop
+[copy_drop]: https://github.com/tawesoft/go/tree/master/drop/LICENSE.txt
 ### email - format multipart RFC 2045 email
 
 Package email implements the formatting of multipart RFC 2045 e-mail messages,
@@ -130,7 +148,7 @@ import "tawesoft.co.uk/go/router"
 
 |  Links  | License | Stable? |
 |:-------:|:-------:|:-------:|
-| [home][home_router] ∙ [docs][docs_router] ∙ [src][src_router] | [MIT][copy_router] | ✔ yes |
+| [home][home_router] ∙ [docs][docs_router] ∙ [src][src_router] | [MIT][copy_router] | candidate |
 
 [home_router]: https://tawesoft.co.uk/go/router
 [src_router]:  https://github.com/tawesoft/go/tree/master/router
@@ -171,28 +189,10 @@ import "tawesoft.co.uk/go/sqlp/sqlite3"
 [src_sqlp/sqlite3]:  https://github.com/tawesoft/go/tree/master/sqlp/sqlite3
 [docs_sqlp/sqlite3]: https://godoc.org/tawesoft.co.uk/go/sqlp/sqlite3
 [copy_sqlp/sqlite3]: https://github.com/tawesoft/go/tree/master/sqlp/sqlite3/LICENSE.txt
-### start - system process setup
-
-Package start implements helpful features for starting a (system) process
-including dropping privileges (while inheriting privileged file handles) and
-managing multiple goroutines with graceful shutdown.
-
-```go
-import "tawesoft.co.uk/go/start"
-```
-
-|  Links  | License | Stable? |
-|:-------:|:-------:|:-------:|
-| [home][home_start] ∙ [docs][docs_start] ∙ [src][src_start] | [MIT][copy_start] | candidate |
-
-[home_start]: https://tawesoft.co.uk/go/start
-[src_start]:  https://github.com/tawesoft/go/tree/master/start
-[docs_start]: https://godoc.org/tawesoft.co.uk/go/start
-[copy_start]: https://github.com/tawesoft/go/tree/master/start/LICENSE.txt
 ### variadic - helpers for variadic functions
 
 Package variadic implements features that make it easier to work with
-variadic functions, like the functions `Flatten` and `FlattenExcludingNils`.
+variadic functions.
 
 ```go
 import "tawesoft.co.uk/go/variadic"

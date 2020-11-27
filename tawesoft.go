@@ -10,6 +10,7 @@ package tawesoft
 
 import (
     _ "tawesoft.co.uk/go/dialog"
+    _ "tawesoft.co.uk/go/drop"
     _ "tawesoft.co.uk/go/email"
     _ "tawesoft.co.uk/go/glcaps"
     _ "tawesoft.co.uk/go/lxstrconv"
@@ -18,7 +19,6 @@ import (
     _ "tawesoft.co.uk/go/router"
     _ "tawesoft.co.uk/go/sqlp"
     _ "tawesoft.co.uk/go/sqlp/sqlite3"
-    _ "tawesoft.co.uk/go/start"
     _ "tawesoft.co.uk/go/variadic"
     _ "tawesoft.co.uk/go/ximage"
     _ "tawesoft.co.uk/go/ximage/xcolor"

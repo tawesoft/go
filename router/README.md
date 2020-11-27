@@ -10,7 +10,7 @@ import "tawesoft.co.uk/go/router"
 
 |  Links  | License | Stable? |
 |:-------:|:-------:|:-------:|
-| [home][home_router] ∙ [docs][docs_router] ∙ [src][src_router] | [MIT][copy_router] | ✔ yes |
+| [home][home_router] ∙ [docs][docs_router] ∙ [src][src_router] | [MIT][copy_router] | candidate |
 
 [home_router]: https://tawesoft.co.uk/go/router
 [src_router]:  https://github.com/tawesoft/go/tree/master/router

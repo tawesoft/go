@@ -1,10 +1,15 @@
-package start
+package drop
 
 import (
     "fmt"
+    "os"
     "os/user"
     "strconv"
 )
+
+func isSuperuser() bool {
+    return os.Getuid() == 0
+}
 
 // returns UID, GID, and Supplementary Group IDs
 func userLookup(username string) (uid uint32, gid uint32, gids []uint32, err error) {

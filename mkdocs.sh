@@ -1,5 +1,6 @@
 go run internal/doc/doc.go \
     dialog \
+    drop \
     email \
     glcaps \
     lxstrconv \
@@ -8,7 +9,6 @@ go run internal/doc/doc.go \
     router \
     sqlp \
     sqlp/sqlite3 \
-    start \
     variadic \
     ximage \
     ximage/xcolor

@@ -20,7 +20,7 @@ import "tawesoft.co.uk/go/variadic"
 ## About
 
 Package variadic implements features that make it easier to work with
-variadic functions, like the functions `Flatten` and `FlattenExcludingNils`.
+variadic functions.
 
 ## Getting Help
 
