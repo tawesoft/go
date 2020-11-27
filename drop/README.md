@@ -58,7 +58,7 @@ func (h InheritableFile) Name() string {
 }
 
 func (h InheritableFile) Open() (*os.File, error) {
-    return os.OpenFile("/tmp/privileged-file-example", os.O_RDWR|os.O_CREATE, 0600)
+    return os.OpenFile(h.Path, h.Flags, h.Perm)
 }
 
 func (h *InheritableFile) Inherit(f *os.File) error {
