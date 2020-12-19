@@ -31,8 +31,14 @@ func main() {
     packageNames := os.Args[1:]
     sort.Strings(packageNames)
     packages := make([]Package, 0, len(packageNames))
+    packagesExceptLegacy := make([]Package, 0, len(packageNames))
     for _, name := range packageNames {
-        packages = append(packages, LoadPackage(name))
+        p := LoadPackage(name)
+        packages = append(packages, p)
+        
+        if !strings.HasPrefix(p.Name, "legacy") {
+            packagesExceptLegacy = append(packagesExceptLegacy, p)
+        }
     }
     
     for _, pkg := range packages {
@@ -44,8 +50,8 @@ func main() {
     if err != nil { panic(err) }
     
     writeGoIndex(packages)
-    writeMarkdownIndex(packages)
-    writeHtmlIndex(t, packages)
+    writeMarkdownIndex(packagesExceptLegacy)
+    writeHtmlIndex(t, packagesExceptLegacy)
 }
 
 type Doc struct {

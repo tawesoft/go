@@ -11,4 +11,5 @@ go run internal/doc/doc.go \
     sqlp/sqlite3 \
     variadic \
     ximage \
-    ximage/xcolor
+    ximage/xcolor \
+    legacy/email
