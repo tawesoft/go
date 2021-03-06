@@ -197,7 +197,7 @@
 //
 // License: MIT (see LICENSE.txt)
 //
-// Stable: candidate
+// Stable: no
 //
 // For more information, documentation, source code, examples, support, links,
 // etc. please see https://www.tawesoft.co.uk/go and 

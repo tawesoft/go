@@ -96,7 +96,7 @@ import "tawesoft.co.uk/go/loader"
 
 |  Links  | License | Stable? |
 |:-------:|:-------:|:-------:|
-| [home][home_loader] ∙ [docs][docs_loader] ∙ [src][src_loader] | [MIT][copy_loader] | candidate |
+| [home][home_loader] ∙ [docs][docs_loader] ∙ [src][src_loader] | [MIT][copy_loader] | ✘ **no** |
 
 [home_loader]: https://tawesoft.co.uk/go/loader
 [src_loader]:  https://github.com/tawesoft/go/tree/master/loader
