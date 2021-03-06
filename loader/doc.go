@@ -41,6 +41,7 @@
 //         "fmt"
 //         "math/rand"
 //         "net/url"
+//         "runtime"
 //         "strings"
 //         "time"
 //     
@@ -100,8 +101,13 @@
 //         }
 //     
 //         // Define consumerNet on the loader as a class of worker for network files.
-//         // Allows up to 5 simultaneous downloads (Firefox uses 256!)
+//         // Allows up to 5 simultaneous downloads (Firefox uses 256!) but the
+//         // strategy will limit concurrent connections to a single host.
 //         consumerNet := ldr.NewConsumer(5, netStrategy)
+//     
+//         // Define consumerCPU on the loader as a class of worker for CPU-bound
+//         // tasks.
+//         consumerCPU := ldr.NewConsumer(runtime.NumCPU(), nil)
 //     
 //         // A helper function that returns a loader.Task for downloading a file
 //         // concurrently with consumerNet
@@ -132,6 +138,7 @@
 //                 Name: name,
 //                 Keep: true,
 //                 RequiresDirect: tasks,
+//                 Consumer: consumerCPU,
 //     
 //                 Load: func(inputs ... interface{}) (interface{}, error) {
 //                     inputStrings := make([]string, 0)
