@@ -29,6 +29,24 @@ concurrently with files being loaded from disk, and synchronised with the main
 thread for safe OpenGL operations such as creating texture objects on the GPU.
 
 
+## TODO: doesn't yet free temporary results
+
+
+
+## TODO: refactor the load loop to always send/receive at the same time
+
+
+
+## TODO: clean up generally
+
+
+TODO: not decided about the API for Loader.Result (but loader.MustResult is ok)
+
+
+## TODO: a step to simplify the DAG to remove passthrough loader.NamedTask steps
+
+
+
 ## Examples
 
 
