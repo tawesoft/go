@@ -16,6 +16,7 @@ func (s *defaultStrategyT) End(_ interface{}) {}
 type Progress struct {
     Completed int
     Remaining int
+    Total     int
     Done bool
 }
 
@@ -171,13 +172,11 @@ func (l *Loader) registerResult(idx int, result interface{}, err error) error {
 // See also the LoadAll() method.
 func (l *Loader) Load(budget time.Duration) (Progress, error) {
 
-    earlyResults := l.sendPendingTasksToConsumers()
-
     start := time.Now()
 
     outer:
     for {
-        // TODO move pending tasks here
+        earlyResults := l.sendPendingTasksToConsumers()
 
         // while there is sequential work to be done...
         for _, c := range l.seqConsumers {
@@ -213,15 +212,19 @@ func (l *Loader) Load(budget time.Duration) (Progress, error) {
 // LoadAll completes all loading tasks and blocks until finished
 func (l *Loader) LoadAll() (Progress, error) {
 
-    earlyResults := l.sendPendingTasksToConsumers()
-
-    // TODO
-    earlyResults = earlyResults
-
     for l.progress.Remaining > 0 {
+        earlyResults := l.sendPendingTasksToConsumers()
+
         // while there is sequential work to be done...
         for _, c := range l.seqConsumers {
             c.manage(&l.dag, &l.dag.nodes, l.registerResult)
+        }
+
+        if earlyResults != nil {
+            for _, result := range earlyResults {
+                l.registerResult(result.idx, result.result, result.err)
+            }
+            earlyResults = nil
         }
 
         // if there are still concurrent tasks left...
@@ -268,6 +271,7 @@ func (l *Loader) identify(idx int) {
 func (l *Loader) Add(tasks []Task) error {
     err := l.dag.add(tasks)
     l.progress.Remaining += len(l.dag.nodes)
+    l.progress.Total     += len(l.dag.nodes)
     l.progress.Done = false
     return err
 }

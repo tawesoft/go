@@ -1,0 +1,18 @@
+SPDX-License-Identifier: MIT
+short-desc: concurrent dependency graph solver
+stable: candidate
+
+---
+
+Package loader implements the ability to define a graph of tasks and
+dependencies, classes of synchronous and concurrent workers, and limiting
+strategies, and solve the graph incrementally or totally.
+
+For example, this could be used to implement a loading screen for a computer
+game with a progress bar that updates in real time, with images being decoded
+concurrently with files being loaded from disk, and synchronised with the main
+thread for safe OpenGL operations such as creating texture objects on the GPU.
+
+Examples
+
+EXAMPLE: limit-connections-per-host

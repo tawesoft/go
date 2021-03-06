@@ -3,6 +3,7 @@ go run internal/doc/doc.go \
     drop \
     email \
     glcaps \
+    loader \
     lxstrconv \
     operator \
     queue \

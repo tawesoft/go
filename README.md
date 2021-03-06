@@ -84,6 +84,24 @@ import "tawesoft.co.uk/go/glcaps"
 [src_glcaps]:  https://github.com/tawesoft/go/tree/master/glcaps
 [docs_glcaps]: https://godoc.org/tawesoft.co.uk/go/glcaps
 [copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/LICENSE.txt
+### loader - concurrent dependency graph solver
+
+Package loader implements the ability to define a graph of tasks and
+dependencies, classes of synchronous and concurrent workers, and limiting
+strategies, and solve the graph incrementally or totally.
+
+```go
+import "tawesoft.co.uk/go/loader"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_loader] ∙ [docs][docs_loader] ∙ [src][src_loader] | [MIT][copy_loader] | candidate |
+
+[home_loader]: https://tawesoft.co.uk/go/loader
+[src_loader]:  https://github.com/tawesoft/go/tree/master/loader
+[docs_loader]: https://godoc.org/tawesoft.co.uk/go/loader
+[copy_loader]: https://github.com/tawesoft/go/tree/master/loader/LICENSE.txt
 ### lxstrconv - locale-aware number parsing
 
 Package lxstrconv is an attempt at implementing locale-aware parsing of
