@@ -28,6 +28,10 @@ game with a progress bar that updates in real time, with images being decoded
 concurrently with files being loaded from disk, and synchronised with the main
 thread for safe OpenGL operations such as creating texture objects on the GPU.
 
+While this package is generally suitable for use in real world applications,
+we are waiting to get some experience with how it works for us in an internal
+application before polishing or committing to a stable API.
+
 
 ## TODO: doesn't yet free temporary results
 
