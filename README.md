@@ -60,7 +60,7 @@ import "tawesoft.co.uk/go/email"
 
 |  Links  | License | Stable? |
 |:-------:|:-------:|:-------:|
-| [home][home_email] ∙ [docs][docs_email] ∙ [src][src_email] | [MIT][copy_email] | ✘ **no** |
+| [home][home_email] ∙ [docs][docs_email] ∙ [src][src_email] | [MIT][copy_email] | candidate |
 
 [home_email]: https://tawesoft.co.uk/go/email
 [src_email]:  https://github.com/tawesoft/go/tree/master/email

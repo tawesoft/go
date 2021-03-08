@@ -10,7 +10,7 @@ import "tawesoft.co.uk/go/email"
 
 |  Links  | License | Stable? |
 |:-------:|:-------:|:-------:|
-| [home][home_email] ∙ [docs][docs_email] ∙ [src][src_email] | [MIT][copy_email] | ✘ **no** |
+| [home][home_email] ∙ [docs][docs_email] ∙ [src][src_email] | [MIT][copy_email] | candidate |
 
 [home_email]: https://tawesoft.co.uk/go/email
 [src_email]:  https://github.com/tawesoft/go/tree/master/email
@@ -65,6 +65,11 @@ func main() {
 ## Changes
 
 ### 2021-03-07
+
+* Breaking changes to this email package, as previously warned, bump the
+monorepo tagged version to v0.2.0 and upgrade the email package stability
+rating from "unstable" to "candidate". For previous behavior, point your
+imports to `tawesoft.co.uk/go/legacy/email`.
 
 * Attachments are now read/written more efficiently.
 

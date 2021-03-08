@@ -66,13 +66,18 @@
 //
 // License: MIT (see LICENSE.txt)
 //
-// Stable: no
+// Stable: candidate
 //
 // For more information, documentation, source code, examples, support, links,
 // etc. please see https://www.tawesoft.co.uk/go and 
 // https://www.tawesoft.co.uk/go/email
 //
 //     2021-03-07
+//     
+//         * Breaking changes to this email package, as previously warned, bump the
+//           monorepo tagged version to v0.2.0 and upgrade the email package stability
+//           rating from "unstable" to "candidate". For previous behavior, point your
+//           imports to `tawesoft.co.uk/go/legacy/email`.
 //     
 //         * Attachments are now read/written more efficiently.
 //     
