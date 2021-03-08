@@ -1,7 +1,7 @@
 // tawesoft.co.uk/go/email
 // 
-// Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
-// Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
+// Copyright © 2020 - 2021 Tawesoft Ltd <open-source@tawesoft.co.uk>
+// Copyright © 2020 - 2021 Ben Golightly <ben@tawesoft.co.uk>
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,6 +20,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
+// 
 
 // Package email implements the formatting of multipart RFC 2045 e-mail messages,
 // including headers, attachments, HTML email, and plain text.

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#375EAB">
+{{with .Tabtitle}}
+  <title>{{html .}} - Tawesoft® monorepo Go documentation</title>
+{{else}}
+  <title>Tawesoft® Go monorepo documentation</title>
+{{end}}
+<link type="text/css" rel="stylesheet" href="/lib/godoc/style.css">
+{{if .SearchBox}}
+<link rel="search" type="application/opensearchdescription+xml" title="godoc" href="/opensearch.xml" />
+{{end}}
+{{if .TreeView}}
+<link rel="stylesheet" href="/lib/godoc/jquery.treeview.css">
+{{end}}
+<script>window.initFuncs = [];</script>
+{{with .GoogleAnalytics}}
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(["_setAccount", "{{.}}"]);
+window.trackPageview = function() {
+  _gaq.push(["_trackPageview", location.pathname+location.hash]);
+};
+window.trackPageview();
+window.trackEvent = function(category, action, opt_label, opt_value, opt_noninteraction) {
+  _gaq.push(["_trackEvent", category, action, opt_label, opt_value, opt_noninteraction]);
+};
+</script>
+{{end}}
+<script src="/lib/godoc/jquery.js" defer></script>
+{{if .TreeView}}
+<script src="/lib/godoc/jquery.treeview.js" defer></script>
+<script src="/lib/godoc/jquery.treeview.edit.js" defer></script>
+{{end}}
+
+{{if .Playground}}
+<script src="/lib/godoc/playground.js" defer></script>
+{{end}}
+{{with .Version}}<script>var goVersion = {{printf "%q" .}};</script>{{end}}
+<script src="/lib/godoc/godocs.js" defer></script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div style="float: right; padding: 0.5em 0.7em;"><a href="https://www.tawesoft.co.uk/products/open-source-software"><img src="https://www.tawesoft.co.uk/media/0/logo-240r.png" alt="Tawesoft Logo" /></a></div>
+
+<div id="topbar"{{if .Title}} class="wide"{{end}}>
+<div class="container">
+    <div class="top-heading" id="heading-wide"><a href="https://www.tawesoft.co.uk/go/doc">Tawesoft<sup>®</sup> monorepo Go documentation</a></div>
+    <div class="top-heading" id="heading-narrow"><a href="https://www.tawesoft.co.uk/go/doc">Tawesoft monorepo Go docs</a></div>
+
+</div></div>
+
+{{if .Playground}}
+<div id="playground" class="play">
+	<div class="input"><textarea class="code" spellcheck="false">package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, 世界")
+}</textarea></div>
+	<div class="output"></div>
+	<div class="buttons">
+		<a class="run" title="Run this code [shift-enter]">Run</a>
+		<a class="fmt" title="Format this code">Format</a>
+		{{if not $.GoogleCN}}
+		<a class="share" title="Share this code">Share</a>
+		{{end}}
+	</div>
+</div>
+{{end}}
+
+<div id="page"{{if .Title}} class="wide"{{end}}>
+<div class="container">
+
+{{if or .Title .SrcPath}}
+  <h1>
+    {{html .Title}}
+    {{/* html .SrcPath | srcBreadcrumb -- wget broke links */}}
+    {{html .SrcPath }}
+  </h1>
+{{end}}
+
+{{with .Subtitle}}
+  <h2>{{html .}}</h2>
+{{end}}
+
+{{with .SrcPath}}
+  <h2>
+    Documentation: {{/* html . | srcToPkgLink - wget broke links */}}
+    {{html . }}
+  </h2>
+{{end}}
+
+{{/* The Table of Contents is automatically inserted in this <div>.
+     Do not delete this <div>. */}}
+<div id="nav"></div>
+
+{{/* Body is HTML-escaped elsewhere */}}
+{{printf "%s" .Body}}
+
+<div id="footer">
+Copyright / Hawlfraint © <a href="https://www.tawesoft.co.uk/">Tawesoft Ltd</a> 2019 - 2021. Tawesoft<sup>®</sup> is a trading style and registered trade mark of Tawesoft Ltd<br>
+Built with {{html .Version}} and <a href="https://github.com/golang/tools/tree/master/godoc">godoc</a>, Copyright (c) 2009 The Go Authors.<br>
+<a href="https://www.tawesoft.co.uk/about/privacy">Privacy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+{{if .GoogleAnalytics}}
+<script type="text/javascript">
+(function() {
+  var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
+  ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+  var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+{{end}}
+</body>
+</html>
+
