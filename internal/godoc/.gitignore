@@ -1,3 +1,5 @@
 *
 !.gitignore
 !godoc.html
+!style.css
+!package.html
