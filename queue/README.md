@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/queue"
 
 [home_queue]: https://tawesoft.co.uk/go/queue
 [src_queue]:  https://github.com/tawesoft/go/tree/master/queue
-[docs_queue]: https://godoc.org/tawesoft.co.uk/go/queue
+[docs_queue]: https://www.tawesoft.co.uk/go/doc/queue
 [copy_queue]: https://github.com/tawesoft/go/tree/master/queue/LICENSE.txt
 
 ## About

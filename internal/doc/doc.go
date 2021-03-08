@@ -372,7 +372,7 @@ A monorepo for small Go modules maintained by Tawesoft®
 This is permissively-licensed open source software but exact licenses may vary between modules.
 
 For license information, documentation, source code, support, links, etc. please see
-https://tawesoft.co.uk/go
+https://www.tawesoft.co.uk/go
 */
 package tawesoft
 
@@ -429,7 +429,7 @@ Links
 -----
 
 * Home: [tawesoft.co.uk/go](https://tawesoft.co.uk/go)
-* Docs hub: [godoc.org/tawesoft.co.uk/go](https://godoc.org/tawesoft.co.uk/go)
+* Docs hub: [tawesoft.co.uk/go/doc/](https://www.tawesoft.co.uk/go/doc/)
 * Repository: [github.com/tawesoft/go](https://github.com/tawesoft/go)
 * Or [search "tawesoft"](https://pkg.go.dev/search?q=tawesoft) on [go.dev](https://go.dev/)
 
@@ -532,7 +532,7 @@ func fmtMarkdownPackageTable(p Package) string {
 
 [home_%[1]s]: https://tawesoft.co.uk/go/%[1]s
 [src_%[1]s]:  https://github.com/tawesoft/go/tree/master/%[1]s
-[docs_%[1]s]: https://godoc.org/tawesoft.co.uk/go/%[1]s
+[docs_%[1]s]: https://www.tawesoft.co.uk/go/doc/%[1]s
 [copy_%[1]s]: https://github.com/tawesoft/go/tree/master/%[1]s/LICENSE.txt
 `)
 

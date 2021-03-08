@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/glcaps"
 
 [home_glcaps]: https://tawesoft.co.uk/go/glcaps
 [src_glcaps]:  https://github.com/tawesoft/go/tree/master/glcaps
-[docs_glcaps]: https://godoc.org/tawesoft.co.uk/go/glcaps
+[docs_glcaps]: https://www.tawesoft.co.uk/go/doc/glcaps
 [copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/LICENSE.txt
 
 ## About

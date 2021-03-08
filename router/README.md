@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/router"
 
 [home_router]: https://tawesoft.co.uk/go/router
 [src_router]:  https://github.com/tawesoft/go/tree/master/router
-[docs_router]: https://godoc.org/tawesoft.co.uk/go/router
+[docs_router]: https://www.tawesoft.co.uk/go/doc/router
 [copy_router]: https://github.com/tawesoft/go/tree/master/router/LICENSE.txt
 
 ## About

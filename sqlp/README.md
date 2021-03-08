@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/sqlp"
 
 [home_sqlp]: https://tawesoft.co.uk/go/sqlp
 [src_sqlp]:  https://github.com/tawesoft/go/tree/master/sqlp
-[docs_sqlp]: https://godoc.org/tawesoft.co.uk/go/sqlp
+[docs_sqlp]: https://www.tawesoft.co.uk/go/doc/sqlp
 [copy_sqlp]: https://github.com/tawesoft/go/tree/master/sqlp/LICENSE.txt
 
 ## About

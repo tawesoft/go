@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/operator"
 
 [home_operator]: https://tawesoft.co.uk/go/operator
 [src_operator]:  https://github.com/tawesoft/go/tree/master/operator
-[docs_operator]: https://godoc.org/tawesoft.co.uk/go/operator
+[docs_operator]: https://www.tawesoft.co.uk/go/doc/operator
 [copy_operator]: https://github.com/tawesoft/go/tree/master/operator/LICENSE.txt
 
 ## About

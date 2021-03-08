@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/dialog"
 
 [home_dialog]: https://tawesoft.co.uk/go/dialog
 [src_dialog]:  https://github.com/tawesoft/go/tree/master/dialog
-[docs_dialog]: https://godoc.org/tawesoft.co.uk/go/dialog
+[docs_dialog]: https://www.tawesoft.co.uk/go/doc/dialog
 [copy_dialog]: https://github.com/tawesoft/go/tree/master/dialog/LICENSE.txt
 
 ## About

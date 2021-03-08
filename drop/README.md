@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/drop"
 
 [home_drop]: https://tawesoft.co.uk/go/drop
 [src_drop]:  https://github.com/tawesoft/go/tree/master/drop
-[docs_drop]: https://godoc.org/tawesoft.co.uk/go/drop
+[docs_drop]: https://www.tawesoft.co.uk/go/doc/drop
 [copy_drop]: https://github.com/tawesoft/go/tree/master/drop/LICENSE.txt
 
 ## About

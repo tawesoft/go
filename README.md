@@ -29,7 +29,7 @@ import "tawesoft.co.uk/go/dialog"
 
 [home_dialog]: https://tawesoft.co.uk/go/dialog
 [src_dialog]:  https://github.com/tawesoft/go/tree/master/dialog
-[docs_dialog]: https://godoc.org/tawesoft.co.uk/go/dialog
+[docs_dialog]: https://www.tawesoft.co.uk/go/doc/dialog
 [copy_dialog]: https://github.com/tawesoft/go/tree/master/dialog/LICENSE.txt
 ### drop - drop privileges and inherit handles
 
@@ -47,7 +47,7 @@ import "tawesoft.co.uk/go/drop"
 
 [home_drop]: https://tawesoft.co.uk/go/drop
 [src_drop]:  https://github.com/tawesoft/go/tree/master/drop
-[docs_drop]: https://godoc.org/tawesoft.co.uk/go/drop
+[docs_drop]: https://www.tawesoft.co.uk/go/doc/drop
 [copy_drop]: https://github.com/tawesoft/go/tree/master/drop/LICENSE.txt
 ### email - format multipart RFC 2045 email
 
@@ -64,7 +64,7 @@ import "tawesoft.co.uk/go/email"
 
 [home_email]: https://tawesoft.co.uk/go/email
 [src_email]:  https://github.com/tawesoft/go/tree/master/email
-[docs_email]: https://godoc.org/tawesoft.co.uk/go/email
+[docs_email]: https://www.tawesoft.co.uk/go/doc/email
 [copy_email]: https://github.com/tawesoft/go/tree/master/email/LICENSE.txt
 ### glcaps - read and check OpenGL capabilities
 
@@ -82,7 +82,7 @@ import "tawesoft.co.uk/go/glcaps"
 
 [home_glcaps]: https://tawesoft.co.uk/go/glcaps
 [src_glcaps]:  https://github.com/tawesoft/go/tree/master/glcaps
-[docs_glcaps]: https://godoc.org/tawesoft.co.uk/go/glcaps
+[docs_glcaps]: https://www.tawesoft.co.uk/go/doc/glcaps
 [copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/LICENSE.txt
 ### loader - concurrent dependency graph solver
 
@@ -100,7 +100,7 @@ import "tawesoft.co.uk/go/loader"
 
 [home_loader]: https://tawesoft.co.uk/go/loader
 [src_loader]:  https://github.com/tawesoft/go/tree/master/loader
-[docs_loader]: https://godoc.org/tawesoft.co.uk/go/loader
+[docs_loader]: https://www.tawesoft.co.uk/go/doc/loader
 [copy_loader]: https://github.com/tawesoft/go/tree/master/loader/LICENSE.txt
 ### lxstrconv - locale-aware number parsing
 
@@ -117,7 +117,7 @@ import "tawesoft.co.uk/go/lxstrconv"
 
 [home_lxstrconv]: https://tawesoft.co.uk/go/lxstrconv
 [src_lxstrconv]:  https://github.com/tawesoft/go/tree/master/lxstrconv
-[docs_lxstrconv]: https://godoc.org/tawesoft.co.uk/go/lxstrconv
+[docs_lxstrconv]: https://www.tawesoft.co.uk/go/doc/lxstrconv
 [copy_lxstrconv]: https://github.com/tawesoft/go/tree/master/lxstrconv/LICENSE.txt
 ### operator - operators as functions
 
@@ -135,7 +135,7 @@ import "tawesoft.co.uk/go/operator"
 
 [home_operator]: https://tawesoft.co.uk/go/operator
 [src_operator]:  https://github.com/tawesoft/go/tree/master/operator
-[docs_operator]: https://godoc.org/tawesoft.co.uk/go/operator
+[docs_operator]: https://www.tawesoft.co.uk/go/doc/operator
 [copy_operator]: https://github.com/tawesoft/go/tree/master/operator/LICENSE.txt
 ### queue - same-process durable message queue
 
@@ -153,7 +153,7 @@ import "tawesoft.co.uk/go/queue"
 
 [home_queue]: https://tawesoft.co.uk/go/queue
 [src_queue]:  https://github.com/tawesoft/go/tree/master/queue
-[docs_queue]: https://godoc.org/tawesoft.co.uk/go/queue
+[docs_queue]: https://www.tawesoft.co.uk/go/doc/queue
 [copy_queue]: https://github.com/tawesoft/go/tree/master/queue/LICENSE.txt
 ### router - general purpose (HTTP, etc.) router
 
@@ -170,7 +170,7 @@ import "tawesoft.co.uk/go/router"
 
 [home_router]: https://tawesoft.co.uk/go/router
 [src_router]:  https://github.com/tawesoft/go/tree/master/router
-[docs_router]: https://godoc.org/tawesoft.co.uk/go/router
+[docs_router]: https://www.tawesoft.co.uk/go/doc/router
 [copy_router]: https://github.com/tawesoft/go/tree/master/router/LICENSE.txt
 ### sqlp - SQL database extras
 
@@ -188,7 +188,7 @@ import "tawesoft.co.uk/go/sqlp"
 
 [home_sqlp]: https://tawesoft.co.uk/go/sqlp
 [src_sqlp]:  https://github.com/tawesoft/go/tree/master/sqlp
-[docs_sqlp]: https://godoc.org/tawesoft.co.uk/go/sqlp
+[docs_sqlp]: https://www.tawesoft.co.uk/go/doc/sqlp
 [copy_sqlp]: https://github.com/tawesoft/go/tree/master/sqlp/LICENSE.txt
 ### sqlp/sqlite3 - SQLite3 database extras
 
@@ -205,7 +205,7 @@ import "tawesoft.co.uk/go/sqlp/sqlite3"
 
 [home_sqlp/sqlite3]: https://tawesoft.co.uk/go/sqlp/sqlite3
 [src_sqlp/sqlite3]:  https://github.com/tawesoft/go/tree/master/sqlp/sqlite3
-[docs_sqlp/sqlite3]: https://godoc.org/tawesoft.co.uk/go/sqlp/sqlite3
+[docs_sqlp/sqlite3]: https://www.tawesoft.co.uk/go/doc/sqlp/sqlite3
 [copy_sqlp/sqlite3]: https://github.com/tawesoft/go/tree/master/sqlp/sqlite3/LICENSE.txt
 ### variadic - helpers for variadic functions
 
@@ -222,7 +222,7 @@ import "tawesoft.co.uk/go/variadic"
 
 [home_variadic]: https://tawesoft.co.uk/go/variadic
 [src_variadic]:  https://github.com/tawesoft/go/tree/master/variadic
-[docs_variadic]: https://godoc.org/tawesoft.co.uk/go/variadic
+[docs_variadic]: https://www.tawesoft.co.uk/go/doc/variadic
 [copy_variadic]: https://github.com/tawesoft/go/tree/master/variadic/LICENSE.txt
 ### ximage - extended image types
 
@@ -239,7 +239,7 @@ import "tawesoft.co.uk/go/ximage"
 
 [home_ximage]: https://tawesoft.co.uk/go/ximage
 [src_ximage]:  https://github.com/tawesoft/go/tree/master/ximage
-[docs_ximage]: https://godoc.org/tawesoft.co.uk/go/ximage
+[docs_ximage]: https://www.tawesoft.co.uk/go/doc/ximage
 [copy_ximage]: https://github.com/tawesoft/go/tree/master/ximage/LICENSE.txt
 ### ximage/xcolor - extended color types
 
@@ -256,14 +256,14 @@ import "tawesoft.co.uk/go/ximage/xcolor"
 
 [home_ximage/xcolor]: https://tawesoft.co.uk/go/ximage/xcolor
 [src_ximage/xcolor]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
-[docs_ximage/xcolor]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
+[docs_ximage/xcolor]: https://www.tawesoft.co.uk/go/doc/ximage/xcolor
 [copy_ximage/xcolor]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/LICENSE.txt
 
 Links
 -----
 
 * Home: [tawesoft.co.uk/go](https://tawesoft.co.uk/go)
-* Docs hub: [godoc.org/tawesoft.co.uk/go](https://godoc.org/tawesoft.co.uk/go)
+* Docs hub: [tawesoft.co.uk/go/doc/](https://www.tawesoft.co.uk/go/doc/)
 * Repository: [github.com/tawesoft/go](https://github.com/tawesoft/go)
 * Or [search "tawesoft"](https://pkg.go.dev/search?q=tawesoft) on [go.dev](https://go.dev/)
 

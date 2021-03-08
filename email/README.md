@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/email"
 
 [home_email]: https://tawesoft.co.uk/go/email
 [src_email]:  https://github.com/tawesoft/go/tree/master/email
-[docs_email]: https://godoc.org/tawesoft.co.uk/go/email
+[docs_email]: https://www.tawesoft.co.uk/go/doc/email
 [copy_email]: https://github.com/tawesoft/go/tree/master/email/LICENSE.txt
 
 ## About

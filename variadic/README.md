@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/variadic"
 
 [home_variadic]: https://tawesoft.co.uk/go/variadic
 [src_variadic]:  https://github.com/tawesoft/go/tree/master/variadic
-[docs_variadic]: https://godoc.org/tawesoft.co.uk/go/variadic
+[docs_variadic]: https://www.tawesoft.co.uk/go/doc/variadic
 [copy_variadic]: https://github.com/tawesoft/go/tree/master/variadic/LICENSE.txt
 
 ## About

@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/lxstrconv"
 
 [home_lxstrconv]: https://tawesoft.co.uk/go/lxstrconv
 [src_lxstrconv]:  https://github.com/tawesoft/go/tree/master/lxstrconv
-[docs_lxstrconv]: https://godoc.org/tawesoft.co.uk/go/lxstrconv
+[docs_lxstrconv]: https://www.tawesoft.co.uk/go/doc/lxstrconv
 [copy_lxstrconv]: https://github.com/tawesoft/go/tree/master/lxstrconv/LICENSE.txt
 
 ## About

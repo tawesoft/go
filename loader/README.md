@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/loader"
 
 [home_loader]: https://tawesoft.co.uk/go/loader
 [src_loader]:  https://github.com/tawesoft/go/tree/master/loader
-[docs_loader]: https://godoc.org/tawesoft.co.uk/go/loader
+[docs_loader]: https://www.tawesoft.co.uk/go/doc/loader
 [copy_loader]: https://github.com/tawesoft/go/tree/master/loader/LICENSE.txt
 
 ## About

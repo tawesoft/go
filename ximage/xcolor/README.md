@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/ximage/xcolor"
 
 [home_ximage/xcolor]: https://tawesoft.co.uk/go/ximage/xcolor
 [src_ximage/xcolor]:  https://github.com/tawesoft/go/tree/master/ximage/xcolor
-[docs_ximage/xcolor]: https://godoc.org/tawesoft.co.uk/go/ximage/xcolor
+[docs_ximage/xcolor]: https://www.tawesoft.co.uk/go/doc/ximage/xcolor
 [copy_ximage/xcolor]: https://github.com/tawesoft/go/tree/master/ximage/xcolor/LICENSE.txt
 
 ## About

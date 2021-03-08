@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/legacy/email"
 
 [home_legacy/email]: https://tawesoft.co.uk/go/legacy/email
 [src_legacy/email]:  https://github.com/tawesoft/go/tree/master/legacy/email
-[docs_legacy/email]: https://godoc.org/tawesoft.co.uk/go/legacy/email
+[docs_legacy/email]: https://www.tawesoft.co.uk/go/doc/legacy/email
 [copy_legacy/email]: https://github.com/tawesoft/go/tree/master/legacy/email/LICENSE.txt
 
 ## About

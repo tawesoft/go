@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/sqlp/sqlite3"
 
 [home_sqlp/sqlite3]: https://tawesoft.co.uk/go/sqlp/sqlite3
 [src_sqlp/sqlite3]:  https://github.com/tawesoft/go/tree/master/sqlp/sqlite3
-[docs_sqlp/sqlite3]: https://godoc.org/tawesoft.co.uk/go/sqlp/sqlite3
+[docs_sqlp/sqlite3]: https://www.tawesoft.co.uk/go/doc/sqlp/sqlite3
 [copy_sqlp/sqlite3]: https://github.com/tawesoft/go/tree/master/sqlp/sqlite3/LICENSE.txt
 
 ## About

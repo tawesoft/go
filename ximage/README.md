@@ -14,7 +14,7 @@ import "tawesoft.co.uk/go/ximage"
 
 [home_ximage]: https://tawesoft.co.uk/go/ximage
 [src_ximage]:  https://github.com/tawesoft/go/tree/master/ximage
-[docs_ximage]: https://godoc.org/tawesoft.co.uk/go/ximage
+[docs_ximage]: https://www.tawesoft.co.uk/go/doc/ximage
 [copy_ximage]: https://github.com/tawesoft/go/tree/master/ximage/LICENSE.txt
 
 ## About
