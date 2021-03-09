@@ -13,6 +13,7 @@ import (
     _ "tawesoft.co.uk/go/drop"
     _ "tawesoft.co.uk/go/email"
     _ "tawesoft.co.uk/go/glcaps"
+    _ "tawesoft.co.uk/go/grace"
     _ "tawesoft.co.uk/go/legacy/email"
     _ "tawesoft.co.uk/go/loader"
     _ "tawesoft.co.uk/go/lxstrconv"

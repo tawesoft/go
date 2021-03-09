@@ -7,6 +7,7 @@ pkgs="\
     drop \
     email \
     glcaps \
+    grace \
     legacy/email \
     loader \
     lxstrconv \

@@ -84,6 +84,23 @@ import "tawesoft.co.uk/go/glcaps"
 [src_glcaps]:  https://github.com/tawesoft/go/tree/master/glcaps
 [docs_glcaps]: https://www.tawesoft.co.uk/go/doc/glcaps
 [copy_glcaps]: https://github.com/tawesoft/go/tree/master/glcaps/LICENSE.txt
+### grace - start and gracefully shutdown processes
+
+Package grace implements a simple way to start multiple long-lived processes
+(e.g. goroutines) with cancellation, signal handling and graceful shutdown.
+
+```go
+import "tawesoft.co.uk/go/grace"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_grace] ∙ [docs][docs_grace] ∙ [src][src_grace] | [MIT][copy_grace] | candidate |
+
+[home_grace]: https://tawesoft.co.uk/go/grace
+[src_grace]:  https://github.com/tawesoft/go/tree/master/grace
+[docs_grace]: https://www.tawesoft.co.uk/go/doc/grace
+[copy_grace]: https://github.com/tawesoft/go/tree/master/grace/LICENSE.txt
 ### loader - concurrent dependency graph solver
 
 Package loader implements the ability to define a graph of tasks and
