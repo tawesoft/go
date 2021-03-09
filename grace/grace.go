@@ -35,20 +35,21 @@ func shutdown(ctx context.Context, processes []Process) []error {
 
 // Run starts each process, waits for any signal in `notify` or
 // until ctx is cancelled, then cancels each process. It blocks until all
-// processes have been cancelled and all process Start() functions mark
-// themselves as completely Done().
+// processes have been stopped with Stop() and all process Start() functions
+// mark themselves as completely done().
 //
 // The first return value is the os.Signal received.
 //
 // The second return value is a list of errors for processes that returned
-// errors when being cancelled or asynchronously after starting using abort.
+// errors when being cancelled.
 //
 // The third return value returns any startup error.
 //
 // The second return value may be non-empty even when the third return value is
 // non-nil when there is both a startup error and an error stopping any
 // previously started processes e.g. if process one starts but process two
-// fails, then process one needs to be cancelled.
+// fails, then process one needs to be cancelled but may also run into an error
+// cancelling.
 func Run(ctx context.Context, processes []Process, signals []os.Signal) (os.Signal, []error, error) {
 
     var wg sync.WaitGroup
