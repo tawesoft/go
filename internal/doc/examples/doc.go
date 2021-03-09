@@ -4,6 +4,7 @@
 package main
 
 import (
+    "bufio"
     "bytes"
     "fmt"
     "html/template"
@@ -101,9 +102,14 @@ func main() {
                 err = formatter.Format(buf, style, iterator)
                 if err != nil { panic(err) }
 
+                docstring, _ := readGo(src)
+
                 data := Data{
                     Head: Head{
+                        Title: fmt.Sprintf("tawesoft.co.uk/go/%s example: %s.go",
+                            name, example.Name()),
                         CSS: css,
+                        Desc: docstring,
                     },
                     Body: Body{
                         Title: template.HTML(fmt.Sprintf(
@@ -122,4 +128,38 @@ func main() {
     // contents, err := ioutil.ReadAll(r)
     //
 
+}
+
+// readGo parses a go source file, returning a 2-tuple of (docstring, body).
+func readGo(path string) (string, string) {
+    fp, err := os.Open(path)
+    if err != nil { panic(err) }
+    defer fp.Close()
+
+    inBody := false
+    docParts := make([]string, 0)
+    bodyParts := make([]string, 0)
+
+    scanner := bufio.NewScanner(fp)
+    for scanner.Scan() {
+        s := scanner.Text()
+
+        if !inBody && (strings.HasPrefix(s, "package")) {
+            inBody = true
+        }
+
+        if inBody {
+            bodyParts = append(bodyParts, s)
+            continue
+        }
+
+        if strings.HasPrefix(s, "//") {
+            s = s[2:]
+        }
+        docParts = append(docParts, strings.TrimSpace(s))
+    }
+    err = scanner.Err()
+    if err != nil { panic(err) }
+
+    return strings.TrimSpace(strings.Join(docParts, "\n")), strings.TrimSpace(strings.Join(bodyParts, "\n"))
 }
