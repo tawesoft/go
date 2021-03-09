@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 godocport=6061
 
 pkgs="\
@@ -5,6 +7,7 @@ pkgs="\
     drop \
     email \
     glcaps \
+    legacy/email \
     loader \
     lxstrconv \
     operator \
@@ -14,8 +17,7 @@ pkgs="\
     sqlp/sqlite3 \
     variadic \
     ximage \
-    ximage/xcolor \
-    legacy/email \
+    ximage/xcolor
 "
 
 # build go.html, READMEs, etc.
@@ -78,5 +80,12 @@ wget -q -nv -e robots=off \
 
 # close server
 kill -1 $pid
+
+echo "OK"
+
+# build HTML pages for examples
+cd internal/doc/examples
+go run doc.go $pkgs
+cd ../../../
 
 

@@ -27,95 +27,11 @@
 // 
 // Using operators as function arguments
 //
-//     package main
-//     
-//     import (
-//         "fmt"
-//         "tawesoft.co.uk/go/operator"
-//     )
-//     
-//     func foo(op func(int, int) int, a int, b int) int {
-//         return op(a, b)
-//     }
-//     
-//     func fooChecked(op func(int8, int8) (int8, error), a int8, b int8) (int8, error) {
-//         return op(a, b)
-//     }
-//     
-//     func main() {
-//         fmt.Println(foo(operator.Int.Binary.Add, 5, 3))
-//         fmt.Println(foo(operator.Int.Binary.Sub, 5, 3))
-//         
-//         var result, err = fooChecked(operator.Int8Checked.Binary.Add, 126, 2) // max int8 is 127!
-//         if err != nil {
-//             fmt.Printf("error: %v (expected!)\n", err)
-//         } else {
-//             fmt.Println(result)
-//         }
-//     }
+// https://www.tawesoft.co.uk/go/doc/operator/simple/
 //
 // Using operators in lookup tables for a command-line calculator program
 //
-//     package main
-//     
-//     import (
-//         "bufio"
-//         "fmt"
-//         "os"
-//         "strconv"
-//         "strings"
-//         
-//         "tawesoft.co.uk/go/operator"
-//     )
-//     
-//     type checkedOperation func(float64, float64) (float64, error)
-//     
-//     var reader = bufio.NewReader(os.Stdin)
-//     
-//     var operations = map[string]checkedOperation {
-//         "+": operator.Float64Checked.Binary.Add,
-//         "-": operator.Float64Checked.Binary.Sub,
-//         "*": operator.Float64Checked.Binary.Mul,
-//         "/": operator.Float64Checked.Binary.Div,
-//     }
-//     
-//     func getNumber(prompt string) float64 {
-//         for {
-//             fmt.Print(prompt)
-//             var text, _ = reader.ReadString('\n')
-//             var result, err = strconv.ParseFloat(strings.TrimSpace(text), 64)
-//             if err != nil {
-//                 fmt.Println("Sorry, try again. (%v)", err)
-//                 continue
-//             }
-//             return result
-//         }
-//     }
-//     
-//     func getOperation(prompt string) checkedOperation {
-//         for {
-//             fmt.Print(prompt)
-//             var text, _ = reader.ReadString('\n')
-//             var operator, ok = operations[strings.TrimSpace(text)]
-//             if !ok {
-//                 fmt.Println("Sorry, try again.")
-//                 continue
-//             }
-//             return operator
-//         }
-//     }
-//     
-//     func main() {
-//         var firstNumber = getNumber("Enter a number (then press enter): ")
-//         var operation = getOperation("Enter +, -, * or / (then press enter) for add, subtract, multiply, or divide: ")
-//         var secondNumber = getNumber("Enter another number (then press enter): ")
-//         var result, err = operation(firstNumber, secondNumber)
-//         if err != nil {
-//             fmt.Printf("Sorry, something went wrong: %v\n", err)
-//         } else {
-//             fmt.Printf("The result is %.2f!\n", result)
-//         }
-//     }
+// https://www.tawesoft.co.uk/go/doc/operator/calculator/
 //
 //
 // Package Information

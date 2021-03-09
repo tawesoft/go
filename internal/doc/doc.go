@@ -214,15 +214,23 @@ func (p Package) writeGodoc() error {
             args := strings.SplitN(part, " ", 2)
             if len(args) != 2 { panic("Invalid EXAMPLE: command") }
             example := args[1]
-            docstr, code := readGo(fmt.Sprintf("%[1]s/examples/%[2]s/%[2]s.go",
+            docstr, _ := readGo(fmt.Sprintf("%[1]s/examples/%[2]s/%[2]s.go",
                 p.Name, example))
             for _, p := range strings.Split(docstr, "\n") {
                 data = append(data, "// "+p)
             }
             data = append(data, "//")
+
+            // rather than embed the example, provide a link
+            // (relative would be preferable but wouldn't automatically get
+            // hyperlinked)
+            data = append(data, fmt.Sprintf(
+                "// https://www.tawesoft.co.uk/go/doc/%s/%s/", p.Name, example))
+            /*
             for _, p := range strings.Split(code, "\n") {
                 data = append(data, "//     "+p)
             }
+             */
             data = append(data, "//")
         } else {
             data = append(data, "// "+part)
