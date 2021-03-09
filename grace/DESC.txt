@@ -6,3 +6,7 @@ stable: candidate
 
 Package grace implements a simple way to start multiple long-lived processes
 (e.g. goroutines) with cancellation, signal handling and graceful shutdown.
+
+Examples
+
+EXAMPLE: multiportserver

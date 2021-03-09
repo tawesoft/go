@@ -72,7 +72,9 @@ func main() {
         syscall.SIGTERM,
     }
 
-    // blocks until cancelled, interrupted, terminated, or killed
+    // blocks until cancelled, interrupted, terminated, or killed, until
+    // all servers have shutdown, and all start functions have marked
+    // themselves as completely `done()` (e.g. so they have time to clean up)
     signal, errs, err := grace.Run(context.Background(), servers, signals)
 
     if err != nil {

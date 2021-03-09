@@ -33,8 +33,10 @@ func shutdown(ctx context.Context, processes []Process) []error {
     return errors
 }
 
-// Run starts each process, blocks while waiting for any signal in `notify` or
-// until ctx is cancelled, then cancels each process.
+// Run starts each process, waits for any signal in `notify` or
+// until ctx is cancelled, then cancels each process. It blocks until all
+// processes have been cancelled and all process Start() functions mark
+// themselves as completely Done().
 //
 // The first return value is the os.Signal received.
 //

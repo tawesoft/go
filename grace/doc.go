@@ -24,6 +24,13 @@
 
 // Package grace implements a simple way to start multiple long-lived processes
 // (e.g. goroutines) with cancellation, signal handling and graceful shutdown.
+// 
+// Examples
+// 
+// Start HTTP servers on multiple ports with graceful shutdown
+//
+// https://www.tawesoft.co.uk/go/doc/grace/examples/multiportserver/
+//
 //
 // Package Information
 //
