@@ -49,7 +49,7 @@
 // 
 // Configure the Loader with a Strategy to limit concurrent connections per host
 //
-// https://www.tawesoft.co.uk/go/doc/loader/limit-connections-per-host/
+// https://www.tawesoft.co.uk/go/doc/loader/examples/limit-connections-per-host/
 //
 //
 // Package Information

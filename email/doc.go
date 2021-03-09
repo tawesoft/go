@@ -32,7 +32,7 @@
 // 
 // Format an email message and print it to a Writer (here, stdout).
 //
-// https://www.tawesoft.co.uk/go/doc/email/stdout/
+// https://www.tawesoft.co.uk/go/doc/email/examples/stdout/
 //
 //
 // Package Information

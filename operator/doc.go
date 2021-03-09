@@ -27,11 +27,11 @@
 // 
 // Using operators as function arguments
 //
-// https://www.tawesoft.co.uk/go/doc/operator/simple/
+// https://www.tawesoft.co.uk/go/doc/operator/examples/simple/
 //
 // Using operators in lookup tables for a command-line calculator program
 //
-// https://www.tawesoft.co.uk/go/doc/operator/calculator/
+// https://www.tawesoft.co.uk/go/doc/operator/examples/calculator/
 //
 //
 // Package Information

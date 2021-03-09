@@ -30,7 +30,7 @@
 // 
 // Opens privileged files and ports as root, then drops privileges
 //
-// https://www.tawesoft.co.uk/go/doc/drop/drop/
+// https://www.tawesoft.co.uk/go/doc/drop/examples/drop/
 //
 //
 // Package Information

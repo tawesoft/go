@@ -36,7 +36,7 @@
 // Demonstrates simple HTTP routing and named routes with a server at
 // localhost:8080
 //
-// https://www.tawesoft.co.uk/go/doc/router/httprouting/
+// https://www.tawesoft.co.uk/go/doc/router/examples/httprouting/
 //
 //
 // Package Information

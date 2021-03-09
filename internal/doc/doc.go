@@ -225,7 +225,7 @@ func (p Package) writeGodoc() error {
             // (relative would be preferable but wouldn't automatically get
             // hyperlinked)
             data = append(data, fmt.Sprintf(
-                "// https://www.tawesoft.co.uk/go/doc/%s/%s/", p.Name, example))
+                "// https://www.tawesoft.co.uk/go/doc/%s/examples/%s/", p.Name, example))
             /*
             for _, p := range strings.Split(code, "\n") {
                 data = append(data, "//     "+p)
