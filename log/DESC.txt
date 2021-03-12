@@ -1,0 +1,16 @@
+SPDX-License-Identifier: MIT-0
+short-desc: configurable loggers
+stable: candidate
+
+---
+
+Package log provides a common way to quickly configure a logging implementation
+with file rotation, syslog, console output, etc. for some popular logging
+implementations such as zerolog.
+
+This package defines the configuration interface. It is concretely
+implemented by the packages in the subfolder.
+
+The package also wraps the stdlib syslog as an interface without it being a
+compile-time constraint so that it can be imported on platforms that don't
+support syslog (like Windows), but give a runtime error instead.

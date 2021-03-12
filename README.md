@@ -119,6 +119,41 @@ import "tawesoft.co.uk/go/loader"
 [src_loader]:  https://github.com/tawesoft/go/tree/master/loader
 [docs_loader]: https://www.tawesoft.co.uk/go/doc/loader
 [copy_loader]: https://github.com/tawesoft/go/tree/master/loader/LICENSE.txt
+### log - configurable loggers
+
+Package log provides a common way to quickly configure a logging implementation
+with file rotation, syslog, console output, etc. for some popular logging
+implementations such as zerolog.
+
+```go
+import "tawesoft.co.uk/go/log"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_log] ∙ [docs][docs_log] ∙ [src][src_log] | [MIT-0][copy_log] | candidate |
+
+[home_log]: https://tawesoft.co.uk/go/log
+[src_log]:  https://github.com/tawesoft/go/tree/master/log
+[docs_log]: https://www.tawesoft.co.uk/go/doc/log
+[copy_log]: https://github.com/tawesoft/go/tree/master/log/LICENSE.txt
+### log/zero - easy-config zerolog
+
+Package log/zero makes it trivial to configure a zerolog logger with syslog,
+file, and/or console output.
+
+```go
+import "tawesoft.co.uk/go/log/zero"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_log/zero] ∙ [docs][docs_log/zero] ∙ [src][src_log/zero] | [MIT-0][copy_log/zero] | candidate |
+
+[home_log/zero]: https://tawesoft.co.uk/go/log/zero
+[src_log/zero]:  https://github.com/tawesoft/go/tree/master/log/zero
+[docs_log/zero]: https://www.tawesoft.co.uk/go/doc/log/zero
+[copy_log/zero]: https://github.com/tawesoft/go/tree/master/log/zero/LICENSE.txt
 ### lxstrconv - locale-aware number parsing
 
 Package lxstrconv is an attempt at implementing locale-aware parsing of

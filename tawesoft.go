@@ -16,6 +16,8 @@ import (
     _ "tawesoft.co.uk/go/grace"
     _ "tawesoft.co.uk/go/legacy/email"
     _ "tawesoft.co.uk/go/loader"
+    _ "tawesoft.co.uk/go/log"
+    _ "tawesoft.co.uk/go/log/zero"
     _ "tawesoft.co.uk/go/lxstrconv"
     _ "tawesoft.co.uk/go/operator"
     _ "tawesoft.co.uk/go/queue"

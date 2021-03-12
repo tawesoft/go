@@ -1,0 +1,16 @@
+SPDX-License-Identifier: MIT-0
+short-desc: easy-config zerolog
+stable: candidate
+
+---
+
+Package log/zero makes it trivial to configure a zerolog logger with syslog,
+file, and/or console output.
+
+See https://github.com/rs/zerolog
+
+See https://www.tawesoft.co.uk/go/doc/log
+
+Examples
+
+EXAMPLE: hello-world

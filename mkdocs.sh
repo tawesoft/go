@@ -10,6 +10,8 @@ pkgs="\
     grace \
     legacy/email \
     loader \
+    log \
+    log/zero \
     lxstrconv \
     operator \
     queue \
