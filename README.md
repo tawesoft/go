@@ -49,10 +49,10 @@ import "tawesoft.co.uk/go/drop"
 [src_drop]:  https://github.com/tawesoft/go/tree/master/drop
 [docs_drop]: https://www.tawesoft.co.uk/go/doc/drop
 [copy_drop]: https://github.com/tawesoft/go/tree/master/drop/LICENSE.txt
-### email - format multipart RFC 2045 email
+### email - format multipart MIME email
 
-Package email implements the formatting of multipart RFC 2045 e-mail messages,
-including headers, attachments, HTML email, and plain text.
+Package email implements the formatting of multipart MIME e-mail messages,
+including Unicode headers, attachments, HTML email, and plain text.
 
 ```go
 import "tawesoft.co.uk/go/email"

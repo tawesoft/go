@@ -143,10 +143,9 @@ func (e *Message) write(dest io.Writer, compat bool) (ret error) {
         }
     }
 
-    // RFC 5332 date format with (comment) for time.Format
+    // "RFC 5332 date format with (comment)" for time.Format
     const RFC5332C = "Mon, 02 Jan 2006 15:04:05 -0700 (MST)"
 
-    //var err error
     var qp *quotedprintable.Writer
     var bufferedDest = bufio.NewWriter(dest)
     var dw = textproto.NewWriter(bufferedDest).DotWriter()
@@ -228,7 +227,7 @@ func (e *Message) write(dest io.Writer, compat bool) (ret error) {
         bndMxd.next(dw)
         err = attachment.write(dw)
         if err != nil {
-            return fmt.Errorf("error writing attachment %s: %v", attachment.Filename, err)
+            return fmt.Errorf("error writing attachment %q: %v", attachment.Filename, err)
         }
     }
 

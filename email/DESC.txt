@@ -1,14 +1,16 @@
 SPDX-License-Identifier: MIT
-short-desc: format multipart RFC 2045 email
+short-desc: format multipart MIME email
 stable: candidate
 
 ---
 
-Package email implements the formatting of multipart RFC 2045 e-mail messages,
-including headers, attachments, HTML email, and plain text.
+Package email implements the formatting of multipart MIME e-mail messages,
+including Unicode headers, attachments, HTML email, and plain text.
 
 File attachments are lazy, and read from disk only at the time the e-mail is
 sent.
+
+(Optionally) supports encoding very long headers using folding whitespace.
 
 Examples
 

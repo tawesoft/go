@@ -1,4 +1,4 @@
-# email - format multipart RFC 2045 email
+# email - format multipart MIME email
 
 ```shell script
 go get "tawesoft.co.uk/go/"
@@ -19,29 +19,35 @@ import "tawesoft.co.uk/go/email"
 
 ## About
 
-Package email implements the formatting of multipart RFC 2045 e-mail messages,
-including headers, attachments, HTML email, and plain text.
+Package email implements the formatting of multipart MIME e-mail messages,
+including Unicode headers, attachments, HTML email, and plain text.
 
 File attachments are lazy, and read from disk only at the time the e-mail is
 sent.
+
+(Optionally) supports encoding very long headers using folding whitespace.
 
 
 ## Examples
 
 
-Format an email message and print it to a Writer (here, stdout).
+Format an email message and print it, as well as its JSON serialisation, to
+a Writer (here, stdout).
 ```go
 package main
 
 import (
+    "encoding/json"
+    "fmt"
     "net/mail"
     "os"
+    "strings"
 
     "tawesoft.co.uk/go/email"
 )
 
 func main() {
-    var eml = email.Message{
+    eml := email.Message{
         ID:    email.NewMessageID("localhost"),
         From:  mail.Address{"Alan Turing", "turing.alan@example.org"},
         To:  []mail.Address{{"Grace Hopper", "amazing.grace@example.net"},},
@@ -57,12 +63,74 @@ func main() {
         },
     }
 
-    var err = eml.Write(os.Stdout)
+    fmt.Printf("Formatted email:\n")
+    err := eml.Write(os.Stdout)
     if err != nil { panic(err) }
+
+    fmt.Printf("\n\nJSON serialisation:\n")
+    encoder := json.NewEncoder(os.Stdout)
+    encoder.SetIndent("", "    ")
+    encoder.SetEscapeHTML(false)
+    err = encoder.Encode(eml)
+    if err != nil { panic(err) }
+
+    fmt.Printf("\n\nJSON deserialisation:\n")
+    var out email.Message
+    decoder := json.NewDecoder(strings.NewReader(`{
+    "ID": "20210312143531.183a5bf8f218c9c3e2dc4976a70676d2@localhost",
+    "From": {
+        "Name": "Alan Turing",
+        "Address": "turing.alan@example.org"
+    },
+    "To": [
+        {
+            "Name": "Grace Hopper",
+            "Address": "amazing.grace@example.net"
+        }
+    ],
+    "Cc": null,
+    "Bcc": [
+        {
+            "Name": "BCC1",
+            "Address": "bcc1@example.net"
+        },
+        {
+            "Name": "BCC2",
+            "Address": "bbc2@example.net"
+        }
+    ],
+    "Subject": "Computer Science is Cool! ❤",
+    "Headers": {
+        "X-Category": [
+            "newsletter",
+            "marketing"
+        ]
+    },
+    "Html": "<!DOCTYPE html><html lang=\"en\"><body><p>This is a test email!</p></body></html>",
+    "Text": "This is a test email!",
+    "Attachments": [
+        {
+            "Filename": "attachment1.txt",
+            "Mimetype": "text/plain; charset=utf-8",
+            "Content": "U0dWc2JHOGdkMjl5YkdRaA=="
+        }
+    ]
+}
+`))
+    decoder.DisallowUnknownFields()
+    err = decoder.Decode(&out)
+    if err != nil { panic(err) }
+    out.Write(os.Stdout)
 }
 ```
 
 ## Changes
+
+### 2021-03-12
+
+* Add JSON (de)serialisation
+
+* Add missing error case
 
 ### 2021-03-07
 

@@ -45,13 +45,19 @@ func optionalQEncode(x string) string {
 }
 
 // lineBreaker wraps a writer forcing a line break every 76 characters (RFC 2045)
+//
+// This is used e.g. to break up base64 encoded strings and is not suitable
+// for breaking up text across word boundaries.
 type lineBreaker struct {
     column int
     writer io.Writer
 }
 
 // Write writes p to the wrapped writer, forcing a line break every 76 characters (RFC 2045) across
-// multiple calls to Write
+// multiple calls to Write.
+//
+// This is used e.g. to break up base64 encoded strings and is not suitable
+// for breaking up text across word boundaries.
 func (lb lineBreaker) Write(p []byte) (n int, err error) {
 
     const LIMIT = 76 // RFC 2045

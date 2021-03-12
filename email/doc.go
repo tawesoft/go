@@ -22,15 +22,18 @@
 // SOFTWARE.
 // 
 
-// Package email implements the formatting of multipart RFC 2045 e-mail messages,
-// including headers, attachments, HTML email, and plain text.
+// Package email implements the formatting of multipart MIME e-mail messages,
+// including Unicode headers, attachments, HTML email, and plain text.
 // 
 // File attachments are lazy, and read from disk only at the time the e-mail is
 // sent.
 // 
+// (Optionally) supports encoding very long headers using folding whitespace.
+// 
 // Examples
 // 
-// Format an email message and print it to a Writer (here, stdout).
+// Format an email message and print it, as well as its JSON serialisation, to
+// a Writer (here, stdout).
 //
 // https://www.tawesoft.co.uk/go/doc/email/examples/stdout/
 //
@@ -45,6 +48,12 @@
 // etc. please see https://www.tawesoft.co.uk/go and 
 // https://www.tawesoft.co.uk/go/email
 //
+//     2021-03-12
+//     
+//         * Add JSON (de)serialisation
+//     
+//         * Add missing error case
+//     
 //     2021-03-07
 //     
 //         * Breaking changes to this email package, as previously warned, bump the

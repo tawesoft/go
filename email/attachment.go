@@ -1,7 +1,9 @@
 package email
 
 import (
+    "bytes"
     "encoding/base64"
+    "encoding/json"
     "fmt"
     "io"
     "mime"
@@ -18,8 +20,58 @@ type Attachment struct {
     // If an empty string, then attempts to automatically detect based on filename extension.
     Mimetype string
 
-    // Reader is a lazy reader. e.g. return the result of os.Open.
+    // Reader is a lazy reader. e.g. a function that returns the result of os.Open.
     Reader func() (io.ReadCloser, error)
+}
+
+type jsonAttachment struct {
+    Filename string
+    Mimetype string
+    Content []byte
+}
+
+// Implements the json.Marshal interface. Note that the JSON content is ALWAYS
+// Base64 encoded (with whitespace).
+func (a *Attachment) MarshalJSON() ([]byte, error) {
+    r, err := a.Reader()
+    if err != nil {
+        return nil, fmt.Errorf("attachment open error: %v", err)
+    }
+    defer r.Close()
+
+    w := &bytes.Buffer{}
+    encoder := base64.NewEncoder(base64.StdEncoding, lineBreaker{writer: w})
+    defer encoder.Close()
+
+    _, err = io.Copy(encoder, r)
+    if err != nil {
+        return nil, fmt.Errorf("attachment read error: %v", err)
+    }
+
+    return json.Marshal(jsonAttachment{
+        Filename: a.Filename,
+        Mimetype: a.Mimetype,
+        Content:  w.Bytes(),
+    })
+}
+
+// Implements the json.Unarshal interface. Note that the JSON content is ALWAYS
+// Base64 encoded (with whitespace).
+func (a *Attachment) UnmarshalJSON(data []byte) error {
+    var j jsonAttachment
+
+    err := json.Unmarshal(data, &j)
+    if err != nil { return err }
+
+    a.Filename = j.Filename
+    a.Mimetype = j.Mimetype
+    a.Reader = func() (io.ReadCloser, error) {
+        r := bytes.NewReader(j.Content)
+        decoder := base64.NewDecoder(base64.StdEncoding, r)
+        return io.NopCloser(decoder), nil
+    }
+
+    return nil
 }
 
 // FileAttachment returns an Attachment from a file path. The file at that path is lazily opened at the time the
@@ -62,7 +114,8 @@ func (a *Attachment) write(w io.Writer) error {
     var encoder = base64.NewEncoder(base64.StdEncoding, lineBreaker{writer: w})
     defer encoder.Close()
 
-    io.Copy(encoder, reader)
+    _, err = io.Copy(encoder, reader)
+    if err != nil { return err }
 
     fmt.Fprintf(w, "\r\n")
     return nil

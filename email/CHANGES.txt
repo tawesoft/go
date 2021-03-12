@@ -1,3 +1,9 @@
+2021-03-12
+
+    * Add JSON (de)serialisation
+
+    * Add missing error case
+
 2021-03-07
 
     * Breaking changes to this email package, as previously warned, bump the
