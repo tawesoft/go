@@ -119,7 +119,7 @@ import "tawesoft.co.uk/go/loader"
 [src_loader]:  https://github.com/tawesoft/go/tree/master/loader
 [docs_loader]: https://www.tawesoft.co.uk/go/doc/loader
 [copy_loader]: https://github.com/tawesoft/go/tree/master/loader/LICENSE.txt
-### log - configurable loggers
+### log - uniformly configurable loggers
 
 Package log provides a common way to quickly configure a logging implementation
 with file rotation, syslog, console output, etc. for some popular logging
@@ -140,7 +140,8 @@ import "tawesoft.co.uk/go/log"
 ### log/zero - easy-config zerolog
 
 Package log/zero makes it trivial to configure a zerolog logger with syslog,
-file, and/or console output.
+rotating file, and/or console output using the same uniform configuration
+interface.
 
 ```go
 import "tawesoft.co.uk/go/log/zero"

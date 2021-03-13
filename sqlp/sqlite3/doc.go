@@ -20,7 +20,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
 
 // Package sqlite enchances a mattn/go-sqlite3 database with simple setup
 // of things like utf8 collation and tawesoft.co.uk/go/sqlp features.

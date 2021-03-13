@@ -1,7 +1,7 @@
 # legacy/email - format multipart RFC 2045 email
 
 ```shell script
-go get "tawesoft.co.uk/go/"
+go get -u "tawesoft.co.uk/go"
 ```
 
 ```go

@@ -1,7 +1,7 @@
 # queue - same-process durable message queue
 
 ```shell script
-go get "tawesoft.co.uk/go/"
+go get -u "tawesoft.co.uk/go"
 ```
 
 ```go

@@ -20,7 +20,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
-// 
 
 // Package email implements the formatting of multipart RFC 2045 e-mail messages,
 // including headers, attachments, HTML email, and plain text.

@@ -1,7 +1,7 @@
 # lxstrconv - locale-aware number parsing
 
 ```shell script
-go get "tawesoft.co.uk/go/"
+go get -u "tawesoft.co.uk/go"
 ```
 
 ```go

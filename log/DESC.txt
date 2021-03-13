@@ -1,5 +1,5 @@
 SPDX-License-Identifier: MIT-0
-short-desc: configurable loggers
+short-desc: uniformly configurable loggers
 stable: candidate
 
 ---

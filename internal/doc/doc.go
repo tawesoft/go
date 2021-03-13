@@ -53,6 +53,7 @@ func main() {
     writeGoIndex(packages)
     writeMarkdownIndex(packagesExceptLegacy)
     writeHtmlIndex(t, packagesExceptLegacy)
+    writeLicenseIndex(packages)
 }
 
 type Doc struct {
@@ -88,7 +89,7 @@ func LoadPackage(name string) Package {
         Name:       name,
         Doc:        readDoc(name + "/DESC.txt"),
         Changes:    readOptionalFile(name + "/CHANGES.txt"),
-        License:    readFile(name + "/LICENSE.txt"),
+        License:    strings.TrimSpace(readFile(name + "/LICENSE.txt")),
     }
 }
 
@@ -281,7 +282,7 @@ func (p Package) writeReadme() error {
         fmt.Sprintf("# %s - %s", p.Name, p.Doc.ShortDesc),
         "",
         "```shell script",
-        `go get "tawesoft.co.uk/go/"`,
+        `go get -u "tawesoft.co.uk/go"`,
         "```",
         "",
         "```go",
@@ -499,6 +500,25 @@ func writeHtmlIndex(t *template.Template, packages []Package) {
     err = t.Execute(f, data)
     if err != nil { panic(fmt.Sprintf("template error: %v", err)) }
 }
+
+func writeLicenseIndex(packages []Package) {
+    f, err := os.Create("LICENSE.txt")
+    if err != nil { panic(err) }
+    defer f.Close()
+
+    divider := "\n\n--------------------------------------------------------------------------------\n\n"
+
+    for i, p := range packages {
+        suffix := "\n"
+        if i < len(packages) - 1 {
+            suffix = divider
+        }
+
+        _, err := f.WriteString(p.License + suffix)
+        if err != nil { panic(err) }
+    }
+}
+
 
 // isGodocTitle detects titles in a Go docstring. A title is a line that is
 // separated from its following line by an empty line, begins with a capital

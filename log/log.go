@@ -4,6 +4,8 @@ import (
     "fmt"
     "os"
     "time"
+
+    "github.com/mattn/go-isatty"
 )
 
 // ConfigSyslog configures a syslog logger
@@ -57,6 +59,13 @@ type ConfigStderr struct {
     // If Color is true, output is colourised iff Stderr is attached to
     // a terminal.
     Color bool
+}
+
+// ShouldColorize returns true if the output should be colourised (if possible)
+// for a given output (e.g. os.Stderr). This is true when both the config Color
+// field is true and the output is a terminal.
+func (c ConfigStderr) ShouldColorize(output *os.File) bool {
+    return c.Color && isatty.IsTerminal(os.Stderr.Fd())
 }
 
 type Config struct{

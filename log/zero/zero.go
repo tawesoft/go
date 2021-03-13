@@ -6,7 +6,6 @@ import (
     "os"
     "strings"
 
-    "github.com/mattn/go-isatty"
     "github.com/rs/zerolog"
     "gopkg.in/natefinch/lumberjack.v2"
     "tawesoft.co.uk/go/log"
@@ -36,10 +35,9 @@ func New(cfg log.Config) (logger zerolog.Logger, closer func() error, err error)
 
     if cfg.Stderr.Enabled {
         c := cfg.Stderr
-        color := c.Color && isatty.IsTerminal(os.Stderr.Fd())
 
         writers = append(writers, zerolog.NewConsoleWriter(func(w *zerolog.ConsoleWriter) {
-            w.NoColor = !color
+            w.NoColor = !c.ShouldColorize(os.Stderr)
             w.Out = os.Stderr
         }))
     }

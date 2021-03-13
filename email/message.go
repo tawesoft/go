@@ -45,11 +45,14 @@ type Message struct {
 
 // Envelope wraps an Email with some SMTP protocol information for extra control.
 type Envelope struct {
-    // From is the sender. Usually this should match the Email From address. In
-    // the cause of autoreplies (like "Out of Office" or bounces or delivery
+    // ReturnPath is the sender in the FROM SMTP command.
+    //
+    // Often, this should match the Email From address.
+    //
+    // In the cause of autoreplies (like "Out of Office" or bounces or delivery
     // status notifications) this should be an empty string to stop an infinite
-    // loop of bounces)
-    From string
+    // loop of bounces.
+    ReturnPath string
 
     // ReceiptTo is a list of recipients. This is normally automatically
     // generated from the Email To/CC/BCC addresses.

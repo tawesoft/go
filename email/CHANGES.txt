@@ -1,3 +1,9 @@
+2021-03-13
+
+    * The envelope From field has been renamed ReturnPath. It was intended for
+      this change to make part of the 2021-03-07 changes - apologies for its
+      late inclusion. This should be the last breaking API change.
+
 2021-03-12
 
     * Add JSON (de)serialisation
