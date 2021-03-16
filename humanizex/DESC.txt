@@ -16,4 +16,6 @@ TODO: parsing
 
 Examples
 
-EXAMPLE custom-durations
+EXAMPLE: simple
+EXAMPLE: custom-durations
+EXAMPLE: custom-factors

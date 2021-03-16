@@ -30,6 +30,23 @@
 // of this package named `humanize` (dropping the 'x').
 // 
 // TODO: parsing
+// 
+// Examples
+// 
+// Example formatting 1536 Bytes (1.5 KiB) in various locales
+//
+// https://www.tawesoft.co.uk/go/doc/humanizex/examples/simple/
+//
+// Example leveraging the raw parts of FormatParts to handle durations in a
+// custom even nicer way for the english language.
+//
+// https://www.tawesoft.co.uk/go/doc/humanizex/examples/custom-durations/
+//
+// Example using custom time factors from the Battlestar Galactica 1978 TV
+// series.
+//
+// https://www.tawesoft.co.uk/go/doc/humanizex/examples/custom-factors/
+//
 //
 // Package Information
 //
