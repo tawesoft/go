@@ -2,6 +2,7 @@ package humanizex
 
 import (
     "math"
+    "strings"
 )
 
 // FormatParts is a general purpose locale-aware way to format any quantity
@@ -55,25 +56,30 @@ func FormatParts(n float64, unit Unit, factors Factors) []Part {
 }
 
 func (h *humanizer) Format(n float64, unit Unit, factors Factors) String {
-    if factors.Components <= 1 {
-        parts := FormatParts(n, unit, factors)
-        part := parts[0]
+    resultUtf8  := make([]string, 0, factors.Components)
+    resultAscii := make([]string, 0, factors.Components)
+    parts := FormatParts(n, unit, factors)
+
+    for _, part := range parts {
 
         places := 0
 
-        return String{
-            h.Printer.Sprintf("%.*f %s", places, part.Magnitude, part.Unit.Utf8),
-            h.Printer.Sprintf("%.*f %s", places, part.Magnitude, part.Unit.Ascii),
+        if part.Magnitude < 10.0 {
+            places = 1
         }
-    }
-    return String{}
 
-    /*
-    result := make([]string, 0, factors.Components)
-    parts := FormatParts(n, unit, factors)
-    for _, part := range parts {
-        result = append(result, str)
+        if part.Magnitude < 1.0 {
+            places = 2
+        }
+
+        str := h.Printer.Sprintf("%.*f", places, part.Magnitude)
+        resultUtf8 = append(resultUtf8, str, part.Unit.Utf8)
+        resultAscii = append(resultAscii, str, part.Unit.Ascii)
     }
-     */
+
+    return String{
+        strings.Join(resultUtf8, " "),
+        strings.Join(resultAscii, " "),
+    }
 }
 
