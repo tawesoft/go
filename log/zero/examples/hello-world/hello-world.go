@@ -1,6 +1,8 @@
 package main
 
 import (
+    "encoding/json"
+    "fmt"
     "time"
 
     "tawesoft.co.uk/go/log"
@@ -31,6 +33,9 @@ func main() {
             Color:   true,
         },
     }
+
+    encodedCfg, err := json.Marshal(cfg)
+    fmt.Println("Encoded config: ", string(encodedCfg))
 
     logger, closer, err := zero.New(cfg)
     if err != nil { panic(err) }

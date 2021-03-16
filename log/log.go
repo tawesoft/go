@@ -1,25 +1,68 @@
 package log
 
 import (
+    "encoding/json"
     "fmt"
     "os"
     "time"
 
     "github.com/mattn/go-isatty"
+    "golang.org/x/text/language"
+    "tawesoft.co.uk/go/humanizex"
 )
 
 // ConfigSyslog configures a syslog logger
 type ConfigSyslog struct {
-    Enabled bool
-    Network string // See syslog.Dial
-    Address string // See syslog.Dial
+    Enabled  bool
+    Network  string // See syslog.Dial
+    Address  string // See syslog.Dial
     Priority Priority // See syslog.Dial
-    Tag string // See syslog.Dial
+    Tag      string // See syslog.Dial
 }
 
+type nativeConfigSyslog struct {
+    Enabled  bool
+    Network  string
+    Address  string
+    Priority string
+    Tag      string
+}
+
+// Dial connects to a local or remote syslog.
 func (c ConfigSyslog) Dial() (Syslog, error) {
     if !c.Enabled { return nil, fmt.Errorf("cannot connect to syslog: not enabled") }
     return dial(c.Network, c.Address, c.Priority, c.Tag)
+}
+
+func (c ConfigSyslog) MarshalJSON() ([]byte, error) {
+    return json.Marshal(nativeConfigSyslog{
+        Enabled:   c.Enabled,
+        Network:   c.Network,
+        Address:   c.Address,
+        Priority:  c.Priority.String(),
+        Tag:       c.Tag,
+    })
+}
+
+func (c *ConfigSyslog) UnmarshalJSON(data []byte) error {
+    var n nativeConfigSyslog
+    err := json.Unmarshal(data, &n)
+    if err != nil { return err }
+
+    priority, err := ParsePriority(n.Priority)
+    if err != nil {
+        return fmt.Errorf("error parsing syslog priority: %v", err)
+    }
+
+    *c = ConfigSyslog{
+        Enabled:  n.Enabled,
+        Network:  n.Network,
+        Address:  n.Address,
+        Priority: priority,
+        Tag:      n.Tag,
+    }
+
+    return nil
 }
 
 // ConfigFile configures a file logger, with optional file rotation
@@ -50,6 +93,53 @@ type ConfigFile struct {
     // If non-zero, keep only this many rotated logs and delete any exceeding
     // the limit of RotateKeepNumber.
     RotateKeepNumber int
+}
+
+type nativeConfigFile struct {
+    Enabled bool
+    Mode string
+    Path string
+    Rotate bool
+    RotateCompress bool
+    RotateMaxSize string
+    RotateKeepAge string
+    RotateKeepNumber int
+}
+
+func (c ConfigFile) MarshalJSON() ([]byte, error) {
+    h := humanizex.NewHumanizer(language.English)
+
+    return json.Marshal(nativeConfigFile{
+        Enabled:          c.Enabled,
+        Mode:             fmt.Sprintf("%#o", c.Mode),
+        Path:             c.Path,
+        Rotate:           c.Rotate,
+        RotateCompress:   c.RotateCompress,
+        RotateMaxSize:    h.FormatBytesIEC(int64(c.RotateMaxSize)),
+        RotateKeepAge:    h.FormatDuration(c.RotateKeepAge),
+        RotateKeepNumber: c.RotateKeepNumber,
+    })
+}
+
+func (c *ConfigFile) UnmarshalJSON(data []byte) error {
+    var n nativeConfigFile
+    err := json.Unmarshal(data, &n)
+    if err != nil { return err }
+
+    panic("TODO")
+
+    *c = ConfigFile{
+        Enabled:          false, // TODO
+        Mode:             0, // TODO
+        Path:             n.Path,
+        Rotate:           n.Rotate,
+        RotateCompress:   n.RotateCompress,
+        RotateMaxSize:    0, // TODO
+        RotateKeepAge:    0, // TODO
+        RotateKeepNumber: n.RotateKeepNumber,
+    }
+
+    return nil
 }
 
 // ConfigStdio configures a logger which writes to Stderr

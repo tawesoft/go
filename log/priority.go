@@ -30,14 +30,17 @@ const (
     LOG_MAIL
     LOG_DAEMON
     LOG_AUTH
-    // LOG_SYSLOG // omitted - should only ever be used internally by syslogd
+    LOG_SYSLOG // should only ever be used internally by syslogd
     LOG_LPR
     LOG_NEWS
     LOG_UUCP
     LOG_CRON
     LOG_AUTHPRIV
     LOG_FTP
-
+    _ // unused
+    _ // unused
+    _ // unused
+    _ // unused
     LOG_LOCAL0
     LOG_LOCAL1
     LOG_LOCAL2
@@ -48,7 +51,8 @@ const (
     LOG_LOCAL7
 )
 
-func (p *Priority) MarshalJSON() ([]byte, error) {
+/*
+func (p Priority) MarshalJSON() ([]byte, error) {
     return []byte(p.String()), nil
 }
 
@@ -59,39 +63,43 @@ func (p *Priority) UnmarshalJSON(data []byte) error {
     *p = number
     return nil
 }
+*/
 
 func (p Priority) String() string {
     var r []string
 
-    if p & LOG_EMERG    == LOG_EMERG    { r = append(r, "EMERG") }
-    if p & LOG_ALERT    == LOG_ALERT    { r = append(r, "ALERT") }
-    if p & LOG_CRIT     == LOG_CRIT     { r = append(r, "CRIT") }
-    if p & LOG_ERR      == LOG_ERR      { r = append(r, "ERR") }
-    if p & LOG_WARNING  == LOG_WARNING  { r = append(r, "WARNING") }
-    if p & LOG_NOTICE   == LOG_NOTICE   { r = append(r, "NOTICE") }
-    if p & LOG_INFO     == LOG_INFO     { r = append(r, "INFO") }
-    if p & LOG_DEBUG    == LOG_DEBUG    { r = append(r, "DEBUG") }
+    const severityMask = 0b0111
+    const facilityMask = 0b1111111111111000
 
-    if p & LOG_KERN     == LOG_KERN     { r = append(r, "KERN") }
-    if p & LOG_USER     == LOG_USER     { r = append(r, "USER") }
-    if p & LOG_MAIL     == LOG_MAIL     { r = append(r, "MAIL") }
-    if p & LOG_DAEMON   == LOG_DAEMON   { r = append(r, "DAEMON") }
-    if p & LOG_AUTH     == LOG_AUTH     { r = append(r, "AUTH") }
-    if p & LOG_LPR      == LOG_LPR      { r = append(r, "LPR") }
-    if p & LOG_NEWS     == LOG_NEWS     { r = append(r, "NEWS") }
-    if p & LOG_UUCP     == LOG_UUCP     { r = append(r, "UUCP") }
-    if p & LOG_CRON     == LOG_CRON     { r = append(r, "CRON") }
-    if p & LOG_AUTHPRIV == LOG_AUTHPRIV { r = append(r, "AUTHPRIV") }
-    if p & LOG_FTP      == LOG_FTP      { r = append(r, "FTP") }
+    if p & severityMask  == LOG_EMERG    { r = append(r, "EMERG") }
+    if p & severityMask  == LOG_ALERT    { r = append(r, "ALERT") }
+    if p & severityMask  == LOG_CRIT     { r = append(r, "CRIT") }
+    if p & severityMask  == LOG_ERR      { r = append(r, "ERR") }
+    if p & severityMask  == LOG_WARNING  { r = append(r, "WARNING") }
+    if p & severityMask  == LOG_NOTICE   { r = append(r, "NOTICE") }
+    if p & severityMask  == LOG_INFO     { r = append(r, "INFO") }
+    if p & severityMask  == LOG_DEBUG    { r = append(r, "DEBUG") }
 
-    if p & LOG_LOCAL0   == LOG_LOCAL0   { r = append(r, "LOCAL0") }
-    if p & LOG_LOCAL1   == LOG_LOCAL1   { r = append(r, "LOCAL1") }
-    if p & LOG_LOCAL2   == LOG_LOCAL2   { r = append(r, "LOCAL2") }
-    if p & LOG_LOCAL3   == LOG_LOCAL3   { r = append(r, "LOCAL3") }
-    if p & LOG_LOCAL4   == LOG_LOCAL4   { r = append(r, "LOCAL4") }
-    if p & LOG_LOCAL5   == LOG_LOCAL5   { r = append(r, "LOCAL5") }
-    if p & LOG_LOCAL6   == LOG_LOCAL6   { r = append(r, "LOCAL6") }
-    if p & LOG_LOCAL7   == LOG_LOCAL7   { r = append(r, "LOCAL7") }
+    if p & facilityMask  == LOG_KERN     { r = append(r, "KERN") }
+    if p & facilityMask  == LOG_USER     { r = append(r, "USER") }
+    if p & facilityMask  == LOG_MAIL     { r = append(r, "MAIL") }
+    if p & facilityMask  == LOG_DAEMON   { r = append(r, "DAEMON") }
+    if p & facilityMask  == LOG_AUTH     { r = append(r, "AUTH") }
+    if p & facilityMask  == LOG_LPR      { r = append(r, "LPR") }
+    if p & facilityMask  == LOG_NEWS     { r = append(r, "NEWS") }
+    if p & facilityMask  == LOG_UUCP     { r = append(r, "UUCP") }
+    if p & facilityMask  == LOG_CRON     { r = append(r, "CRON") }
+    if p & facilityMask  == LOG_AUTHPRIV { r = append(r, "AUTHPRIV") }
+    if p & facilityMask  == LOG_FTP      { r = append(r, "FTP") }
+
+    if p & severityMask  == LOG_LOCAL0   { r = append(r, "LOCAL0") }
+    if p & severityMask  == LOG_LOCAL1   { r = append(r, "LOCAL1") }
+    if p & severityMask  == LOG_LOCAL2   { r = append(r, "LOCAL2") }
+    if p & severityMask  == LOG_LOCAL3   { r = append(r, "LOCAL3") }
+    if p & severityMask  == LOG_LOCAL4   { r = append(r, "LOCAL4") }
+    if p & severityMask  == LOG_LOCAL5   { r = append(r, "LOCAL5") }
+    if p & severityMask  == LOG_LOCAL6   { r = append(r, "LOCAL6") }
+    if p & severityMask  == LOG_LOCAL7   { r = append(r, "LOCAL7") }
 
     if len(r) > 0 {
         return strings.Join(r, "|")

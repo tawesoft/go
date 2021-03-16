@@ -8,6 +8,7 @@ pkgs="\
     email \
     glcaps \
     grace \
+    humanizex \
     legacy/email \
     loader \
     log \

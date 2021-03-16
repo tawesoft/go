@@ -1,0 +1,15 @@
+SPDX-License-Identifier: MIT
+short-desc: locale-aware natural number formatting
+stable: no
+
+---
+
+Package humanizex is an elegant general-purpose, locale-aware way to format
+and parse numbers and quantities - like distances, bytes, and time - in a
+human-readable way ideal for config files and as a building-block for a fully
+translated ergonomic user interface.
+
+If golang.org/x/text is ever promoted to core then there will be a new version
+of this package named `humanize` (dropping the 'x').
+
+TODO: parsing

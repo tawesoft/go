@@ -101,6 +101,25 @@ import "tawesoft.co.uk/go/grace"
 [src_grace]:  https://github.com/tawesoft/go/tree/master/grace
 [docs_grace]: https://www.tawesoft.co.uk/go/doc/grace
 [copy_grace]: https://github.com/tawesoft/go/tree/master/grace/LICENSE.txt
+### humanizex - locale-aware natural number formatting
+
+Package humanizex is an elegant general-purpose, locale-aware way to format
+and parse numbers and quantities - like distances, bytes, and time - in a
+human-readable way ideal for config files and as a building-block for a fully
+translated ergonomic user interface.
+
+```go
+import "tawesoft.co.uk/go/humanizex"
+```
+
+|  Links  | License | Stable? |
+|:-------:|:-------:|:-------:|
+| [home][home_humanizex] ∙ [docs][docs_humanizex] ∙ [src][src_humanizex] | [MIT][copy_humanizex] | ✘ **no** |
+
+[home_humanizex]: https://tawesoft.co.uk/go/humanizex
+[src_humanizex]:  https://github.com/tawesoft/go/tree/master/humanizex
+[docs_humanizex]: https://www.tawesoft.co.uk/go/doc/humanizex
+[copy_humanizex]: https://github.com/tawesoft/go/tree/master/humanizex/LICENSE.txt
 ### loader - concurrent dependency graph solver
 
 Package loader implements the ability to define a graph of tasks and
