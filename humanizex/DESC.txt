@@ -13,3 +13,7 @@ If golang.org/x/text is ever promoted to core then there will be a new version
 of this package named `humanize` (dropping the 'x').
 
 TODO: parsing
+
+Examples
+
+EXAMPLE custom-durations

@@ -72,6 +72,11 @@ func (h *humanizer) Format(n float64, unit Unit, factors Factors) String {
             places = 2
         }
 
+        _, frac := math.Modf(part.Magnitude)
+        if math.Abs(frac) < 0.01 {
+            places = 0
+        }
+
         str := h.Printer.Sprintf("%.*f", places, part.Magnitude)
         resultUtf8 = append(resultUtf8, str, part.Unit.Utf8)
         resultAscii = append(resultAscii, str, part.Unit.Ascii)
