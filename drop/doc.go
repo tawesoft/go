@@ -1,7 +1,7 @@
 // tawesoft.co.uk/go/drop
 // 
-// Copyright © 2020 Tawesoft Ltd <open-source@tawesoft.co.uk>
-// Copyright © 2020 Ben Golightly <ben@tawesoft.co.uk>
+// Copyright © 2020 - 2021 Tawesoft Ltd <open-source@tawesoft.co.uk>
+// Copyright © 2020 - 2021 Ben Golightly <ben@tawesoft.co.uk>
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -42,6 +42,11 @@
 // etc. please see https://www.tawesoft.co.uk/go and 
 // https://www.tawesoft.co.uk/go/drop
 //
+//     2021-03-17
+//     
+//         * Drop() now returns a (bool, error) 2-tuple. The first return value,
+//           if true, indicates that the caller should immediately exit.
+//     
 //     2020-11-27
 //     
 //         * Drop() functionality has been moved to tawesoft.co.uk/go/drop with
