@@ -83,10 +83,11 @@ func main() {
     // the parent process's stdio, and immediately exit.
     //
     // If the program is run as non-root, inherit these resources and continue.
-    err := drop.Drop(username, privilegedFile, privilegedPort)
+    shouldExit, err := drop.Drop(username, privilegedFile, privilegedPort)
     if err != nil {
         panic(fmt.Sprintf("error dropping privileges (try running as root): %v", err))
     }
+    if shouldExit { return }
 
     // At this point, the program is no longer running as root, but it still
     // has access to these privileged resources.

@@ -1,3 +1,8 @@
+2021-03-17
+
+    * Drop() now returns a (bool, error) 2-tuple. The first return value,
+      if true, indicates that the caller should immediately exit.
+
 2020-11-27
 
     * Drop() functionality has been moved to tawesoft.co.uk/go/drop with
