@@ -82,7 +82,7 @@ func dropArg(username string, supervise bool, files ... Inheritable) (bool, erro
         args := os.Args
         cmd        := exec.Command(args[0], args[1:]...)
 
-        if !supervise {
+        if supervise {
             cmd.Stdin  = os.Stdin
             cmd.Stdout = os.Stdout
             cmd.Stderr = os.Stderr
