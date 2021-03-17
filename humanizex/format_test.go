@@ -92,8 +92,6 @@ func TestFormat(t *testing.T) {
         {danish,  "danish", CommonFactors.Distance, 1500 * 1000, Unit{"m", "m"}, "1.500 km"},
     }
 
-    const epsilon = 0.01
-
     for _, test := range tests {
         str := test.humanizer.Format(test.value, test.unit, test.factors)
         if str.Utf8 != test.expected {

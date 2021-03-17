@@ -20,8 +20,8 @@ type String struct {
     Ascii  string
 }
 
-// Unit describes some quantity e.g. length in metres, the unit prefix "kilo",
-// or both e.g. a kilometre.
+// Unit describes some quantity e.g. "m" for length in metres, "k" for the SI
+// unit prefix kilo, "km" for a kilometre.
 type Unit String
 
 // Cat concatenates two units (u + v) and returns the result.
@@ -69,8 +69,22 @@ type Humanizer interface {
     FormatBytesIEC(bytes int64) string              // e.g. 12 kB, 5 MB
     FormatBytesSI(bytes int64) string               // e.g. 12 KiB, 5 MiB
 
-    // TODO
-    // Parse(str string, unit Unit, factors Factors) (float64, error)
+    // Accept is a general purpose locale-aware way to parse any quantity
+    // with a defined set of factors from the start of the string str. The
+    // provided unit is optional and is accepted if it appears in str.
+    //
+    // Accept returns the value, the number of bytes successfully parsed (which
+    // may be zero), or an error.
+    Accept(str string, unit Unit, factors Factors) (float64, int, error)
+
+    // Parse is a general purpose locale-aware way to parse any quantity
+    // with a defined set of factors.  The provided unit is optional and is
+    // accepted if it appears in str.
+    Parse(str string, unit Unit, factors Factors) (float64, error)
+
+    ParseBytesJEDEC(str string) (int64, error)
+    ParseBytesIEC(str string) (int64, error)
+    ParseBytesSI(str string) (int64, error)
 }
 
 type humanizer struct {
@@ -107,17 +121,27 @@ func (h *humanizer) FormatNumber(number float64) String {
     return h.Format(number, CommonUnits.None, CommonFactors.SI)
 }
 
-
-func (h *humanizer) Parse(str string, unit Unit, factors Factors) (float64, error) {
-    panic("TODO")
-    return 0, nil
+func (h *humanizer) ParseBytesJEDEC(str string) (int64, error) {
+    v, err := h.Parse(str, CommonUnits.Byte, CommonFactors.JEDEC)
+    return int64(v), err
 }
 
-// NewHumanizer initialises a natural language number encoder/decoder for the
+func (h *humanizer) ParseBytesIEC(str string) (int64, error) {
+    v, err := h.Parse(str, CommonUnits.Byte, CommonFactors.IEC)
+    return int64(v), err
+}
+
+func (h *humanizer) ParseBytesSI(str string) (int64, error) {
+    v, err := h.Parse(str, CommonUnits.Byte, CommonFactors.SI)
+    return int64(v), err
+}
+
+// NewHumanizer initialises a human language number encoder/decoder for the
 // given tag (representing a specific language or locale).
 //
 // The language.Tag is usually a named language from golang.org/x/text/language
-// e.g. language.English.
+// e.g. language.English and controls how numbers are written e.g. comma
+// placement, decimal point, digits.
 func NewHumanizer(tag language.Tag, options ... interface{}) Humanizer {
     return &humanizer{
         Tag:     tag,

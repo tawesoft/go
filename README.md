@@ -103,10 +103,10 @@ import "tawesoft.co.uk/go/grace"
 [copy_grace]: https://github.com/tawesoft/go/tree/master/grace/LICENSE.txt
 ### humanizex - locale-aware natural number formatting
 
-Package humanizex is an elegant general-purpose, locale-aware way to format
-and parse numbers and quantities - like distances, bytes, and time - in a
-human-readable way ideal for config files and as a building-block for a fully
-translated ergonomic user interface.
+Package humanizex is an elegant, general-purpose, extensible, modular,
+locale-aware way to format and parse numbers and quantities - like distances,
+bytes, and time - in a human-readable way ideal for config files and as a
+building-block for fully translated ergonomic user interfaces.
 
 ```go
 import "tawesoft.co.uk/go/humanizex"

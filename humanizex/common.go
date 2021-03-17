@@ -20,10 +20,12 @@ var CommonFactors = struct{
     // Time is time units in seconds, minutes, hours, days and years as min, h,
     // d, and y. These are non-SI units but generally accepted in context.
     // For times smaller than a second (e.g. nanoseconds), use SI instead.
+    // The expected unit is a second (Unit{"s", "s"} or CommonUnits.Second)
     Time Factors
 
-    // Distance are SI units that stop at kilometre (because nobody uses
-    // megametres or gigametres!) but includes centimetres.
+    // Distance are SI units that stop at kilo (because nobody uses
+    // megametres or gigametres!) but includes centi. The expected unit is the
+    // SI unit for distance, the metre (Unit{"m", "m"} or CommonUnits.Meter)
     Distance Factors
 
     // IEC are the "ibi" unit prefixes for bytes e.g. Ki, Mi, Gi with a

@@ -12,7 +12,7 @@ import (
 // other cases, there may be multiple parts e.g. the two parts "1 h" and
 // "30 min" making up the time "1 h 30 min". The number of parts returned is
 // never more than that defined by the factors argument's Components field
-// (but may be less).
+// (but may be fewer).
 func FormatParts(n float64, unit Unit, factors Factors) []Part {
 
     numComponents := factors.Components

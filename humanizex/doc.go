@@ -21,19 +21,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-// Package humanizex is an elegant general-purpose, locale-aware way to format
-// and parse numbers and quantities - like distances, bytes, and time - in a
-// human-readable way ideal for config files and as a building-block for a fully
-// translated ergonomic user interface.
+// Package humanizex is an elegant, general-purpose, extensible, modular,
+// locale-aware way to format and parse numbers and quantities - like distances,
+// bytes, and time - in a human-readable way ideal for config files and as a
+// building-block for fully translated ergonomic user interfaces.
 // 
 // If golang.org/x/text is ever promoted to core then there will be a new version
 // of this package named `humanize` (dropping the 'x').
 // 
-// TODO: parsing
+// What about dustin's go-humanize?
+// 
+// dustin's go-humanize (https://github.com/dustin/go-humanize) is 3.9 to 4.5
+// times faster formatting and 2 times faster parsing, if this is a bottleneck for
+// you. It's also quite mature, so is probably very well tested by now. If you're
+// only targeting the English language it also has more handy "out of the box"
+// features.
+// 
+// On the other hand, tawesoft's humanizex is more general purpose and has better
+// localisation support. Even with those extra features, tawesoft's humanizex
+// codebase is also smaller and simpler.
 // 
 // Examples
 // 
-// Example formatting 1536 Bytes (1.5 KiB) in various locales
+// Example formatting and parsing Byte quantities in various locales
 //
 // https://www.tawesoft.co.uk/go/doc/humanizex/examples/simple/
 //

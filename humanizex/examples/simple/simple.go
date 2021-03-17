@@ -1,4 +1,4 @@
-// Example formatting 1536 Bytes (1.5 KiB) in various locales
+// Example formatting and parsing Byte quantities in various locales
 package main
 
 import (
@@ -7,6 +7,11 @@ import (
     "golang.org/x/text/language"
     "tawesoft.co.uk/go/humanizex"
 )
+
+func mustInt64(v int64, err error) int64 {
+    if err != nil { panic(err) }
+    return v
+}
 
 func main() {
     hEnglish := humanizex.NewHumanizer(language.English)
@@ -21,4 +26,7 @@ func main() {
 
     // prints ১.৫ KiB
     fmt.Println(hBengali.FormatBytesIEC(1024 + 512))
+
+    // prints 1536
+    fmt.Println(mustInt64(hEnglish.ParseBytesIEC("1.5 KiB")))
 }
