@@ -156,24 +156,24 @@ import "tawesoft.co.uk/go/log"
 [src_log]:  https://github.com/tawesoft/go/tree/master/log
 [docs_log]: https://www.tawesoft.co.uk/go/doc/log
 [copy_log]: https://github.com/tawesoft/go/tree/master/log/LICENSE.txt
-### log/zero - easy-config zerolog
+### log/zerolog - easy-config zerolog
 
 Package log/zero makes it trivial to configure a zerolog logger with syslog,
 rotating file, and/or console output using the same uniform configuration
 interface.
 
 ```go
-import "tawesoft.co.uk/go/log/zero"
+import "tawesoft.co.uk/go/log/zerolog"
 ```
 
 |  Links  | License | Stable? |
 |:-------:|:-------:|:-------:|
-| [home][home_log/zero] ∙ [docs][docs_log/zero] ∙ [src][src_log/zero] | [MIT-0][copy_log/zero] | candidate |
+| [home][home_log/zerolog] ∙ [docs][docs_log/zerolog] ∙ [src][src_log/zerolog] | [MIT-0][copy_log/zerolog] | candidate |
 
-[home_log/zero]: https://tawesoft.co.uk/go/log/zero
-[src_log/zero]:  https://github.com/tawesoft/go/tree/master/log/zero
-[docs_log/zero]: https://www.tawesoft.co.uk/go/doc/log/zero
-[copy_log/zero]: https://github.com/tawesoft/go/tree/master/log/zero/LICENSE.txt
+[home_log/zerolog]: https://tawesoft.co.uk/go/log/zerolog
+[src_log/zerolog]:  https://github.com/tawesoft/go/tree/master/log/zerolog
+[docs_log/zerolog]: https://www.tawesoft.co.uk/go/doc/log/zerolog
+[copy_log/zerolog]: https://github.com/tawesoft/go/tree/master/log/zerolog/LICENSE.txt
 ### lxstrconv - locale-aware number parsing
 
 Package lxstrconv is an attempt at implementing locale-aware parsing of

@@ -23,12 +23,14 @@ Package log provides a common way to quickly configure a logging implementation
 with file rotation, syslog, console output, etc. for some popular logging
 implementations such as zerolog.
 
-This package defines the configuration interface. It is concretely
-implemented by the packages in the subfolder.
+This package defines the configuration interface, which is json-encodable.
+
+Loggers are concretely implemented by the packages in the subfolder e.g.
+tawesoft.co.uk/go/log/zerolog.
 
 The package also wraps the stdlib syslog as an interface without it being a
 compile-time constraint so that it can be imported on platforms that don't
-support syslog (like Windows), but give a runtime error instead.
+support syslog (like Windows), giving a runtime error if used instead.
 
 ## Getting Help
 

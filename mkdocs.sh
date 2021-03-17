@@ -12,7 +12,7 @@ pkgs="\
     legacy/email \
     loader \
     log \
-    log/zero \
+    log/zerolog \
     lxstrconv \
     operator \
     queue \

@@ -82,6 +82,7 @@ type Humanizer interface {
     // accepted if it appears in str.
     Parse(str string, unit Unit, factors Factors) (float64, error)
 
+    ParseDuration(str string) (time.Duration, error)
     ParseBytesJEDEC(str string) (int64, error)
     ParseBytesIEC(str string) (int64, error)
     ParseBytesSI(str string) (int64, error)
@@ -119,6 +120,11 @@ func (h *humanizer) FormatSeconds(seconds float64) string {
 
 func (h *humanizer) FormatNumber(number float64) String {
     return h.Format(number, CommonUnits.None, CommonFactors.SI)
+}
+
+func (h *humanizer) ParseDuration(str string) (time.Duration, error) {
+    v, err := h.Parse(str, CommonUnits.Second, CommonFactors.Time)
+    return time.Second * time.Duration(v), err
 }
 
 func (h *humanizer) ParseBytesJEDEC(str string) (int64, error) {

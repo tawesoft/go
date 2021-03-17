@@ -4,6 +4,8 @@ import (
     "encoding/json"
     "fmt"
     "os"
+    "strconv"
+    "strings"
     "time"
 
     "github.com/mattn/go-isatty"
@@ -126,16 +128,32 @@ func (c *ConfigFile) UnmarshalJSON(data []byte) error {
     err := json.Unmarshal(data, &n)
     if err != nil { return err }
 
-    panic("TODO")
+    h := humanizex.NewHumanizer(language.English)
+
+    rotateMaxSize, err := h.ParseBytesIEC(n.RotateMaxSize)
+    if err != nil { return err }
+
+    rotateKeepAge, err := h.ParseDuration(n.RotateKeepAge)
+    if err != nil { return err }
+
+    var mode int64
+    if strings.HasPrefix(n.Mode, "0") {
+        var err error
+        mode, err = strconv.ParseInt(n.Mode, 8, 32)
+        if err != nil { return fmt.Errorf("invalid octal mode %s\n") }
+    } else {
+        mode, err = strconv.ParseInt(n.Mode, 10, 32)
+        if err != nil { return fmt.Errorf("invalid mode %s\n") }
+    }
 
     *c = ConfigFile{
-        Enabled:          false, // TODO
-        Mode:             0, // TODO
+        Enabled:          n.Enabled,
+        Mode:             os.FileMode(mode),
         Path:             n.Path,
         Rotate:           n.Rotate,
         RotateCompress:   n.RotateCompress,
-        RotateMaxSize:    0, // TODO
-        RotateKeepAge:    0, // TODO
+        RotateMaxSize:    int(rotateMaxSize),
+        RotateKeepAge:    rotateKeepAge,
         RotateKeepNumber: n.RotateKeepNumber,
     }
 

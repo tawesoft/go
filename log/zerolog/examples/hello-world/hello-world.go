@@ -1,12 +1,10 @@
 package main
 
 import (
-    "encoding/json"
-    "fmt"
     "time"
 
     "tawesoft.co.uk/go/log"
-    "tawesoft.co.uk/go/log/zero"
+    "tawesoft.co.uk/go/log/zerolog"
 )
 
 func main() {
@@ -34,10 +32,7 @@ func main() {
         },
     }
 
-    encodedCfg, err := json.Marshal(cfg)
-    fmt.Println("Encoded config: ", string(encodedCfg))
-
-    logger, closer, err := zero.New(cfg)
+    logger, closer, err := zerolog.New(cfg)
     if err != nil { panic(err) }
     defer closer()
 
