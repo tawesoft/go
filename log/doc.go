@@ -30,6 +30,13 @@
 // The package also wraps the stdlib syslog as an interface without it being a
 // compile-time constraint so that it can be imported on platforms that don't
 // support syslog (like Windows), giving a runtime error if used instead.
+// 
+// Examples
+// 
+// 
+//
+// https://www.tawesoft.co.uk/go/doc/log/examples/encode/
+//
 //
 // Package Information
 //

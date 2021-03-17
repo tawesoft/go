@@ -5,8 +5,7 @@ import (
     "fmt"
     "net"
     "os"
-    "time"
-    
+
     "tawesoft.co.uk/go/drop"
 )
 
@@ -19,7 +18,7 @@ type InheritableFile struct {
     Path  string
     Flags int // e.g.  os.O_RDWR|os.O_CREATE
     Perm  os.FileMode // e.g. 0600
-    
+
     handle *os.File
 }
 
@@ -53,7 +52,7 @@ func (h InheritableNetListener) Open() (*os.File, error) {
     nl, err := net.Listen(h.Network, h.Address)
     if err != nil { return nil, err }
     defer nl.Close()
-    
+
     fl, err := nl.(*net.TCPListener).File()
     if err != nil { return nil, err }
     return fl, nil
@@ -71,14 +70,14 @@ func main() {
     if len(os.Args) < 2 {
         panic(fmt.Sprintf("USAGE: sudo %s username\n", os.Args[0]))
     }
-    
+
     // what user to drop to
     username := os.Args[1]
-    
+
     // resources to be opened as root and persist after privileges are dropped
     privilegedFile := &InheritableFile{"/tmp/privileged-file-example", os.O_RDWR|os.O_CREATE, 0600, nil}
     privilegedPort := &InheritableNetListener{"tcp4", "127.0.0.1:81", nil}
-    
+
     // If the program is run as root, open privileged resources as root, then
     // start a child process as `username` that inherits these resources and
     // the parent process's stdio, and immediately exit.
@@ -88,16 +87,14 @@ func main() {
     if err != nil {
         panic(fmt.Sprintf("error dropping privileges (try running as root): %v", err))
     }
-    
+
     // At this point, the program is no longer running as root, but it still
     // has access to these privileged resources.
-    
+
     // do things with privilegedFile
     privilegedFile.handle.WriteString("hello world\n")
     privilegedFile.handle.Close()
-    
+
     // do things with privilegedPort
     privilegedPort.handle.Close()
-    
-    time.Sleep(10)
 }

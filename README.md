@@ -158,7 +158,7 @@ import "tawesoft.co.uk/go/log"
 [copy_log]: https://github.com/tawesoft/go/tree/master/log/LICENSE.txt
 ### log/zerolog - easy-config zerolog
 
-Package log/zero makes it trivial to configure a zerolog logger with syslog,
+Package log/zerolog makes it trivial to configure a zerolog logger with syslog,
 rotating file, and/or console output using the same uniform configuration
 interface.
 

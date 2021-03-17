@@ -19,12 +19,15 @@ import "tawesoft.co.uk/go/log/zerolog"
 
 ## About
 
-Package log/zero makes it trivial to configure a zerolog logger with syslog,
+Package log/zerolog makes it trivial to configure a zerolog logger with syslog,
 rotating file, and/or console output using the same uniform configuration
 interface.
 
-See https://github.com/rs/zerolog
-Log rotation provided by "gopkg.in/natefinch/lumberjack.v2"
+
+## See https://github.com/rs/zerolog
+
+
+Log rotation provided by https://gopkg.in/natefinch/lumberjack.v2/
 
 
 ## See https://www.tawesoft.co.uk/go/doc/log
