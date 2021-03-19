@@ -1,3 +1,8 @@
+// Example using glcaps with an OpenGL binding and a struct with tags.
+//
+// See https://godoc.org/tawesoft.co.uk/go/glcaps#Parse for a description of the
+// struct annotation syntax.
+
 package main
 
 // Example output:

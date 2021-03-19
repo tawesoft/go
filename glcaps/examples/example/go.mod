@@ -2,7 +2,7 @@ module tawesoft.co.uk/go/glcaps/example
 
 go 1.16
 
-replace tawesoft.co.uk/go => ../../
+replace tawesoft.co.uk/go => ../../../
 
 require (
 	github.com/go-gl/gl v0.0.0-20210308051507-640c6464cf3e
