@@ -27,15 +27,13 @@ OpenGL® and the oval logo are trademarks or registered trademarks of Hewlett
 Packard Enterprise in the United States and/or other countries worldwide.
 
 
-## Example
+## Examples
 
 
-Usage involves defining an OpenGL binding and parsing into an annotated struct.
+Example using glcaps with an OpenGL binding and a struct with tags.
 
 See https://godoc.org/tawesoft.co.uk/go/glcaps#Parse for a description of the
 struct annotation syntax.
-
-
 ```go
 package main
 
