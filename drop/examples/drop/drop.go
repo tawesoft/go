@@ -9,8 +9,11 @@ import (
     "tawesoft.co.uk/go/drop"
 )
 
-// Define structures and methods that meets the start.Inheritable interface
+// Define structures and methods that meets the drop.Inheritable interface
 // by implementing Name(), Open(), and Inherit()...
+
+// These are implemented here for example purposes - but you can use
+// the builtins drop.Inheritable...
 
 // InheritableFile is a file handle that survives a dropping of
 // privileges.
@@ -53,6 +56,8 @@ func (h InheritableNetListener) Open() (*os.File, error) {
     if err != nil { return nil, err }
     defer nl.Close()
 
+    // Note that On JS and Windows, the File method of most Listeners are not
+    // implemented, so this will not work!
     fl, err := nl.(*net.TCPListener).File()
     if err != nil { return nil, err }
     return fl, nil

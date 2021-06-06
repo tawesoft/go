@@ -4,16 +4,8 @@ import (
     "fmt"
     "os"
     "os/exec"
-    "runtime"
     "syscall"
 )
-
-// Inheritable
-type Inheritable interface {
-    Name() string
-    Open() (*os.File, error)
-    Inherit(*os.File) error
-}
 
 // Drop works in two ways, depending on the privileges of the current process.
 //
@@ -53,10 +45,6 @@ func Drop(username string, files ... Inheritable,) (bool, error) {
 //}
 
 func dropArg(username string, supervise bool, files ... Inheritable) (bool, error) {
-    if runtime.GOOS != "linux" {
-        return false, fmt.Errorf("unsupported: Drop only works on Linux")
-    }
-
     closeAll := func(handles []*os.File) {
         for _, i := range handles {
             i.Close()
@@ -80,7 +68,7 @@ func dropArg(username string, supervise bool, files ... Inheritable) (bool, erro
         }
 
         args := os.Args
-        cmd        := exec.Command(args[0], args[1:]...)
+        cmd := exec.Command(args[0], args[1:]...)
 
         if supervise {
             cmd.Stdin  = os.Stdin

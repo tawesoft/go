@@ -23,6 +23,8 @@ Package drop implements the ability to start a process as root, open
 privileged resources as files, drop privileges to become a given user account,
 and inherit file handles across the dropping of privileges.
 
+NOTE: This package has only been tested on Linux. YMMV.
+
 
 ## Examples
 
@@ -39,8 +41,11 @@ import (
     "tawesoft.co.uk/go/drop"
 )
 
-// Define structures and methods that meets the start.Inheritable interface
+// Define structures and methods that meets the drop.Inheritable interface
 // by implementing Name(), Open(), and Inherit()...
+
+// These are implemented here for example purposes - but you can use
+// the builtins drop.Inheritable...
 
 // InheritableFile is a file handle that survives a dropping of
 // privileges.
@@ -83,6 +88,8 @@ func (h InheritableNetListener) Open() (*os.File, error) {
     if err != nil { return nil, err }
     defer nl.Close()
 
+    // Note that On JS and Windows, the File method of most Listeners are not
+    // implemented, so this will not work!
     fl, err := nl.(*net.TCPListener).File()
     if err != nil { return nil, err }
     return fl, nil
@@ -132,6 +139,18 @@ func main() {
 ```
 
 ## Changes
+
+### 2021-07-06
+
+* The Inheritable interface now has a Close() method. Implementations will
+need to add this method.
+
+* The package now exports the builtins InheritableFile and
+InheritableNetListener that implement the Inheritable interface for
+Files and net.Listeners
+
+* Drop() no longer panics on non-Linux platforms. However, it has only been
+tested on Linux so YMMV.
 
 ### 2021-03-17
 

@@ -25,6 +25,8 @@
 // privileged resources as files, drop privileges to become a given user account,
 // and inherit file handles across the dropping of privileges.
 // 
+// NOTE: This package has only been tested on Linux. YMMV.
+// 
 // Examples
 // 
 // Opens privileged files and ports as root, then drops privileges
@@ -42,6 +44,18 @@
 // etc. please see https://www.tawesoft.co.uk/go and 
 // https://www.tawesoft.co.uk/go/drop
 //
+//     2021-07-06
+//     
+//         * The Inheritable interface now has a Close() method. Implementations will
+//           need to add this method.
+//     
+//         * The package now exports the builtins InheritableFile and
+//           InheritableNetListener that implement the Inheritable interface for
+//           Files and net.Listeners
+//     
+//         * Drop() no longer panics on non-Linux platforms. However, it has only been
+//           tested on Linux so YMMV.
+//     
 //     2021-03-17
 //     
 //         * Drop() now returns a (bool, error) 2-tuple. The first return value,

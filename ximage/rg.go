@@ -8,6 +8,7 @@ package ximage
 import (
     "image"
     "image/color"
+
     "tawesoft.co.uk/go/ximage/xcolor"
 )
 

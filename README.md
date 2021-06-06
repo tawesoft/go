@@ -212,8 +212,7 @@ import "tawesoft.co.uk/go/operator"
 ### queue - same-process durable message queue
 
 Package queue implements simple, durable/ACID, same-process message queues
-supporting at-least-once or exactly-once delivery and best-effort ordering
-by priority and/or time.
+with best-effort ordering by priority and/or time.
 
 ```go
 import "tawesoft.co.uk/go/queue"

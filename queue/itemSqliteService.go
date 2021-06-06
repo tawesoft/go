@@ -4,8 +4,9 @@ import (
     "database/sql"
     "fmt"
     "os"
+    "strings"
     "time"
-    
+
     "tawesoft.co.uk/go/sqlp"
     "tawesoft.co.uk/go/sqlp/sqlite3"
     "tawesoft.co.uk/go/variadic"
@@ -90,18 +91,18 @@ func initItemSqliteService(db *sql.DB, dbname string, file string) error {
 // itemSqliteService
 func newItemSqliteService(db *sql.DB, name string, rawpath string) (itemSqliteService, error) {
     var err error
-    
+
     name, err = sqlite3.Features.EscapeIdentifier(name)
     if err != nil { return nilItemSqliteService, err }
     path, err := sqlite3.Features.EscapeString(rawpath)
     if err != nil { return nilItemSqliteService, err }
-    
+
     err = initItemSqliteService(db, name, path)
     if err != nil { return nilItemSqliteService, err }
-    
+
     msgSvc, err := newMessageSqliteService(db, name)
     if err != nil { return nilItemSqliteService, err }
-    
+
     return itemSqliteService{
         dbname:  name,
         dbpath:  rawpath,
@@ -115,38 +116,38 @@ func (s itemSqliteService) CreateItem(newItem NewItem) error {
         tx, err := s.db.Begin()
         if err != nil { return err }
         defer tx.Rollback()
-        
+
         i := itemSqliteNew{
             Priority:   newItem.Priority,
             Created:    newItem.Created.Unix(),
             RetryAfter: newItem.RetryAfter.Unix(),
         }
-        
+
         query := `INSERT INTO `+ s.dbname +`.items(`+i.fields()+`) VALUES (`+i.placeholders()+`)`
-        
+
         result, err := tx.Exec(query, i.values()...)
         if err != nil { return err }
-        
+
         if n, ok := sqlp.RowsAffectedBetween(result, 1, 1); !ok {
             return fmt.Errorf("rows affected %d != 1", n)
         }
-        
+
         itemID, err := result.LastInsertId()
         if err != nil { return err }
-        
+
         err = s.msgSvc.Create(tx, ItemID(itemID), newItem.Message)
         if err != nil { return err }
-        
+
         err = tx.Commit()
         if err != nil { return err }
-        
+
         return nil
     }()
-    
+
     if err != nil {
         return fmt.Errorf("error inserting new item: %+v", err)
     }
-    
+
     return nil
 }
 
@@ -158,7 +159,7 @@ func (s itemSqliteService) PeekItems(
 ) ([]Item, error) {
     items, err := func () ([]Item, error) {
         var i itemSqlite
-        
+
         query := `
         SELECT
             `+ i.fields() +`
@@ -179,14 +180,14 @@ func (s itemSqliteService) PeekItems(
             items.created,
             items.id
         LIMIT ?`
-        
+
         args := variadic.FlattenExcludingNils(minPriority, due.Unix(), excluding, n)
         rows, err := s.db.Query(query, args...)
         if err != nil { return nil, err }
         defer rows.Close()
-        
+
         items := make([]Item, 0, n)
-        
+
         for rows.Next() {
             if err := rows.Scan(i.pointers()...); err != nil {
                 return nil, err
@@ -196,52 +197,53 @@ func (s itemSqliteService) PeekItems(
         if err := rows.Err(); err != nil {
             return nil, err
         }
-        
+
         return items, nil
     }()
-    
+
     if err != nil {
         return nil, fmt.Errorf("error selecting items: %+v", err)
     }
-    
+
     return items, nil
 }
 
-func (s itemSqliteService) RetryItem(id ItemID, priority int, due time.Time) error {
+func (s itemSqliteService) RetryItem(item Item, priority int, due time.Time) error {
     query := `
         UPDATE
             `+ s.dbname +`.items
         SET
             priority = ?,
-            retryAfter = ?
+            retryAfter = ?,
+            attempts = ?,
         WHERE
             id = ?
     `
-    
-    result, err := s.db.Exec(query, priority, due.Unix(), id)
+
+    result, err := s.db.Exec(query, priority, due.Unix(), item.Attempt + 1, item.ID)
     if err != nil {
-        return fmt.Errorf("error updating %s item %d: %+v", s.dbname, id, err)
+        return fmt.Errorf("error updating %s item %d: %+v", s.dbname, item.ID, err)
     }
     if _, ok := sqlp.RowsAffectedBetween(result, 1, 1); !ok {
-        return fmt.Errorf("error updating %s item %d: rows affected != 1", s.dbname, id)
+        return fmt.Errorf("error updating %s item %d: rows affected != 1", s.dbname, item.ID)
     }
     return nil
 }
 
-func (s itemSqliteService) DeleteItem(id ItemID) error {
+func (s itemSqliteService) DeleteItem(item Item) error {
     query := `
         DELETE FROM
             `+ s.dbname +`.items
         WHERE
             id = ?
     `
-    
-    result, err := s.db.Exec(query, id)
+
+    result, err := s.db.Exec(query, item.ID)
     if err != nil {
-        return fmt.Errorf("error deleting %s item %d: %+v", s.dbname, id, err)
+        return fmt.Errorf("error deleting %s item %d: %+v", s.dbname, item.ID, err)
     }
     if _, ok := sqlp.RowsAffectedBetween(result, 1, 1); !ok {
-        return fmt.Errorf("error deleting %s item %d: rows affected != 1", s.dbname, id)
+        return fmt.Errorf("error deleting %s item %d: rows affected != 1", s.dbname, item.ID)
     }
     return nil
 }
@@ -255,5 +257,8 @@ func (s itemSqliteService) Close() error {
 }
 
 func (s itemSqliteService) Delete() error {
-    return os.Remove(s.dbpath)
+    if !strings.HasPrefix(s.dbpath, ":memory:") {
+        return os.Remove(s.dbpath)
+    }
+    return nil
 }

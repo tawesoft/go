@@ -1,6 +1,3 @@
-* Root level license.txt isn't being properly regenerated after porting the
-  docs generator from python to go?
-
 * Some links are broken in the static docs e.g.
     - http://localhost:6061/pkg/builtin/#string => https://pkg.go.dev/builtin#string
     - http://localhost:6061/src/tawesoft.co.uk/go/tawesoft.go?m=text => remove entirely

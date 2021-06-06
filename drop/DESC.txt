@@ -8,6 +8,8 @@ Package drop implements the ability to start a process as root, open
 privileged resources as files, drop privileges to become a given user account,
 and inherit file handles across the dropping of privileges.
 
+NOTE: This package has only been tested on Linux. YMMV.
+
 Examples
 
 EXAMPLE: drop

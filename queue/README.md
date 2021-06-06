@@ -20,14 +20,27 @@ import "tawesoft.co.uk/go/queue"
 ## About
 
 Package queue implements simple, durable/ACID, same-process message queues
-supporting at-least-once or exactly-once delivery and best-effort ordering
-by priority and/or time.
+with best-effort ordering by priority and/or time.
 
 
 ## Examples
 
 
 See examples folder.
+
+## Changes
+
+### 2021-07-06
+
+* The Queue RetryItem and DeleteItem methods now take an Item, not an
+ItemID.
+
+* The Queue RetryItem method now correctly increments the Attempt field
+on disk.
+
+* Calling the Delete() method on a Queue now attempts to avoid deleting
+an in-memory database opened as ":memory:".
+
 
 ## Getting Help
 
