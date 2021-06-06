@@ -208,7 +208,7 @@ func (s itemSqliteService) PeekItems(
     return items, nil
 }
 
-func (s itemSqliteService) RetryItem(item Item, priority int, due time.Time) error {
+func (s itemSqliteService) RetryItem(id ItemID, priority int, due time.Time, attempt int) error {
     query := `
         UPDATE
             `+ s.dbname +`.items
@@ -220,17 +220,17 @@ func (s itemSqliteService) RetryItem(item Item, priority int, due time.Time) err
             id = ?
     `
 
-    result, err := s.db.Exec(query, priority, due.Unix(), item.Attempt + 1, item.ID)
+    result, err := s.db.Exec(query, priority, due.Unix(), attempt, id)
     if err != nil {
-        return fmt.Errorf("error updating %s item %d: %+v", s.dbname, item.ID, err)
+        return fmt.Errorf("error updating %s item %d: %+v", s.dbname, id, err)
     }
     if _, ok := sqlp.RowsAffectedBetween(result, 1, 1); !ok {
-        return fmt.Errorf("error updating %s item %d: rows affected != 1", s.dbname, item.ID)
+        return fmt.Errorf("error updating %s item %d: rows affected != 1", s.dbname, id)
     }
     return nil
 }
 
-func (s itemSqliteService) DeleteItem(item Item) error {
+func (s itemSqliteService) DeleteItem(id ItemID) error {
     query := `
         DELETE FROM
             `+ s.dbname +`.items
@@ -238,12 +238,12 @@ func (s itemSqliteService) DeleteItem(item Item) error {
             id = ?
     `
 
-    result, err := s.db.Exec(query, item.ID)
+    result, err := s.db.Exec(query, id)
     if err != nil {
-        return fmt.Errorf("error deleting %s item %d: %+v", s.dbname, item.ID, err)
+        return fmt.Errorf("error deleting %s item %d: %+v", s.dbname, id, err)
     }
     if _, ok := sqlp.RowsAffectedBetween(result, 1, 1); !ok {
-        return fmt.Errorf("error deleting %s item %d: rows affected != 1", s.dbname, item.ID)
+        return fmt.Errorf("error deleting %s item %d: rows affected != 1", s.dbname, id)
     }
     return nil
 }

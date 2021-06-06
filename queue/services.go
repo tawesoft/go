@@ -71,12 +71,14 @@ type Queue interface {
     PeekItems(n int, minPriority int, due time.Time, excluding []ItemID) ([]Item, error)
 
     // RetryItem reorders an item in the queue at a later `due` time and a
-    // given priority. Note that the passed Item struct is not modified.
-    RetryItem(item Item, priority int, due time.Time) error
+    // given priority. Also updates its attempt number (e.g. on the case of
+    // temporary failure, this will be set to the item's Attempt field plus
+    // one. In other cases, such as rescheduling to a better time, it might
+    // be kept at the current Attempt value)
+    RetryItem(item ItemID, priority int, due time.Time, attempt int) error
 
     // DeleteItem removes an item from the queue.
-    // Note that the passed Item struct is not modified.
-    DeleteItem(Item) error
+    DeleteItem(ItemID) error
 
     // Close any resources such as database handles.
     Close() error
