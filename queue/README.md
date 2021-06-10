@@ -32,11 +32,7 @@ See examples folder.
 
 ### 2021-07-06
 
-* The Queue RetryItem and DeleteItem methods now take an Item, not an
-ItemID.
-
-* The Queue RetryItem method now correctly increments the Attempt field
-on disk.
+* The Queue RetryItem method now takes an Attempt parameter.
 
 * Calling the Delete() method on a Queue now attempts to avoid deleting
 an in-memory database opened as ":memory:".

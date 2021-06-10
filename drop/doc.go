@@ -27,6 +27,12 @@
 // 
 // NOTE: This package has only been tested on Linux. YMMV.
 // 
+// NOTE: This package WILL NOT WORK on Windows.
+// 
+// WARNING: if a process opens a config file as root, that file must be writable
+// by root or system accounts only. The safest way to do this is change it to
+// be root-owned with permissions 0644 (or 0600).
+// 
 // Examples
 // 
 // Opens privileged files and ports as root, then drops privileges
@@ -44,17 +50,27 @@
 // etc. please see https://www.tawesoft.co.uk/go and 
 // https://www.tawesoft.co.uk/go/drop
 //
-//     2021-07-06
+//     2021-07-09
 //     
-//         * The Inheritable interface now has a Close() method. Implementations will
-//           need to add this method.
+//         * The Inheritable interface has changed. It now has a Close() method. The
+//           Name() method has also been renamed String() to satisfy the stringer
+//           interface.
+//     
+//         * The Drop() function now returns an extra value before the error value.
+//           This `closer` can be used by the child process to close all Inheritable
+//           handles. Alternatively, it is possible to ignore this and close each
+//           handle by calling their Close() method.
 //     
 //         * The package now exports the builtins InheritableFile and
 //           InheritableNetListener that implement the Inheritable interface for
-//           Files and net.Listeners
+//           Files and net.Listeners. These are created by the functions
+//           NewInheritableFile, NewInheritableTCPListener and
+//           NewInheritableUnixListener.
 //     
 //         * Drop() no longer panics on non-Linux platforms. However, it has only been
-//           tested on Linux so YMMV.
+//           tested on Linux so YMMV. It will continue to panic on Windows. Listeners
+//           also cannot be inherited on the JS platform target as they are not backed
+//           by files.
 //     
 //     2021-03-17
 //     
