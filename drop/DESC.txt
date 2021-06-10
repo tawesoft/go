@@ -10,6 +10,12 @@ and inherit file handles across the dropping of privileges.
 
 NOTE: This package has only been tested on Linux. YMMV.
 
+NOTE: This package WILL NOT WORK on Windows.
+
+WARNING: if a process opens a config file as root, that file must be writable
+by root or system accounts only. The safest way to do this is change it to
+be root-owned with permissions 0644 (or 0600).
+
 Examples
 
 EXAMPLE: drop

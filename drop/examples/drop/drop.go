@@ -3,34 +3,35 @@ package main
 
 import (
     "fmt"
-    "net"
     "os"
 
     "tawesoft.co.uk/go/drop"
 )
 
 // Define structures and methods that meets the drop.Inheritable interface
-// by implementing Name(), Open(), and Inherit()...
+// by implementing Name(), Open(), Inherit() and Close()...
 
 // These are implemented here for example purposes - but you can use
-// the builtins drop.Inheritable...
+// the builtins from drop instead.
 
 // InheritableFile is a file handle that survives a dropping of
 // privileges.
 type InheritableFile struct {
     Path  string
     Flags int // e.g.  os.O_RDWR|os.O_CREATE
-    Perm  os.FileMode // e.g. 0600
+    Perm  os.FileMode // for os.O_CREATE, e.g. 0600
 
     handle *os.File
 }
 
-func (h InheritableFile) Name() string {
+func (h InheritableFile) String() string {
     return h.Path
 }
 
-func (h InheritableFile) Open() (*os.File, error) {
-    return os.OpenFile(h.Path, h.Flags, h.Perm)
+func (h *InheritableFile) Open() (*os.File, error) {
+    f, err := os.OpenFile(h.Path, h.Flags, h.Perm)
+    h.handle = f
+    return f, err
 }
 
 func (h *InheritableFile) Inherit(f *os.File) error {
@@ -39,36 +40,8 @@ func (h *InheritableFile) Inherit(f *os.File) error {
     return nil
 }
 
-// InheritableNetListener is a net.Listener that survives a dropping of
-// privileges.
-type InheritableNetListener struct {
-    Network string
-    Address string
-    handle net.Listener
-}
-
-func (h InheritableNetListener) Name() string {
-    return fmt.Sprintf("(%s) %s", h.Network, h.Address)
-}
-
-func (h InheritableNetListener) Open() (*os.File, error) {
-    nl, err := net.Listen(h.Network, h.Address)
-    if err != nil { return nil, err }
-    defer nl.Close()
-
-    // Note that On JS and Windows, the File method of most Listeners are not
-    // implemented, so this will not work!
-    fl, err := nl.(*net.TCPListener).File()
-    if err != nil { return nil, err }
-    return fl, nil
-}
-
-func (h *InheritableNetListener) Inherit(f *os.File) error {
-    defer f.Close()
-    fl, err := net.FileListener(f)
-    if err != nil { return err }
-    h.handle = fl
-    return nil
+func (h *InheritableFile) Close() error {
+    return h.handle.Close()
 }
 
 func main() {
@@ -81,17 +54,18 @@ func main() {
 
     // resources to be opened as root and persist after privileges are dropped
     privilegedFile := &InheritableFile{"/tmp/privileged-file-example", os.O_RDWR|os.O_CREATE, 0600, nil}
-    privilegedPort := &InheritableNetListener{"tcp4", "127.0.0.1:81", nil}
+    privilegedPort := drop.NewInheritableTCPListener(":81")
 
     // If the program is run as root, open privileged resources as root, then
     // start a child process as `username` that inherits these resources and
     // the parent process's stdio, and immediately exit.
     //
     // If the program is run as non-root, inherit these resources and continue.
-    shouldExit, err := drop.Drop(username, privilegedFile, privilegedPort)
+    shouldExit, closer, err := drop.Drop(username, privilegedFile, privilegedPort)
     if err != nil {
         panic(fmt.Sprintf("error dropping privileges (try running as root): %v", err))
     }
+    defer closer()
     if shouldExit { return }
 
     // At this point, the program is no longer running as root, but it still
@@ -99,8 +73,9 @@ func main() {
 
     // do things with privilegedFile
     privilegedFile.handle.WriteString("hello world\n")
-    privilegedFile.handle.Close()
+    privilegedFile.Close()
 
     // do things with privilegedPort
-    privilegedPort.handle.Close()
+    // privilegedPort.handle ....
+    privilegedPort.Close()
 }
