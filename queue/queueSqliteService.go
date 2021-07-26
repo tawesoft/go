@@ -3,7 +3,7 @@ package queue
 import (
     "database/sql"
     "fmt"
-    
+
     "tawesoft.co.uk/go/sqlp/sqlite3"
 )
 
@@ -23,8 +23,8 @@ type queueSqliteService struct {
 //
 // A queue databases is VACUUMed when first attached by OpenQueue
 func NewQueueSqliteService() (QueueService, error) {
-    
-    db, err := sqlite3.Open("sqlite3", ":memory:", sqlite3.Config{
+
+    db, err := sqlite3.Open("sqlite3", ":memory:?cache=shared", sqlite3.Config{
         ForeignKeys:  true,
         SecureDelete: true,
         JournalMode:  sqlite3.JournalModeWAL,
@@ -32,7 +32,7 @@ func NewQueueSqliteService() (QueueService, error) {
     if err != nil {
         return nil, fmt.Errorf("error opening main database: %+v", err)
     }
-    
+
     return queueSqliteService{
         db:      db,
     }, nil

@@ -68,7 +68,6 @@ func main() {
 
     signals := []os.Signal{
         syscall.SIGINT,
-        syscall.SIGKILL,
         syscall.SIGTERM,
     }
 
