@@ -15,7 +15,7 @@ import (
 )
 
 const FROZEN_MARKDOWN = `
-##FROZEN - PLEASE MIGRATE
+## FROZEN - PLEASE MIGRATE
 
 These packages are moving to https://github.com/tawesoft/golib.
 
