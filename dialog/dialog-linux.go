@@ -78,6 +78,7 @@ func init() {
 }
 
 func haveCommand(cmd string) bool {
+    // TODO use exec.Lookpath instead of which
     return (exec.Command("sh", "-c", "which "+cmd+" > /dev/null 2>&1").Run() == nil)
 }
 
