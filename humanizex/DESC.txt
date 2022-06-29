@@ -1,6 +1,6 @@
 SPDX-License-Identifier: MIT
 short-desc: locale-aware natural number formatting
-stable: no
+stable: yes
 
 ---
 

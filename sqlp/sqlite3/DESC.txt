@@ -1,8 +1,0 @@
-SPDX-License-Identifier: MIT
-short-desc: SQLite3 database extras
-stable: candidate
-
----
-
-Package sqlite enchances a mattn/go-sqlite3 database with simple setup
-of things like utf8 collation and tawesoft.co.uk/go/sqlp features.

@@ -14,6 +14,37 @@ import (
     "unicode"
 )
 
+const FROZEN_MARKDOWN = `
+##FROZEN - PLEASE MIGRATE
+
+These packages are moving to https://github.com/tawesoft/golib.
+
+This is to increase security against possible supply chain attacks such as our domain name expiring in the future and being registered by someone else.
+
+Please migrate to https://github.com/tawesoft/golib (when available) instead.
+
+Most programs relying on a package in this monorepo, such as the dialog or lxstrconv packages, will continue to work for the foreseeable future.
+
+Rarely used packages have been hidden for now - they are in the git commit history at https://github.com/tawesoft/go if you need to resurrect one.
+`
+
+const FROZEN_COMMENT = `//
+// FROZEN - PLEASE MIGRATE
+//
+// These packages are moving to https://github.com/tawesoft/golib.
+//
+// This is to increase security against possible supply chain attacks such as
+// our domain name expiring in the future and being registered by someone else.
+//
+// Please migrate to https://github.com/tawesoft/golib (when available) instead.
+//
+// Most programs relying on a package in this monorepo, such as the dialog or
+// lxstrconv packages, will continue to work for the foreseeable future.
+//
+// Rarely used packages have been hidden for now - they are in the git commit
+// history at https://github.com/tawesoft/go if you need to resurrect one.
+//`
+
 func Must(err error) {
     if err != nil { panic(err) }
 }
@@ -238,6 +269,8 @@ func (p Package) writeGodoc() error {
         }
     }
 
+    data = append(data, FROZEN_COMMENT)
+
     data = append(data,
         "//",
         "// Package Information",
@@ -290,6 +323,8 @@ func (p Package) writeReadme() error {
         "```",
         "",
     )
+
+    data = append(data, "\n",FROZEN_MARKDOWN,"\n")
 
     data = append(data, strings.Split(fmtMarkdownPackageTable(p), "\n")...)
 
@@ -382,6 +417,19 @@ This is permissively-licensed open source software but exact licenses may vary b
 
 For license information, documentation, source code, support, links, etc. please see
 https://www.tawesoft.co.uk/go
+
+FROZEN - PLEASE MIGRATE
+
+These packages are moving to https://github.com/tawesoft/golib.
+
+This is to increase security against possible supply chain attacks such as our domain name expiring in the future and being registered by someone else.
+
+Please migrate to https://github.com/tawesoft/golib (when available) instead.
+
+Most programs relying on a package in this monorepo, such as the dialog or lxstrconv packages, will continue to work for the foreseeable future.
+
+Rarely used packages have been hidden for now - they are in the git commit history at https://github.com/tawesoft/go if you need to resurrect one.
+
 */
 package tawesoft
 
@@ -407,7 +455,9 @@ func writeMarkdownIndex(packages []Package) {
 
 A monorepo for small Go modules maintained by [Tawesoft®](https://www.tawesoft.co.uk/go)
 
-This is permissively-licensed open source software but exact licenses may vary between modules.
+This is permissively-licensed open source software but exact licences may vary between modules.
+
+`, FROZEN_MARKDOWN,`
 
 Download
 --------

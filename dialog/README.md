@@ -8,6 +8,23 @@ go get -u "tawesoft.co.uk/go"
 import "tawesoft.co.uk/go/dialog"
 ```
 
+
+
+
+##FROZEN - PLEASE MIGRATE
+
+These packages are moving to https://github.com/tawesoft/golib.
+
+This is to increase security against possible supply chain attacks such as our domain name expiring in the future and being registered by someone else.
+
+Please migrate to https://github.com/tawesoft/golib (when available) instead.
+
+Most programs relying on a package in this monorepo, such as the dialog or lxstrconv packages, will continue to work for the foreseeable future.
+
+Rarely used packages have been hidden for now - they are in the git commit history at https://github.com/tawesoft/go if you need to resurrect one.
+
+
+
 |  Links  | License | Stable? |
 |:-------:|:-------:|:-------:|
 | [home][home_dialog] ∙ [docs][docs_dialog] ∙ [src][src_dialog] | [MIT-0][copy_dialog] | ✔ yes |
@@ -45,6 +62,10 @@ func main() {
 ```
 
 ## Changes
+
+### 2022-06-29
+
+* Update dialog to never use a format string with no args
 
 ### 2019-11-16
 

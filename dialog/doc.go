@@ -38,6 +38,22 @@
 //         dialog.Alert("There are %d lights", 4)
 //     }
 //
+// FROZEN - PLEASE MIGRATE
+//
+// These packages are moving to https://github.com/tawesoft/golib.
+//
+// This is to increase security against possible supply chain attacks such as
+// our domain name expiring in the future and being registered by someone else.
+//
+// Please migrate to https://github.com/tawesoft/golib (when available) instead.
+//
+// Most programs relying on a package in this monorepo, such as the dialog or
+// lxstrconv packages, will continue to work for the foreseeable future.
+//
+// Rarely used packages have been hidden for now - they are in the git commit
+// history at https://github.com/tawesoft/go if you need to resurrect one.
+//
+//
 // Package Information
 //
 // License: MIT-0 (see LICENSE.txt)
@@ -48,6 +64,10 @@
 // etc. please see https://www.tawesoft.co.uk/go and 
 // https://www.tawesoft.co.uk/go/dialog
 //
+//     2022-06-29
+//     
+//         * Update dialog to never use a format string with no args
+//     
 //     2019-11-16
 //     
 //         * Fix incorrect formatting of multiple arguments in Linux stdio fallback

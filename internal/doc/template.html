@@ -85,6 +85,24 @@ div#footer {
 
 <p>This is permissively-licensed open source software but exact licenses may vary between modules.</p>
 
+
+<h2>Frozen - please migrate</h2>
+
+<div style="background-color: #FFC; padding: 1em;">
+
+<p><b>These packages are moving to <a href="https://github.com/tawesoft/golib">github.com/tawesoft/golib</a></b>.</p>
+
+<p>This is to increase security against possible supply chain attacks such as our domain name expiring in the future and being registered by someone else.</p>
+
+<p>Please migrate to <a href="https://github.com/tawesoft/golib">github.com/tawesoft/golib</a> (when available) instead.</p>
+
+<p>Most programs relying on a package in this monorepo, such as the <tt>dialog</tt> or <tt>lxstrconv</tt> packages, will continue to work for the foreseeable future.</p>
+
+<p>Rarely used packages have been hidden for now - they are in the git commit history at <a href="https://github.com/tawesoft/go">github.com/tawesoft/go</a> if you need to resurrect one.</p>
+
+</div>
+
+
 <h2>Download</h2>
 
 <pre>go get -u tawesoft.co.uk/go</pre>

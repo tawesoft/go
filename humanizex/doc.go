@@ -58,11 +58,27 @@
 // https://www.tawesoft.co.uk/go/doc/humanizex/examples/custom-factors/
 //
 //
+// FROZEN - PLEASE MIGRATE
+//
+// These packages are moving to https://github.com/tawesoft/golib.
+//
+// This is to increase security against possible supply chain attacks such as
+// our domain name expiring in the future and being registered by someone else.
+//
+// Please migrate to https://github.com/tawesoft/golib (when available) instead.
+//
+// Most programs relying on a package in this monorepo, such as the dialog or
+// lxstrconv packages, will continue to work for the foreseeable future.
+//
+// Rarely used packages have been hidden for now - they are in the git commit
+// history at https://github.com/tawesoft/go if you need to resurrect one.
+//
+//
 // Package Information
 //
 // License: MIT (see LICENSE.txt)
 //
-// Stable: no
+// Stable: yes
 //
 // For more information, documentation, source code, examples, support, links,
 // etc. please see https://www.tawesoft.co.uk/go and 

@@ -1,8 +1,0 @@
-SPDX-License-Identifier: MIT
-short-desc: helpers for variadic functions
-stable: candidate
-
----
-
-Package variadic implements features that make it easier to work with
-variadic functions.

@@ -8,9 +8,26 @@ go get -u "tawesoft.co.uk/go"
 import "tawesoft.co.uk/go/humanizex"
 ```
 
+
+
+
+##FROZEN - PLEASE MIGRATE
+
+These packages are moving to https://github.com/tawesoft/golib.
+
+This is to increase security against possible supply chain attacks such as our domain name expiring in the future and being registered by someone else.
+
+Please migrate to https://github.com/tawesoft/golib (when available) instead.
+
+Most programs relying on a package in this monorepo, such as the dialog or lxstrconv packages, will continue to work for the foreseeable future.
+
+Rarely used packages have been hidden for now - they are in the git commit history at https://github.com/tawesoft/go if you need to resurrect one.
+
+
+
 |  Links  | License | Stable? |
 |:-------:|:-------:|:-------:|
-| [home][home_humanizex] ∙ [docs][docs_humanizex] ∙ [src][src_humanizex] | [MIT][copy_humanizex] | ✘ **no** |
+| [home][home_humanizex] ∙ [docs][docs_humanizex] ∙ [src][src_humanizex] | [MIT][copy_humanizex] | ✔ yes |
 
 [home_humanizex]: https://tawesoft.co.uk/go/humanizex
 [src_humanizex]:  https://github.com/tawesoft/go/tree/master/humanizex

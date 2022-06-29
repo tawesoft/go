@@ -4,24 +4,10 @@ godocport=6061
 
 pkgs="\
     dialog \
-    drop \
-    email \
     glcaps \
-    grace \
     humanizex \
-    legacy/email \
-    loader \
-    log \
-    log/zerolog \
     lxstrconv \
-    operator \
-    queue \
-    router \
-    sqlp \
-    sqlp/sqlite3 \
-    variadic \
-    ximage \
-    ximage/xcolor
+    operator
 "
 
 # build go.html, READMEs, etc.

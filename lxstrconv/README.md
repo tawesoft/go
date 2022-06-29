@@ -8,9 +8,26 @@ go get -u "tawesoft.co.uk/go"
 import "tawesoft.co.uk/go/lxstrconv"
 ```
 
+
+
+
+##FROZEN - PLEASE MIGRATE
+
+These packages are moving to https://github.com/tawesoft/golib.
+
+This is to increase security against possible supply chain attacks such as our domain name expiring in the future and being registered by someone else.
+
+Please migrate to https://github.com/tawesoft/golib (when available) instead.
+
+Most programs relying on a package in this monorepo, such as the dialog or lxstrconv packages, will continue to work for the foreseeable future.
+
+Rarely used packages have been hidden for now - they are in the git commit history at https://github.com/tawesoft/go if you need to resurrect one.
+
+
+
 |  Links  | License | Stable? |
 |:-------:|:-------:|:-------:|
-| [home][home_lxstrconv] ∙ [docs][docs_lxstrconv] ∙ [src][src_lxstrconv] | [MIT][copy_lxstrconv] | ✘ **no** |
+| [home][home_lxstrconv] ∙ [docs][docs_lxstrconv] ∙ [src][src_lxstrconv] | [MIT][copy_lxstrconv] | ✔ yes |
 
 [home_lxstrconv]: https://tawesoft.co.uk/go/lxstrconv
 [src_lxstrconv]:  https://github.com/tawesoft/go/tree/master/lxstrconv
@@ -24,12 +41,6 @@ numbers that integrates with golang.org/x/text.
 
 If golang.org/x/text is ever promoted to core then there will be a new version
 of this package named `lstrconv` (dropping the 'x').
-
-
-## Package Stability
-
-
-THIS IS A PREVIEW RELEASE, SUBJECT TO BREAKING CHANGES.
 
 Todo:
 

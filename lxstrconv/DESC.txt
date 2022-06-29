@@ -1,6 +1,6 @@
 SPDX-License-Identifier: MIT
 short-desc: locale-aware number parsing
-stable: no
+stable: yes
 
 ---
 
@@ -9,10 +9,6 @@ numbers that integrates with golang.org/x/text.
 
 If golang.org/x/text is ever promoted to core then there will be a new version
 of this package named `lstrconv` (dropping the 'x').
-
-Package Stability
-
-THIS IS A PREVIEW RELEASE, SUBJECT TO BREAKING CHANGES.
 
 Todo:
 

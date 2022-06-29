@@ -1,6 +1,0 @@
-2021-07-06
-
-    * The Queue RetryItem method now takes an Attempt parameter.
-
-    * Calling the Delete() method on a Queue now attempts to avoid deleting
-      an in-memory database opened as ":memory:".
