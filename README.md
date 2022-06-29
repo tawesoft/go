@@ -7,7 +7,7 @@ This is permissively-licensed open source software but exact licences may vary b
 
 
 
-##FROZEN - PLEASE MIGRATE
+## FROZEN - PLEASE MIGRATE
 
 These packages are moving to https://github.com/tawesoft/golib.
 

@@ -11,7 +11,7 @@ import "tawesoft.co.uk/go/humanizex"
 
 
 
-##FROZEN - PLEASE MIGRATE
+## FROZEN - PLEASE MIGRATE
 
 These packages are moving to https://github.com/tawesoft/golib.
 
